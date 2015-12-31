@@ -1,11 +1,10 @@
-NameVirtualHost *:80
-
 <VirtualHost *:{{ webport }}>
   ServerAdmin webmaster@localhost
   ServerName  {{ sitename }}.{{ master_host }}
 
   DocumentRoot /var/www/{{ sitename }}.{{ master_host }}
-  ErrorLog ${APACHE_LOG_DIR}/error.log
+  ErrorLog ${APACHE_LOG_DIR}/{{ sitename }}-error.log
+  CustomLog ${APACHE_LOG_DIR}/{{ sitename }}-access.log combined
   LogLevel warn
 
   <Directory /var/www/{{ sitename }}.{{master_host }}>
