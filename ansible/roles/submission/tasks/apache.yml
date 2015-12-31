@@ -9,7 +9,7 @@
 
 - name: Create an apache site named {{ sitename }}
   tags: config
-  template: src=apache_site_{{ sitename }}.j2
+  template: src=apache_site_segue.j2
             dest=/etc/apache2/sites-available/{{ sitename }}.conf
             owner=root
             mode=0644
