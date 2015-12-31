@@ -6,17 +6,18 @@
 </div>
 
 <div class="buttons">
-  <div ng-hide="registrationState == 'open'">
+<!--  <div ng-hide="registrationState == 'open'">
     <header translate>Certificados</header>
     <button ui-sref="certificate">
       emitir certificados!
     </button>
-  </div>
-  <div ng-show="registrationState == 'open'">
+  </div>-->
+ <!-- <div ng-show="registrationState == 'open'">-->
+    <div>
     <header translate>Participantes</header>
     <div ng-show="purchaseMode == 'online'">
       <button ng-click="showInfo('initial', 'contract_large')" translate>quero comprar um ingresso</button>
-      <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button>
+    <!--  <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button> -->
     </div>
     <div ng-show="purchaseMode == 'reservation'">
       <button ng-click="showInfo('initial', 'contract_large')" translate>
