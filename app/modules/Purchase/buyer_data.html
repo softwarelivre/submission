@@ -48,9 +48,11 @@
     </label>
     <input type="text" required focusable
           minlength="5" maxlength="50"
+          placeholder="{{ 'Nome Completo' || translate }}"
           ng-model="buyer.name" />
     <i class="fa fa-check only-expanded"></i>
-    <span form-error="name.object_required" translate>por favor, informe o nome</span>
+    <span form-error="name.object_required" translate>por favor, informe o nome completo</span>
+    <span form-error="name.string_pattern" translate>por favor, informe o nome completo</span>
   </p>
 
   <p>

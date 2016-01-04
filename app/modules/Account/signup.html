@@ -7,11 +7,12 @@
         <small translate>(de 5 até 80 caracteres)</small>
       </label>
       <input type="text" required focusable
-            placeholder="{{ 'nome' || translate }}"
+            placeholder="{{ 'Nome completo' || translate }}"
             minlength="5" maxsize="80"
             ng-model="signup.name"/>
       <i class="fa fa-check only-expanded"></i>
       <span form-error="name.object_required" translate>por favor, informe seu nome completo</span>
+      <span form-error="name.string_pattern" translate>por favor, informe seu nome completo</span>
     </p>
 
     <p>
