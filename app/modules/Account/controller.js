@@ -49,6 +49,8 @@
       $scope.signup = Account.localLoad();
       $scope.$watch('signup', Account.localSave);
 
+      $scope.disabilities =  Account.getDisabilityTypes();
+
       UserLocation.autobind($scope, 'signup');
 
       function finishedSignUp() {

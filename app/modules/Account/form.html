@@ -47,6 +47,26 @@
     </p>
 
     <p class="only-expanded">
+      <label class="">
+        <span translate>possui deficiência</span>
+      </label>
+      <select
+            ng-model="signup.disability"
+            ng-init="signup.disability='none'" required>
+            <option ng-repeat="disability in disabilities" value="{{disability.key}}">{{disability.value}}</option>
+      </select>
+    </p>
+
+    <p class="only-expanded" ng-show="signup.disability != 'none'">
+      <label>
+        <span translate>detalhes da deficiência</span>
+        <small translate>(até 200 caracteres)</small>
+      </label>
+      <textarea minlength="3" maxlength="200" ng-model="signup.disability_info"></textarea>
+      <i class="fa fa-check"></i>
+    </p>
+
+    <p class="only-expanded">
       <label class="notip">
         <span translate>país</span>
       </label>

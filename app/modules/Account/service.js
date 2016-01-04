@@ -22,6 +22,15 @@
           return 'passport';
         }
       };
+      extensions.getDisabilityTypes = function() {
+          return [
+           { key: 'none', value: 'Não' },
+           { key: 'physical', value: 'Física' },
+           { key: 'hearing', value: 'Auditiva' },
+           { key: 'visual', value: 'Visual' },
+           { key: 'mental', value: 'Mental' }
+        ];
+      }
       extensions.localLoad = function() {
         return $localStorage.savedAccount || {};
       };
