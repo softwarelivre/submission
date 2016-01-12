@@ -4,3 +4,4 @@ dist
 .*.sw?
 locale/*.mo
 .DS_Store
+.idea/
