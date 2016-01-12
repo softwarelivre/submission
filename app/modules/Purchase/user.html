@@ -1,27 +1,34 @@
-<fieldset class="author" ng-controller="NewProposalAuthorController" ng-hide="proposal.id">
-  <legend translate>quem é você?</legend>
-  <p class="not-logged info" ng-hide="credentials || accountOption" translate>
-    não conseguimos detectar sua sessão neste computador...
-  </p>
-  <p ng-hide="credentials">
-    <label class="long" translate>você já tem conta no sistema?</label>
-    <span>
-      <input type="radio" id="account_use_old" value="existing"
-             ng-model="accountOption" ng-click="openLoginModal()"/>
-      <label for="account_use_old" translate>sim, já tenho conta</label>
-    </span>
-    <span ng-hide="isProponent">
-      <input type="radio" id="account_create_new" value="create"
-             ng-model="accountOption" ng-click="focusName()"/>
-      <label for="account_create_new" translate>não, quero criar uma conta</label>
-    </span>
-  </p>
-  <logged-as></logged-as>
 
-  <div ng-hide="credentials">
-    <ng-include src="'modules/Account/signup.html'"
-              ng-controller="SignUpController"
-              ng-show="accountOption == 'create'">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <fieldset class="author" ng-controller="NewProposalAuthorController" ng-hide="proposal.id">
+        <p class="not-logged info" ng-hide="credentials || accountOption" translate>
+          não conseguimos detectar sua sessão neste computador...
+        </p>
+        <p ng-hide="credentials">
+          <label class="long" translate>você já tem conta no sistema?</label>
+          <span>
+            <input type="radio" id="account_use_old" value="existing"
+                   ng-model="accountOption" ng-click="openLoginModal()"/>
+            <label for="account_use_old" translate>sim, já tenho conta</label>
+          </span>
+          <span ng-hide="isProponent">
+            <input type="radio" id="account_create_new" value="create"
+                   ng-model="accountOption" ng-click="focusName()"/>
+            <label for="account_create_new" translate>não, quero criar uma conta</label>
+          </span>
+        </p>
+
+        <logged-as></logged-as>
+
+
+        <div ng-hide="credentials">
+          <div class="container-fluid">
+            <ng-include src="'modules/Account/signup.html'"
+                      ng-controller="SignUpController"
+                      ng-show="accountOption == 'create'">
+            </div>
+        </div>
+      </fieldset>
+    </div>
   </div>
-
-</fieldset>

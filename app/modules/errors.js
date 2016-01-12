@@ -45,9 +45,33 @@
         elem.addClass("error");
         var myError = "^"+attr.formError+"$";
 
-        scope.$on('errors:clear', function(e, name) { elem.addClass("ng-hide"); });
+        scope.$on('errors:clear', function(e, name) {
+            //FIX ME PLEASE FIND THE FORM GROUP
+            first_parent = elem.parent();
+            second_parent = elem.parent().parent();
+            if( first_parent.hasClass('form-group') )
+            {
+                first_parent.removeClass("has-error");
+            }
+            else if( second_parent.hasClass('form-group') )
+            {
+                second_parent.removeClass("has-error");
+            }
+            elem.addClass("ng-hide");
+        });
         scope.$on('errors:set', function(e, name) {
           if (name.match(myError)) {
+              //FIX ME PLEASE FIND THE FORM GROUP
+            first_parent = elem.parent();
+            second_parent = elem.parent().parent();
+            if( first_parent.hasClass('form-group') )
+            {
+                first_parent.addClass("has-error");
+            }
+            else if(second_parent.hasClass('form-group') )
+            {
+                second_parent.addClass("has-error");
+            }
             elem.removeClass("ng-hide");
           }
         });

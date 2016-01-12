@@ -1,23 +1,35 @@
-<img src="/images/logo-pt.png"/>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <img src="/images/logo-pt.png"/>
 
-<div class="subtitle">
-  8 a 11 de Julho de 2015 | Porto Alegre | Brasil
-  <button ui-sref="authenticate" translate>entrar na minha conta</button>
-</div>
 
+                <h2>Fórum Internacional Software Livre</h2>
+                <h4 class="text-muted">8 a 11 de Julho de 2016 | Porto Alegre | Brasil</h4>
+           <!--   FIX <button ui-sref="authenticate" translate>entrar na minha conta</button> -->
+                <div ng-show="purchaseMode == 'online'">
+                  <button class="btn btn-lg btn-primary" ng-click="showInfo('initial', 'contract_large')" translate>
+                      Quero comprar um ingresso
+                  </button>
+                <!--  <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button> -->
+                </div>
+        </div>
+    </div>
+
+    <!--
 <div class="buttons">
-<!--  <div ng-hide="registrationState == 'open'">
+    <div ng-hide="registrationState == 'open'">
     <header translate>Certificados</header>
     <button ui-sref="certificate">
       emitir certificados!
     </button>
-  </div>-->
- <!-- <div ng-show="registrationState == 'open'">-->
+  </div>
+  <div ng-show="registrationState == 'open'">
     <div>
-    <header translate>Participantes</header>
+   <header translate>Participantes</header>
     <div ng-show="purchaseMode == 'online'">
       <button ng-click="showInfo('initial', 'contract_large')" translate>quero comprar um ingresso</button>
-    <!--  <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button> -->
+      <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button>
     </div>
     <div ng-show="purchaseMode == 'reservation'">
       <button ng-click="showInfo('initial', 'contract_large')" translate>
@@ -40,4 +52,6 @@
       propor nova palestra
     </button>
   </div>
+  </div>-->
+
 </div>

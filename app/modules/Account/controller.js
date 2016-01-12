@@ -45,13 +45,24 @@
     })
     .controller("SignUpController", function($scope,
                                              Account, Auth, Validator, FormErrors, UserLocation,
-                                             focusOn) {
+                                             focusOn, $http, AddressResolver) {
       $scope.signup = Account.localLoad();
       $scope.$watch('signup', Account.localSave);
 
-      $scope.disabilities =  Account.getDisabilityTypes();
+      $scope.disabilityTypes =  Account.getDisabilityTypes();
+      $scope.occupationTypes = Account.getOccupationTypes();
+      $scope.educationTypes = Account.getEducationTypes();
 
-      UserLocation.autobind($scope, 'signup');
+      $scope.fetchAddress = function(zipcode) {
+        AddressResolver.getAddress(zipcode)
+        .then(function(success) {
+          $scope.signup.country = success.country;
+          $scope.signup.city = success.city;
+          $scope.signup.address_state = success.state;
+        });
+      };
+
+     // UserLocation.autobind($scope, 'signup'); FIX MAYBE REMOVE
 
       function finishedSignUp() {
         Auth.login($scope.signup.email, $scope.signup.password);
@@ -61,7 +72,6 @@
           $scope.home();
         }
       }
-
 
       $scope.submit = function() {
         Validator.validate($scope.signup, 'accounts/signup')

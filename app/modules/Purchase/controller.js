@@ -119,7 +119,7 @@
     .controller('NewPurchaseController', function($rootScope, $scope, $stateParams,
                                                   Config, Auth, Validator, FormErrors, ContractModal,
                                                   focusOn, products, currentPurchase, purchaseMode,
-                                                  Products, Purchases, Account) {
+                                                  Products, Purchases, Account, AddressResolver) {
       $scope.selectedProduct = {};
       $scope.purchaseMode = purchaseMode;
 
@@ -212,13 +212,28 @@
         })
       }
 
+      $scope.fetchAddress = function(zipcode) {
+        AddressResolver.getAddress(zipcode)
+        .then(function(success) {
+          $scope.buyer.address_country = success.country;
+          $scope.buyer.address_city = success.city;
+          $scope.buyer.address_state = success.state;
+        });
+      };
+
       $scope.$watch($scope.credentials, function() {
         if ($scope.credentials) {
           Account.get().then(function(account) {
             $scope.temp_name             = account.name;
             $scope.buyer.name            = account.name;
             $scope.buyer.address_country = account.country;
+            $scope.buyer.address_state   = account.address_state;
             $scope.buyer.address_city    = account.city;
+            $scope.buyer.address_neighborhood = account.address_neighborhood;
+            $scope.buyer.address_extra = account.address_extra;
+            $scope.buyer.address_number = account.address_number;
+            $scope.buyer.address_street = account.address_street;
+            $scope.buyer.address_zipcode = account.address_zipcode;
             $scope.buyer.document        = account.document;
             if ($stateParams.caravan_hash) {
               $scope.buyer.caravan_invite_hash = $stateParams.caravan_hash;

@@ -2,6 +2,8 @@
 <html ng-app="segue.submission">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <title>fisl - inscrições</title>
     <!-- inject:vendor:css -->
@@ -17,24 +19,38 @@
     <script src='config.js'></script>
   </head>
   <body ng-controller="SubmissionController" class="{{ topState }}">
-    <header class="noprint {{ topState }}" ui-view="header">
+    <header class=" {{ topState }}" ui-view="header">
     </header>
 
     <toast translate></toast>
 
-    <aside>
-      <logged-as></logged-as>
-    </aside>
 
-    <main class="{{ topState }}" ui-view="main">
+
+
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="{{ topState }} container" ui-view="main"></div>
+        </div>
+      </div>
     </main>
 
-    <support class="noprint">
-      <span translate>problemas?</span>&nbsp;
-      <a href="mailto:financeiro@espacodeprojetos.com.br?subject=[BUG] Notificação&body=Descreva seu problema:">financeiro@espacodeprojetos.com.br</a>
-    </support>
 
-    <footer class="noprint">
-      {{ state.name }}
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="col-sm-6">
+          <support class="noprint">
+            <p>
+            <span translate>Problemas?</span>&nbsp;
+            <a href="mailto:financeiro@espacodeprojetos.com.br?subject=[BUG] Notificação&body=Descreva seu problema:">financeiro@espacodeprojetos.com.br</a>
+            </p>
+          </support>
+        </div>
+        <div class="col-sm-offset-5 col-sm-1">
+          <p class="text-muted"> {{ state.name }} </p>
+        </div>
+      </div>
     </footer>
+
+
   </body>

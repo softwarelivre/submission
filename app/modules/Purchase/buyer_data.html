@@ -1,172 +1,288 @@
+
+
+
+        <p class="alert alert-warning" translate>
+          Atenção: não é possível alterar os dados do comprador após a realização da compra
+        </p>
+
+        <p class="alert alert-info" translate>
+          Os dados abaixo são necessários para realização do pagamento e posterior emissão de nota fiscal
+        </p>
+
 <fieldset class="buyer_data">
-  <legend translate>dados do comprador</legend>
-
-  <p class="alert alert-warning">
-    atenção: não é possível alterar os dados do comprador após a realização da compra
-  </p>
-
-  <p class="alert alert-info">
-    os dados abaixo são necessários para realização do pagamento e posterior emissão de nota fiscal
-  </p>
+  <legend translate>Dados do comprador</legend>
 
   <p>
-    <label class="long" translate>este ingresso está sendo comprado: </label>
+    <label class="long" translate>Este ingresso está sendo comprado: </label>
     <span>
       <input type="radio" id="buyer_person" name="buyer_type" value="person"
              ng-model="buyer.kind"
              ng-click="changeBuyerType()" />
       <label for="buyer_person" translate>por mim</label>
     </span>
-    <span form-error="kind.object_required" translate>por favor, informe o tipo de comprador</span>
+    <span form-error="kind.object_required" translate>Por favor, informe o tipo de comprador</span>
   </p>
 
-  <p>
-    <label translate>forma de pagamento: </label>
-    <span ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash">
-      <input type="radio" id="payment_boleto" name="payment_method" value="boleto"
-             ng-model="payment.method"/>
-      <label for="payment_boleto" translate>boleto bancário</label>
-    </span>
-    <span ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash">
-      <input type="radio" id="payment_pagseguro" name="payment_method" value="pagseguro"
-             ng-model="payment.method" />
-      <label for="payment_pagseguro" translate>pagseguro</label>
-    </span>
-    <span ng-show="selectedProduct.can_pay_cash">
-      <input type="radio" id="payment_cash" name="payment_method" value="cash"
-             ng-model="payment.method"/>
-      <label for="payment_cash" translate>no evento</label>
-    </span>
-    <span form-error="payment_method.object_required" translate>por favor, informe a forma de pagamento</span>
-  </p>
-
-  <p>
-    <label>
-      <span ng-show="buyer.kind == 'person'" translate>nome do comprador</span>
-      <span ng-show="buyer.kind == 'company'" translate>nome da empresa</span>
-      <small translate>(de 5 até 80 caracteres)</small>
-    </label>
-    <input type="text" required focusable
-          minlength="5" maxlength="50"
-          placeholder="{{ 'Nome Completo' || translate }}"
-          ng-model="buyer.name" />
-    <i class="fa fa-check only-expanded"></i>
-    <span form-error="name.object_required" translate>por favor, informe o nome completo</span>
-    <span form-error="name.string_pattern" translate>por favor, informe o nome completo</span>
-  </p>
-
-  <p>
-    <label>
-      <span translate>contato</span>
-      <small translate>(de 5 até 80 caracteres)</small>
-    </label>
-    <input type="text" focusable
-          minlength="5" maxlength="100"
-          ng-model="buyer.contact"
-          ng-required="buyer.kind == 'company'" />
-    <i class="fa fa-check only-expanded"></i>
-    <span form-error="contact.object_required" translate>por favor, informe o nome do contato</span>
-  </p>
-
-  <p>
-    <label class="notip">
-      <span translate>país</span>
-    </label>
-    <input type="text" required
-          minlength="2" maxlength="40"
-          watch="country:changed"
-          ng-model="buyer.address_country" />
-    <i class="fa fa-check"></i>
-    <span form-error="address_country.object_required" translate>por favor, informe seu país</span>
-  </p>
-
-  <p class="cpf" ng-show="buyer.kind == 'person' || buyer.kind == 'student'">
-    <label>
-      <span translate>número do CPF</span>
-      <small translate>(somente residentes no Brasil)</small>
-    </label>
-    <input type="text" required
-          minlength="11" maxlength="20"
-          ng-model="buyer.document"
-          ui-br-cpf-mask/>
-    <i class="fa fa-check"></i>
-    <span form-error="cpf.object_required" translate>residentes no Brasil, favor informar o CPF</span>
-  </p>
-
-  <p class="passport" ng-show="isForeignPerson">
-    <label>
-      <span translate>passaporte</span>
-      <small translate>(Mercosul: use identidade nacional)</small>
-    </label>
-    <input type="text" required
-          minlength="8" maxlength="15"
-          ng-model="buyer.document"/>
-    <i class="fa fa-check"></i>
-    <span form-error="passport.object_required" translate>estrangeiros não-residentes, favor informar o passaporte; cidadãos do Mercosul podem informar documento de identidade nacional</span>
-  </p>
-
-  <p>
-    <label>
-      <span translate>endereço</span>
-    </label>
-    <input type="text" required
-          minlength="5" maxlength="80"
-          ng-model="buyer.address_street"
-          />
-    <i class="fa fa-check"></i>
-    <span form-error="address_street.object_required" translate>favor informar o endereço</span>
-  </p>
-
-  <div class="address_number_extra">
-
-  <p>
-    <label>
-      <span translate>número</span>
-    </label>
-    <input type="text" required
-          minlength="1" maxlength="20"
-          ng-model="buyer.address_number"
-          />
-    <i class="fa fa-check"></i>
-    <span form-error="address_number.object_required" translate>favor informar o número</span>
-  </p>
-
-  <p>
-    <label>
-      <span translate>complemento</span>
-    </label>
-    <input type="text"
-          minlength="1" maxlength="40"
-          ng-model="buyer.address_extra"
-          />
-    <i class="fa fa-check"></i>
-  </p>
-
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span>
+        <span ng-show="buyer.kind == 'person'" translate>Nome do comprador:</span>
+        <span ng-show="buyer.kind == 'company'" translate>Nome da empresa:</span>
+      </label>
+      <div class="col-sm-4">
+        <input type="text" required focusable
+            placeholder="{{ 'Nome completo' || translate }}"
+            minlength="5" maxsize="80"
+            ng-model="buyer.name"
+            class="form-control"/>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+        <span form-error="name.object_required" class="help-block" translate>
+          Por favor, informe seu nome
+        </span>
+        <span form-error="name.string_pattern" class="help-block" translate>
+          Por favor, informe seu nome
+        </span>
+      </div>
   </div>
 
-  <p>
-    <label>
-      <span translate>cidade</span>
-    </label>
-    <input type="text" required
-          minlength="2" maxlength="60"
-          ng-model="buyer.address_city"
-          />
-    <i class="fa fa-check"></i>
-    <span form-error="address_city.object_required" translate>residentes no Brasil, favor informar a cidade</span>
-  </p>
 
-  <p>
-    <label>
-      <span translate>CEP</span>
+
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span> Telefone:
+        <small class="help-block" translate>(inclua o código de área)</small>
+      </label>
+      <div class="col-sm-4">
+        <input type="text" required
+            ng-model="buyer.contact"
+            ui-br-phone-number
+            class="form-control" />
+      </div>
+      <div class="col-sm-9">
+        <span form-error="contact.object_required" class="help-block" translate>
+          Por favor, infome o seu número de telefone
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group has-feedback" ng-show="buyer.kind == 'person' || buyer.kind == 'student'">
+    <label class="col-sm-3 control-label" translate>
+      <span class="required"> * </span> Documento:
+      <small class="help-block" translate>(Somente números)</small>
+      <small class="help-block" translate>(Não é necessário se estrangeiro)</small>
     </label>
-    <input type="text" required
-          ng-model="buyer.address_zipcode"
-          minlength="9" maxlength="9"
-          ui-br-cep-mask
-          />
-    <i class="fa fa-check"></i>
-    <span form-error="address_zipcode.object_required" translate>residentes no Brasil, favor informar o CEP</span>
-  </p>
+    <div class="col-sm-4">
+      <input type="text" required
+          placeholder="{{ 'CPF' }}"
+          ng-model="buyer.document"
+          minlength="4" maxsize="16"
+          class="form-control"/>
+    </div>
+    <div class="col-sm-9">
+      <span form-error="document.object_required" class="help-block" translate>
+        Por favor, informar um número de documento
+      </span>
+      <span form-error="document.invalid_format"  class="help-block" translate>
+        Residentes no Brasil, número do CPF ou CNPJ inválido (utilize somente números)
+      </span>
+    </div>
+  </div>
+
+    <p class="passport" ng-show="isForeignPerson">
+      <label>
+        <span translate>passaporte</span>
+        <small translate>(Mercosul: use identidade nacional)</small>
+      </label>
+      <input type="text" required
+            minlength="8" maxlength="15"
+            ng-model="buyer.document"/>
+      <i class="fa fa-check"></i>
+      <span form-error="passport.object_required" translate>estrangeiros não-residentes, favor informar o passaporte; cidadãos do Mercosul podem informar documento de identidade nacional</span>
+    </p>
+
 
 </fieldset>
+
+  <fieldset>
+    <legend translate>Dados do pagamento</legend>
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        Forma de pagamento:
+      </label>
+      <div class="col-sm-9">
+          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash"
+                 class="radio-inline" translate>
+            <input type="radio" id="payment_boleto" name="payment_method" value="boleto"
+               ng-model="payment.method" >Boleto bancário
+          </label>
+          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash"
+                 class="radio-inline" translate>
+            <input type="radio" id="payment_pagseguro" name="payment_method" value="pagseguro"
+               ng-model="payment.method" /> Cartão
+          </label>
+          <label ng-show="selectedProduct.can_pay_cash" class="radio-inline" translate>
+          <input type="radio" id="payment_cash" name="payment_method" value="cash"
+               ng-model="payment.method" /> No evento
+          </label>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+        <span form-error="payment_method.object_required" class="help-block" translate>
+          Por favor, selecione um valor válido
+        </span>
+      </div>
+    </div>
+
+  </fieldset>
+
+
+  <fieldset>
+      <legend translate>Dados do endereço</legend>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Código Postal:
+          <small class="help-block" translate>(Somente números)</small>
+        </label>
+        <div class="col-sm-2">
+          <input type="text" required
+            ng-model="buyer.address_zipcode"
+            ng-change='fetchAddress(buyer.address_zipcode)'
+            ng-model-options="{ debounce: { 'default': 500 } }"
+            class="form-control"/>
+        </div>
+        <div class="col-sm-9">
+           <span form-error="address_zipcode.object_required" class="help-block" translate>
+             Favor informar o código postal
+           </span>
+        </div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> País:
+          <small class="help-block" translate>(Sigla)</small>
+        </label>
+        <div class="col-sm-2">
+            <input type="text" required
+            minlength="2" maxsize="2"
+            placeholder="BR"
+            ng-model="buyer.address_country"
+            class="form-control"/>
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="address_country.object_required" class="help-block" translate>
+            Por favor, informe seu país
+          </span>
+        </div>
+      </div>
+
+       <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Estado:
+          <small class="help-block" translate>(Sigla)</small>
+        </label>
+        <div class="col-sm-2">
+            <input type="text" required
+            minlength="2" maxsize="2"
+            placeholder="RS"
+            ng-model="buyer.address_state"
+            class="form-control"/>
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="address_state.object_required" class="help-block" translate>
+            Por favor, informar o estado
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Cidade:
+        </label>
+        <div class="col-sm-4">
+        <input type="text" required
+            minlength="3" maxsize="80"
+            ng-model="buyer.address_city"
+            class="form-control"/>
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="address_city.object_required"  class="help-block" translate>
+            Por favor, informe sua cidade
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Bairro:
+        </label>
+        <div class="col-sm-4">
+             <input type="text" required
+              minlength="2" maxlength="20" required
+              ng-model="buyer.address_neighborhood"
+              class="form-control" />
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="address_neighborhood.object_required" class="help-block" translate>
+            Por favor, informar o bairro
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Endereço:
+        </label>
+        <div class="col-sm-6">
+             <input type="text" required
+              minlength="2" maxlength="20" required
+              ng-model="buyer.address_street"
+              class="form-control" />
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="address_street.object_required" class="help-block" translate>
+            Por favor informar o endereço
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Número:
+        </label>
+        <div class="col-sm-2">
+             <input type="text" required
+              minlength="2" maxlength="20" required
+              ng-model="buyer.address_number"
+              class="form-control" />
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="address_number.object_required" class="help-block" translate>
+            Favor informar o número
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          Complemento:
+        </label>
+        <div class="col-sm-4">
+             <input type="text" maxlength="20"
+              ng-model="buyer.address_extra"
+              placeholder="{{ 'Apartamento, Casa, Condomínio ...' | translate }}"
+              class="form-control" />
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+            <span form-error="address_extra.invalid_type" class="help-block" translate>
+                Valor inválido
+          </span>
+        </div>
+      </div>
+
+   </fieldset>
+
+        </div>
+    </div>
+</div>
