@@ -42,6 +42,49 @@
 
       return self;
     })
+    .service('AddressResolver', function(Config, $http, $q) {
+
+        return {
+          getAddress: function (zipcode) {
+            var api = Config.GOOGLE_GEO_API;
+            var params = {address: zipcode, sensor: false};
+            var deferred = $q.defer();
+            if (zipcode == undefined)
+            {
+              deferred.reject({'message': 'invalid zipcode'});
+            }
+            else {
+              $http.get(api, {params: params}).then(function (success) {
+                var data = success.data;
+                var result = {};
+                if( data.status == 'OK')
+                {
+                  result.zipcode = zipcode;
+                  angular.forEach(data.results[0].address_components, function (address_component) {
+                    if (address_component.types[0] == "country"){
+                        result.country = address_component.short_name;
+                    }
+                    if (address_component.types[0] == "administrative_area_level_1"){
+                        result.state = address_component.short_name;
+                    }
+                    if (address_component.types[0] == "administrative_area_level_2"){
+                        result.city = address_component.long_name;
+                    }
+                  });
+                }
+                if(Object.keys(result).length === 0) {
+                  deferred.reject({'message': 'not found'});
+                } else {
+                  deferred.resolve(result);
+                }
+              }, function (error) {
+                deferred.reject({'message': 'invalid number'});
+              });
+            }
+            return deferred.promise;
+          }
+        };
+    })
     .service('UserLocation', function(Config, $http, $q, $localStorage) {
       var service = {
         set: function(data) {
