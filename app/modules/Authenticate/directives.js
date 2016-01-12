@@ -37,5 +37,13 @@
           $scope.logout  = Auth.logoutAndSplash;
         }
       };
+    })
+    .directive("loadCredentials", function(Auth) { //FIX REMOVE USED TO RETRIVE ACCOUNT INFO
+      return {
+        controller: function($scope) {
+          $scope.credentials = Auth.glue($scope,'credentials');
+          $scope.logout  = Auth.logoutAndSplash;
+        }
+      };
     });
 })();
