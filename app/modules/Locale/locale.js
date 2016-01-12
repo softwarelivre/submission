@@ -85,10 +85,10 @@
           }
         };
     })
-    .service('UserLocation', function(Config, $http, $q, $localStorage) {
+    .service('UserLocation', function(Config, $http, $q, $localStorage) { //FIX REMOVE REPLACE
       var service = {
         set: function(data) {
-          $localStorage.userLocation = data;
+          // $localStorage.userLocation = data;
         },
         get: function(ip) {
           var deferred = $q.defer();
