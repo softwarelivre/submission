@@ -22,15 +22,34 @@
           return 'passport';
         }
       };
-      extensions.getDisabilityTypes = function() {
-          return [
-           { key: 'none', value: 'Não' },
-           { key: 'physical', value: 'Física' },
-           { key: 'hearing', value: 'Auditiva' },
-           { key: 'visual', value: 'Visual' },
-           { key: 'mental', value: 'Mental' }
+      extensions.getDisabilityTypes = function() {  //FIX HARDCODING
+        return [
+          { key: 'none', value: 'Não' },
+          { key: 'physical', value: 'Física' },
+          { key: 'hearing', value: 'Auditiva' },
+          { key: 'visual', value: 'Visual' },
+          { key: 'mental', value: 'Mental' }
         ];
-      }
+      };
+      extensions.getOccupationTypes = function() { //FIX HARDCODING
+        return [
+          { key: 'student', value: 'Estudante' },
+          { key: 'private_employee', value: 'Funcionário' },
+          { key: 'public_employee', value: 'Funcionário Público' },
+          { key: 'businessman', value: 'Empresário' },
+          { key: 'other', value: 'Outro' }
+        ];
+      };
+      extensions.getEducationTypes = function() {  //FIX HARDCODING
+        return [
+          { key: 'post_graduation_stricto', value: 'Mestrado/Doutorado' },
+          { key: 'post_graduation_lato', value: 'Pós Graduação/Especialização'},
+          { key: 'graduation', value: 'Ensino Superior Completo' },
+          { key: 'graduation_incomplete', value: 'Ensino Superior Incompleto' },
+          { key: 'secondary', value: 'Ensino Médio Completo' },
+          { key: 'secondary_incomplete', value: 'Ensino Médio Incompleto' },
+        ];
+      };
       extensions.localLoad = function() {
         return $localStorage.savedAccount || {};
       };
