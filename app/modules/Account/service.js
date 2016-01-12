@@ -37,7 +37,7 @@
           { key: 'private_employee', value: 'Funcionário' },
           { key: 'public_employee', value: 'Funcionário Público' },
           { key: 'businessman', value: 'Empresário' },
-          { key: 'other', value: 'Outro' }
+          { key: 'freelancer', value: 'Autônomo' }
         ];
       };
       extensions.getEducationTypes = function() {  //FIX HARDCODING
