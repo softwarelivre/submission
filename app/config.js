@@ -7,6 +7,7 @@
       API_HOST: 'http://192.168.33.91',
       API_PATH: '/api',
       GEOIP_API: 'http://ip-api.com/json',
+      GOOGLE_GEO_API: 'http://maps.googleapis.com/maps/api/geocode/json',
       PROPOSAL_LANGUAGES: [
         { abbr: 'pt', name: 'português' },
         { abbr: 'es', name: 'espanhol' },
