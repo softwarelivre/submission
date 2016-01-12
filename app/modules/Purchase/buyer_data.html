@@ -165,14 +165,14 @@
         </label>
         <div class="col-sm-2">
             <input type="text" required
-            minlength="2" maxsize="2"
+            minlength="2" maxlength="2"
             placeholder="BR"
             ng-model="buyer.address_country"
-            class="form-control"/>
+            class="form-control text-uppercase"/>
         </div>
         <div class="col-sm-offset-3 col-sm-9">
           <span form-error="address_country.object_required" class="help-block" translate>
-            Por favor, informe seu país
+            Por favor, informe seu país dois digitos
           </span>
         </div>
       </div>
@@ -184,14 +184,14 @@
         </label>
         <div class="col-sm-2">
             <input type="text" required
-            minlength="2" maxsize="2"
+            minlength="2" maxlength="2"
             placeholder="RS"
             ng-model="buyer.address_state"
-            class="form-control"/>
+            class="form-control text-uppercase"/>
         </div>
         <div class="col-sm-offset-3 col-sm-9">
           <span form-error="address_state.object_required" class="help-block" translate>
-            Por favor, informar o estado
+            Por favor, informar o estado dois digitos
           </span>
         </div>
       </div>
