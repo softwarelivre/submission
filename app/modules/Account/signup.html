@@ -186,11 +186,8 @@
         <select
                 name="occupation"
                 ng-model="signup.occupation"
-                required class="form-control">
-            <option name="occupation" value="" translate>Selecione uma opção</option>
-            <option ng-repeat="occupation in occupationTypes" value="{{occupation.key}}" translate>
-                {{occupation.value}}
-            </option>
+                class="form-control"
+                ng-options="occupation.key as occupation.value for occupation in occupationTypes" translate>
         </select>
       </div>
       <div class="col-sm-offset-3 col-sm-9">
@@ -206,16 +203,10 @@
         <span class="required"> * </span> Formação:
       </label>
       <div class="col-sm-4">
-        <select
-                name="education"
+        <select name="education"
                 ng-model="signup.education"
-                class="form-control" required>
-            <option value="" translate>Selecione uma opção</option>
-            <option
-                    ng-repeat="education in educationTypes"
-                    value="{{education.key}}" translate>
-                {{education.value}}
-            </option>
+                class="form-control"
+                ng-options="education.key as education.value for education in educationTypes" translate>
       </select>
       </div>
       <div class="col-sm-offset-3 col-sm-9">
@@ -235,8 +226,8 @@
             name="disability"
             ng-model="signup.disability"
             class="form-control"
-            ng-init="signup.disability='none'" required>
-            <option ng-repeat="disability in disabilityTypes" value="{{disability.key}}">{{disability.value}}</option>
+            ng-init="signup.disability='none'"
+            ng-options="disability.key as disability.value for disability in disabilityTypes" translate>
         </select>
       </div>
     </div>
