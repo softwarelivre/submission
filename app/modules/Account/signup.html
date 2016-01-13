@@ -187,7 +187,8 @@
                 name="occupation"
                 ng-model="signup.occupation"
                 class="form-control"
-                ng-options="occupation.key as occupation.value for occupation in occupationTypes" translate>
+                ng-options="occupation.key as occupation.value | translate for occupation in occupationTypes">
+          <option value="" translate>Selecione uma opção</option>
         </select>
       </div>
       <div class="col-sm-offset-3 col-sm-9">
@@ -206,7 +207,8 @@
         <select name="education"
                 ng-model="signup.education"
                 class="form-control"
-                ng-options="education.key as education.value for education in educationTypes" translate>
+                ng-options="education.key as education.value | translate for education in educationTypes">
+          <option value="" translate>Selecione uma opção</option>
       </select>
       </div>
       <div class="col-sm-offset-3 col-sm-9">
