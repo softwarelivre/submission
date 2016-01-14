@@ -19,8 +19,22 @@
           </span>
         </p>
 
-        <logged-as></logged-as>
 
+        <logged-as ng-hide="credentials.dirty"></logged-as>
+
+        <div ng-if="credentials.dirty">
+          <div class="container-fluid" translate>
+            <div class="alert alert-danger" role="alert">
+              <span translate>Por favor atualize seus dandos antes de fazer uma nova operação</span>
+            </div>
+          </div>
+
+          <div class="container-fluid">
+            <ng-include
+                    ng-controller="UpdateAccountController"
+                    src="'modules/Account/form.html'">
+          </div>
+        </div>
 
         <div ng-hide="credentials">
           <div class="container-fluid">
@@ -29,6 +43,7 @@
                       ng-show="accountOption == 'create'">
             </div>
         </div>
+
       </fieldset>
     </div>
   </div>

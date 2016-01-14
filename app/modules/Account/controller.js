@@ -80,5 +80,40 @@
                  .then(finishedSignUp)
                  .catch(FormErrors.set);
       };
+    })
+    .controller("UpdateAccountController", function($scope,
+                                             Account, Auth, AuthModal, Validator, FormErrors, UserLocation,
+                                             focusOn, $http, AddressResolver, ngToast) {
+
+      $scope.lockEmail = true;
+
+      Account.get().then(function(data){
+        $scope.signup = data;
+      });
+
+      $scope.disabilityTypes =  Account.getDisabilityTypes();
+      $scope.occupationTypes = Account.getOccupationTypes();
+      $scope.educationTypes = Account.getEducationTypes();
+
+      $scope.fetchAddress = function(zipcode) {
+        AddressResolver.getAddress(zipcode)
+        .then(function(success) {
+          $scope.signup.country = success.country;
+          $scope.signup.city = success.city;
+          $scope.signup.address_state = success.state;
+        });
+      };
+
+      function finishedUpdate() {
+        Auth.logout();
+        AuthModal.login();
+      }
+
+      $scope.submit = function() {
+        Validator.validate($scope.signup, 'accounts/edit_account')
+                 .then(Account.saveIt)
+                 .then(finishedUpdate)
+                 .catch(FormErrors.set);
+      };
     });
 })();
