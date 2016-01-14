@@ -40,32 +40,15 @@ body.purchase {
 /* SPLAH */
 
 
-/* FIX REMOVE */
 .ngdialog-content {
-  .login, .signup {
-    section {
-      font-size: large;
-      padding: 0.9rem;
-      border-radius: 20px;
-    }
-
-    input, button {
-      width: 90%;
-      font-size: x-large;
-      border: 1px solid gray;
-      margin: 0.6rem auto;
-      padding: 0.5rem;
-    }
-
-    input + .forgot {
-      position: absolute;
-      margin-top: 1.5em;
-      text-decoration: none;
-      right: 70px;
-    }
-
-    &.half { width: 38%; }
+  .login {
+    width: 100%;
+    padding-top: 15px;
   }
+}
+
+.login {
+    width: 40%;
 }
 
 /* FIX REMOVE */

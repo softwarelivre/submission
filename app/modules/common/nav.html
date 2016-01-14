@@ -2,16 +2,11 @@
 <nav class="navbar navbar-default navbar-static-top inverted">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" href="#">Sistema de inscrições</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
+
         <li uib-dropdown class="dropdown" ng-show="credentials">
           <a uib-dropdown-toggle role="button"  href="#">{{ credentials.email }}<span class="caret"></span></a>
           <ul uib-dropdown-menu class="dropdown-menu">
@@ -20,13 +15,10 @@
             </li>
           </ul>
         </li>
-
+        <li  ng-show="!credentials">
+          <a   ui-sref="authenticate" translate><i class="fa fa-sign-in"></i></span> Entrar </a>
+        </li>
       </ul>
-    </div><!--/.nav-collapse -->
+    </div>
   </div>
 </nav>
-<!--
-<img class="logo" ng-click="home()" src="/images/logo-fisl-small.png"/>
-<h1 ng-click="home()">sistema de inscrições</h1>
-<locale-selector></locale-selector>
--->

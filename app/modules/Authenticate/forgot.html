@@ -1,33 +1,38 @@
-<fieldset>
-  <legend translate>esqueci minha senha!</legend>
+<div class="container ">
+  <div class="panel panel-default">
+    <div class="panel-body">
+
+  <legend translate>Esqueci minha senha!</legend>
   <p ng-show="sent" translate>
       Acabamos de enviar uma mensagem contendo as instruções
       de recuperação de senha para seu e-mail. Caso persistam
       os problemas no seu acesso, por favor entre em contato
       o nosso suporte.
   <p>
-  <p ng-hide="sent" translate>
+  <p ng-hide="sent" class="text-center" translate>
       Para recuperar acesso a sua conta, por favor preencha
       endereço de e-mail com o qual você criou o seu cadastro
       inicialmente. Enviaremos uma mensagem com instruções.
   </p>
-  <form novalidate name="forgot_form" id="forgot_form" ng-hide="sent" class="lines">
-    <p>
-      <label class="notip">
-        <span translate>e-mail</span>
-      </label>
-      <input type="text" required focusable
-            minlength="8" maxsize="80"
-            ng-model="forgot.email"/>
-    </p>
 
+   <form novalidate name="forgot_form" id="forgot_form" ng-hide="sent" class="form-inline">
 
-    <p class="centered">
-      <button ng-click="askReset()" translate>
-        enviar instruções!
-      </button>
-      </p>
+      <div class="form-group text-center col-sm-12">
+          <label class="">
+            <span translate>E-mail:</span>
+          </label>
+          <input type="text" required focusable
+                minlength="6" maxlength="80"
+                ng-model="forgot.email"
+                class="form-control" />
+
+          <button class="btn btn-primary" ng-click="askReset()" translate>
+            Enviar instruções!
+          </button>
+
+      </div>
+
   </form>
-
-
-</fieldset>
+    </div>
+</div>
+</div>
