@@ -221,8 +221,8 @@
         });
       };
 
-      $scope.$watch($scope.credentials, function() {
-        if ($scope.credentials) {
+      $scope.$on('auth:changed', function(data) {
+        if($scope.credentials) {
           Account.get().then(function(account) {
             $scope.temp_name             = account.name;
             $scope.buyer.name            = account.name;
@@ -240,7 +240,7 @@
             }
           });
         }
-      });
+     });
 
       $scope.isDirty = function() {
         return $scope.credentials && $scope.selectedProduct.id && $scope.purchase_form.$dirty;

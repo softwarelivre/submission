@@ -10,7 +10,7 @@
       <ng-include ng-show="selectedProduct.id" src="'modules/Purchase/user.html'"></ng-include>
 
 
-  <div class="panel panel-default" ng-show="selectedProduct.id">
+  <div class="panel panel-default" ng-show="selectedProduct.id && credentials">
     <div class="panel-body">
 
       <div class="container-fluid">
