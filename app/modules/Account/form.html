@@ -226,8 +226,7 @@
             name="disability"
             ng-model="signup.disability"
             class="form-control"
-            ng-init="signup.disability='none'"
-            ng-options="disability.key as disability.value for disability in disabilityTypes" translate>
+            ng-options="disability.key as disability.value | translate for disability in disabilityTypes">
         </select>
       </div>
     </div>
