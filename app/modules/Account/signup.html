@@ -1,4 +1,4 @@
-<section class="signup">
+<section class="signup" xmlns="http://www.w3.org/1999/html">
   <header translate>criar uma conta</header>
   <form novalidate id="signup_form" name="signup_form" class="lines" grab-focus>
 
@@ -10,7 +10,7 @@
       </label>
       <div class="col-sm-4">
         <input type="email" required
-          minlength="5" maxsize="80"
+          maxlength="50"
           ng-readonly="lockEmail"
           ng-model="signup.email"
           class="form-control"/>
@@ -19,6 +19,27 @@
           <span form-error="email.object_required" class="help-block" translate>Por favor, informe seu endereço de e-mail</span>
           <span form-error="email.already_in_use" class="help-block" translate>
             Este endereço de e-mail já está registrado no sistema, por favor escolha outro
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group has-feedback" ng-hide="lockEmail">
+      <label class="col-sm-3 control-label">
+        <span class="required"> * </span>Repetir e-mail:
+      </label>
+      <div class="col-sm-4">
+        <input type="email" required
+          maxlength="50"
+          ng-readonly="lockEmail"
+          ng-model="signup.email_confirm"
+          class="form-control"/>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="email_confirm.object_required" class="help-block" translate>
+            Por favor, confirme seu endereço de e-mail
+          </span>
+          <span form-error="email_confirm.invalid_format" class="help-block" translate>
+            Os e-mails não conferem
           </span>
       </div>
     </div>
@@ -98,11 +119,10 @@
       <label class="col-sm-3 control-label" translate>
         <span class="required"> * </span> Documento:
         <small class="help-block" translate>(Somente números e letras)</small>
-        <small class="help-block" translate>(Passaporte se estrangeiro)</small>
       </label>
       <div class="col-sm-4">
         <input type="text" required
-            placeholder="{{ 'CPF ou CPNJ ou Passoaorte' | translate }}"
+            placeholder="{{ 'CPF ou Passaporte' | translate }}"
             ng-model="signup.document"
             minlength="1" maxsize="16"
             class="form-control"/>
@@ -114,6 +134,18 @@
         <span form-error="document.invalid_format"  class="help-block" translate>
           Residentes no Brasil, número do CPF ou CNPJ inválido (utilize somente números)
         </span>
+      </div>
+    </div>
+
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        Identidade Estudantil:
+        <small class="help-block" translate>(Somente números e letras)</small>
+        <small><a href="https://www.documentodoestudante.com.br/" translate>Mais informações</a></small>
+      </label>
+      <div class="col-sm-4">
+        <input type="text" required
+            ng-model="signup.student_document" class="form-control"/>
       </div>
     </div>
 
@@ -226,9 +258,9 @@
       <div class="col-sm-4">
         <select
             name="disability"
-            ng-model="signup.disability"
             class="form-control"
-            ng-init="signup.disability='none'"
+            ng-model="signup.disability"
+            ng-init="signup.disability = signup.disability || 'none'"
             ng-options="disability.key as disability.value | translate for disability in disabilityTypes">
         </select>
       </div>
@@ -243,6 +275,26 @@
         <textarea minlength="3" maxlength="400"
                   class="form-control"
                   ng-model="signup.disability_info"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span> É sócio da ASL:
+      </label>
+      <div class="col-sm-4">
+        <select name="membership"
+                ng-model="signup.membership"
+                ng-init="signup.membership = signup.membership || 'false'"
+                class="form-control">
+          <option value="false" translate>Não</option>
+          <option value="true" translate>Sim</option>
+      </select>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+        <span form-error="education.object_required" class="help-block" translate>
+          Por favor, selecione um valor válido
+        </span>
       </div>
     </div>
 
