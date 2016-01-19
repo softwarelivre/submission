@@ -55,6 +55,10 @@
 
       $scope.today = new Date();
 
+      $scope.disabilityTypes =  Account.getDisabilityTypes();
+      $scope.occupationTypes = Account.getOccupationTypes();
+      $scope.educationTypes = Account.getEducationTypes();
+
       $scope.hasCaravan = _.has(myCaravan, '$type');
       $scope.isCaravan = _.has($stateParams, 'caravan_hash') && !_.isUndefined($stateParams.caravan_hash);
 
