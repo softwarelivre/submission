@@ -1,20 +1,27 @@
+/*
 @media (min-width: 1200px) {
   .container {
     width: 960px;
   }
 }
+*/
 
+@media (min-width: 1200px) {
+  .container {
+    width: 960px;
+  }
+}
 .required {
     color: #ba1820;
 }
 
-/* Sticky footer styles --------------------- */
 html {
   position: relative;
   min-height: 100%;
 }
 body {
-  margin-bottom: 60px;   /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background: url(/images/top-bg.png);
 }
 .footer {
   position: absolute;
@@ -24,21 +31,6 @@ body {
   padding-top: 10px;
   background-color: #f5f5f5;
 }
-/* Sticky footer styles --------------------- */
-
-
-/* SPLAH */
-body.splash {
-  background: url(/images/top-bg.png);
-}
-/* SPLAH */
-
-/* SPLAH */
-body.purchase {
-  background: url(/images/top-bg.png);
-}
-/* SPLAH */
-
 
 .ngdialog-content {
   .login {
