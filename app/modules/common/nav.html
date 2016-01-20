@@ -2,11 +2,19 @@
 <nav class="navbar navbar-default navbar-static-top inverted">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Sistema de inscrições</a>
+      <a class="navbar-brand" href="#">Segue</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-left" ng-show="credentials">
+        <li  ng-class="{'active': state.name == 'home'}" >
+          <a   ui-sref="home" translate> Home </a>
+        </li>
+        <li  ng-class="{'active': state.name == 'account.update'}">
+          <a   ui-sref="account.update" translate> Meus dados </a>
+        </li>
+      </ul>
 
+      <ul class="nav navbar-nav navbar-right">
         <li uib-dropdown class="dropdown" ng-show="credentials">
           <a uib-dropdown-toggle role="button"  href="#">{{ credentials.email }}<span class="caret"></span></a>
           <ul uib-dropdown-menu class="dropdown-menu">
@@ -16,9 +24,10 @@
           </ul>
         </li>
         <li  ng-show="!credentials">
-          <a   ui-sref="authenticate" translate><i class="fa fa-sign-in"></i></span> Entrar </a>
+          <a   ui-sref="authenticate" translate><i class="fa fa-sign-in"></i> Entrar </a>
         </li>
       </ul>
+
     </div>
   </div>
 </nav>
