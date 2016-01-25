@@ -52,7 +52,7 @@
       Auth.logout();
       $scope.signup = { name: invite.name, email: invite.recipient };
       $scope.lockEmail = true;
-      UserLocation.autobind($scope, 'signup');
+      //UserLocation.autobind($scope, 'signup');
 
       focusOn('signup.name', 100);
 

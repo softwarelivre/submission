@@ -9,9 +9,10 @@
           Os dados abaixo são necessários para realização do pagamento e posterior emissão de nota fiscal
         </p>
 
-<fieldset class="buyer_data">
+<fieldset >
   <legend translate>Dados do comprador</legend>
 
+    <!--
   <p>
     <label class="long" translate>Este ingresso está sendo comprado: </label>
     <span>
@@ -22,16 +23,16 @@
     </span>
     <span form-error="kind.object_required" translate>Por favor, informe o tipo de comprador</span>
   </p>
+  -->
 
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
         <span class="required"> * </span>
         <span ng-show="buyer.kind == 'person'" translate>Nome do comprador:</span>
-        <span ng-show="buyer.kind == 'company'" translate>Nome da empresa:</span>
+        <span ng-show="buyer.kind == 'company'" translate>Razão social:</span>
       </label>
       <div class="col-sm-4">
         <input type="text" required focusable
-            placeholder="{{ 'Nome completo' || translate }}"
             minlength="5" maxsize="80"
             ng-model="buyer.name"
             class="form-control"/>
@@ -59,27 +60,27 @@
             ui-br-phone-number
             class="form-control" />
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-offset-3 col-sm-9">
         <span form-error="contact.object_required" class="help-block" translate>
           Por favor, infome o seu número de telefone
         </span>
       </div>
     </div>
 
-    <div class="form-group has-feedback" ng-show="buyer.kind == 'person' || buyer.kind == 'student'">
+    <div class="form-group has-feedback">
     <label class="col-sm-3 control-label" translate>
-      <span class="required"> * </span> Documento:
+      <span class="required"> * </span>
+      <span ng-show="buyer.kind == 'person'" translate>CPF ou Passaporte:</span>
+      <span ng-show="buyer.kind == 'company'" translate>CNPJ:</span>
       <small class="help-block" translate>(Somente números)</small>
-      <small class="help-block" translate>(Não é necessário se estrangeiro)</small>
     </label>
     <div class="col-sm-4">
       <input type="text" required
-          placeholder="{{ 'CPF' }}"
           ng-model="buyer.document"
           minlength="4" maxsize="16"
           class="form-control"/>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-offset-3 col-sm-9">
       <span form-error="document.object_required" class="help-block" translate>
         Por favor, informar um número de documento
       </span>
@@ -144,14 +145,12 @@
           <span class="required" translate> * </span> Código Postal:
           <small class="help-block" translate>(Somente números)</small>
         </label>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <input type="text" required
             ng-model="buyer.address_zipcode"
-            ng-change='fetchAddress(buyer.address_zipcode)'
-            ng-model-options="{ debounce: { 'default': 500 } }"
             class="form-control"/>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-offset-3 col-sm-9">
            <span form-error="address_zipcode.object_required" class="help-block" translate>
              Favor informar o código postal
            </span>
@@ -161,18 +160,16 @@
       <div class="form-group has-feedback">
         <label class="col-sm-3 control-label" translate>
           <span class="required" translate> * </span> País:
-          <small class="help-block" translate>(Sigla)</small>
         </label>
         <div class="col-sm-2">
             <input type="text" required
-            minlength="2" maxlength="2"
-            placeholder="BR"
-            ng-model="buyer.address_country"
-            class="form-control text-uppercase"/>
+                placeholder="Brasil"
+                ng-model="buyer.address_country"
+                class="form-control text-capitalize"/>
         </div>
         <div class="col-sm-offset-3 col-sm-9">
           <span form-error="address_country.object_required" class="help-block" translate>
-            Por favor, informe seu país dois digitos
+            Por favor, informe seu país
           </span>
         </div>
       </div>

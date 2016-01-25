@@ -61,6 +61,9 @@
         });
         scope.$on('errors:set', function(e, name) {
           if (name.match(myError)) {
+
+              attr.uibTooltip = 'After today restriction';
+
               //FIX ME PLEASE FIND THE FORM GROUP
             first_parent = elem.parent();
             second_parent = elem.parent().parent();

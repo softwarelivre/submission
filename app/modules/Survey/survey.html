@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+  <legend translate>
+    Dados para a compra de produto
+  </legend>
+
+  <form class="form">
+    <div class="form-group" ng-repeat="entry in survey">
+      <label>{{ entry.order+1}}) {{ entry.question }}</label>
+        <label ng-repeat="option in entry.alternatives"
+                class="radio-inline" for="opt_{{entry.order}}_{{$index}}" >
+          <input  type="radio" ng-model="responses[entry.label]" id="opt_{{entry.order}}_{{$index}}" value="{{ option }}"/>
+         {{ option }}
+        </label>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-primary" ng-click="doSubmit()" translate>
+        Enviar respostas!
+      </button>
+    </div>
+
+
+  </form>
+  </div>
+</div>

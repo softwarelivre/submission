@@ -17,6 +17,11 @@
         return serviceFor(credentials.id).getList();
       };
 
+      service.submitAnswers = function(data) {
+        if (!credentials) { return null; }
+        return serviceFor(credentials.id).post(data);
+      };
+
       service.saveAnswers = function(data) {
         if (!credentials) { return null; }
         return serviceFor(credentials.id).post({ answers: data });

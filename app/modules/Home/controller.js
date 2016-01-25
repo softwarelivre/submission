@@ -39,7 +39,7 @@
                                            myPurchases, myProposals, myInvites, myCaravan, myCertificates,
                                            currentProposal, signup, cfpState,
                                            Validator, FormErrors, purchaseMode, ngToast) {
-      if (!Auth.credentials()) { $state.go('splash'); }
+      if (!Auth.credentials()) { $state.go('splash'); } //FIX ME
 
       $scope.myCaravan       = myCaravan;
       $scope.myPurchases     = myPurchases;

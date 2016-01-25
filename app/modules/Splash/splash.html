@@ -1,57 +1,33 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 text-center">
-            <img src="/images/logo-pt.png"/>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="text-center">
+                        <h1 class="text-primary" class="text-center">Segue - Sistema ... </h1>
+                        <p translate> Bla... bla... </p>
+                    </div>
 
-
-                <h2>Fórum Internacional Software Livre</h2>
-                <h4 class="text-muted">13 a 16 de Julho de 2016 | Porto Alegre | Brasil</h4>
-           <!--   FIX <button ui-sref="authenticate" translate>entrar na minha conta</button> -->
-                <div ng-show="purchaseMode == 'online'">
-                  <button class="btn btn-lg btn-primary" ng-click="showInfo('initial', 'contract_large')" translate>
-                      Quero comprar um ingresso
-                  </button>
-                <!--  <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button> -->
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <div class="container-fluid">
+                                <a ui-sref="authenticate" class="btn btn-lg btn-primary" translate>
+                                    Acessar a minha conta
+                                </a>
+                            </div>
+                            <br>
+                            <div class="container-fluid">
+                                <a ui-sref="account.signup" class="btn btn-lg btn-default" translate>
+                                    Criar nova conta
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
         </div>
+
     </div>
-
-    <!--
-<div class="buttons">
-    <div ng-hide="registrationState == 'open'">
-    <header translate>Certificados</header>
-    <button ui-sref="certificate">
-      emitir certificados!
-    </button>
-  </div>
-  <div ng-show="registrationState == 'open'">
-    <div>
-   <header translate>Participantes</header>
-    <div ng-show="purchaseMode == 'online'">
-      <button ng-click="showInfo('initial', 'contract_large')" translate>quero comprar um ingresso</button>
-      <button ng-click="showInfo('caravan', 'contract_large')" translate>quero montar uma caravana</button>
-    </div>
-    <div ng-show="purchaseMode == 'reservation'">
-      <button ng-click="showInfo('initial', 'contract_large')" translate>
-        quero reservar meu ingresso
-      </button>
-
-      <button ng-click="showInfo('initial', 'contract_large')" translate>
-        tenho um código promocional
-      </button>
-    </div>
-
-  </div>
-
-  <div ng-show="registrationState == 'open'">
-    <header translate>Palestrantes</header>
-    <button ui-sref="proposal.new" ng-hide="cfpState == 'open'" translate>
-      submissão de propostas encerrada!
-    </button>
-    <button ui-sref="proposal.new" ng-show="cfpState == 'open'" translate>
-      propor nova palestra
-    </button>
-  </div>
-  </div>-->
-
 </div>

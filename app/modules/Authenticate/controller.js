@@ -58,10 +58,19 @@
       };
     })
     .controller("LoginController", function($scope, $state, Auth, focusOn) {
-      $scope.login = {};
+
+      if(Auth.token())
+      {
+        $scope.home(); //FIX
+      }
 
       function succeed(credentials) {
-        if ($scope.closeThisDialog) {
+
+        if(credentials.dirty)
+        {
+          $state.go('account.update');
+        }
+        else if ($scope.closeThisDialog) {
           $scope.closeThisDialog(credentials);
         }
         else if ($scope.nextState) {

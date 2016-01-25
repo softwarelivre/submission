@@ -1,14 +1,12 @@
-<fieldset class="signup">
-  <legend translate>Dados de Acesso</legend>
-  <form novalidate id="account_form" name="account_form" class="form-horizontal" role="form" grab-focus>
-
+  <fieldset>
+    <legend translate>Dados de Acesso</legend>
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label">
         <span class="required"> * </span>E-mail:
       </label>
       <div class="col-sm-4">
         <input type="email" required
-          minlength="5" maxsize="80"
+          maxlength="50"
           ng-readonly="lockEmail"
           ng-model="signup.email"
           class="form-control"/>
@@ -17,6 +15,27 @@
           <span form-error="email.object_required" class="help-block" translate>Por favor, informe seu endereço de e-mail</span>
           <span form-error="email.already_in_use" class="help-block" translate>
             Este endereço de e-mail já está registrado no sistema, por favor escolha outro
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group has-feedback" ng-hide="lockEmail">
+      <label class="col-sm-3 control-label">
+        <span class="required"> * </span>Repetir e-mail:
+      </label>
+      <div class="col-sm-4">
+        <input type="email" required
+          maxlength="50"
+          ng-readonly="lockEmail"
+          ng-model="signup.email_confirm"
+          class="form-control"/>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="email_confirm.object_required" class="help-block" translate>
+            Por favor, confirme seu endereço de e-mail
+          </span>
+          <span form-error="email_confirm.invalid_format" class="help-block" translate>
+            Os e-mails não conferem
           </span>
       </div>
     </div>
@@ -32,7 +51,7 @@
             class="form-control"
             ng-model="signup.password"/>
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-offset-3 col-sm-9">
         <span form-error="password.object_required" class="help-block" translate>
           Por favor, defina uma senha com no mínimo 8 caracteres
         </span>
@@ -51,7 +70,7 @@
             class="form-control"
             ng-model="signup.password_confirm"/>
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-offset-3 col-sm-9">
         <span form-error="password_confirm.object_required class="help-block" translate>
           Por favor, defina uma senha com no mínimo 8 caracteres
         </span>
@@ -60,27 +79,64 @@
         </span>
       </div>
     </div>
+    </fieldset>
+
+
+    <fieldset ng-disabled="lockType">
+      <legend translate>Tipo da conta </legend>
+
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required"> * </span> Tipo da conta:
+        </label>
+        <div class="col-sm-9">
+          <label class="radio-inline">
+            <input type="radio"
+                   value="person"
+                   name="account_type"
+                   ng-model="signup.type" translate>Pessoal
+          </label>
+          <label class="radio-inline">
+            <input type="radio" value="company"
+                   name="account_type"
+                   ng-model="signup.type"
+                   value="company"
+                   translate>Empresarial
+          </label>
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span form-error="type.object_required" class="help-block" translate>
+            Por favor, selecione um valor válido
+          </span>
+        </div>
+      </div>
+    </fieldset>
 
     <fieldset>
       <legend translate>Dados pessoais</legend>
 
       <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
-        <span class="required"> * </span> Nome completo:
+        <span class="required"> * </span>
+        <span ng-show="signup.type == 'person'"> Nome completo: </span>
+        <span ng-show="signup.type == 'company'"> Razão social: </span>
       </label>
       <div class="col-sm-4">
         <input type="text" required focusable
-            placeholder="{{ 'Nome completo' || translate }}"
             minlength="5" maxsize="80"
             ng-model="signup.name"
             class="form-control"/>
       </div>
       <div class="col-sm-offset-3 col-sm-9">
-        <span form-error="name.object_required" class="help-block" translate>Por favor, informe seu nome completo</span>
-        <span form-error="name.string_pattern" class="help-block" translate>Por favor, informe seu nome completo</span>
+        <span form-error="name.object_required" class="help-block" translate>
+          Por favor, informe um valor válido</span>
+        <span form-error="name.string_pattern" class="help-block" translate>
+          <span ng-show="signup.type == 'person'"> Por favor, informe seu nome completo </span>
+          <span ng-show="signup.type == 'company'"> Por favor, informe a razão social da empresa</span>
+        </span>
       </div>
     </div>
-
+<!--
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
          Nome para o crachá:
@@ -91,29 +147,61 @@
             class="form-control"/>
       </div>
     </div>
-
+-->
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
-        <span class="required"> * </span> Documento:
+        <span class="required"> * </span>
+        <span ng-show="signup.type == 'person'" translate> CPF ou Passaporte: </span>
+        <span ng-show="signup.type == 'company'"> CNPJ: </span>
         <small class="help-block" translate>(Somente números e letras)</small>
-        <small class="help-block" translate>(Passaporte se estrangeiro)</small>
       </label>
       <div class="col-sm-4">
         <input type="text" required
-            placeholder="{{ 'CPF ou CPNJ ou Passoaorte' | translate }}"
             ng-model="signup.document"
             minlength="1" maxsize="16"
             class="form-control"/>
       </div>
       <div class="col-sm-9">
         <span form-error="document.object_required" class="help-block" translate>
-          Por favor, informar um número de documento
+          Por favor, informar um documento válido
         </span>
         <span form-error="document.invalid_format"  class="help-block" translate>
           Residentes no Brasil, número do CPF ou CNPJ inválido (utilize somente números)
         </span>
       </div>
     </div>
+
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span> Telefone:
+        <small class="help-block" translate>(inclua o código de área)</small>
+      </label>
+      <div class="col-sm-4">
+        <input type="phone" required
+            ng-model="signup.phone"
+            ui-br-phone-number
+            class="form-control" />
+      </div>
+      <div class="col-sm-9">
+        <span form-error="phone.object_required" class="help-block" translate>
+          Por favor, infome o seu número de telefone
+        </span>
+      </div>
+    </div>
+
+    <div ng-show="signup.type == 'person'">
+      <!--
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        Identidade Estudantil:
+        <small class="help-block" translate>(Somente números e letras)</small>
+        <small><a href="https://www.documentodoestudante.com.br/" translate>Mais informações</a></small>
+      </label>
+      <div class="col-sm-4">
+        <input type="text" required
+            ng-model="signup.student_document" class="form-control"/>
+      </div>
+    </div>-->
 
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
@@ -128,7 +216,7 @@
             ng-model="signup.born_date"
             class="form-control"/>
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-offset-3 col-sm-9">
         <span form-error="born_date.object_required" class="help-block" translate>
           Por favor, selecione um valor (válido formato dd/mm/yyyy)
         </span>
@@ -153,24 +241,6 @@
       <div class="col-sm-offset-3 col-sm-9">
         <span form-error="sex.object_required" class="help-block" translate>
           Por favor, selecione um valor válido
-        </span>
-      </div>
-    </div>
-
-    <div class="form-group has-feedback">
-      <label class="col-sm-3 control-label" translate>
-        <span class="required"> * </span> Telefone:
-        <small class="help-block" translate>(inclua o código de área)</small>
-      </label>
-      <div class="col-sm-4">
-        <input type="phone" required
-            ng-model="signup.phone"
-            ui-br-phone-number
-            class="form-control" />
-      </div>
-      <div class="col-sm-9">
-        <span form-error="phone.object_required" class="help-block" translate>
-          Por favor, infome o seu número de telefone
         </span>
       </div>
     </div>
@@ -219,14 +289,14 @@
 
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
-        É portador de defiência:
+        Você é portador de alguma defiência:
       </label>
       <div class="col-sm-4">
         <select
             name="disability"
+            class="form-control"
             ng-model="signup.disability"
             ng-init="signup.disability = signup.disability || 'none'"
-            class="form-control"
             ng-options="disability.key as disability.value | translate for disability in disabilityTypes">
         </select>
       </div>
@@ -244,49 +314,94 @@
       </div>
     </div>
 
+
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span> É sócio da ASL:
+      </label>
+      <div class="col-sm-4">
+        <select name="membership"
+                class="form-control"
+                ng-model="signup.membership">
+          <option value="false" translate>Não</option>
+          <option value="true" translate>Sim</option>
+      </select>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+        <span form-error="membership.object_required" class="help-block" translate>
+          Por favor, selecione um valor válido
+        </span>
+      </div>
+    </div>
+
+    </div>
+
     </fieldset>
 
 
     <fieldset>
       <legend translate>Dados do endereço</legend>
 
-      <div class="form-group has-feedback">
+      <div class="form-group">
         <label class="col-sm-3 control-label" translate>
-          <span class="required" translate> * </span> Código Postal:
-          <small class="help-block" translate>(Somente números)</small>
+          Buscar por local:
         </label>
-        <div class="col-sm-2">
-          <input type="text" required
-            ng-model="signup.address_zipcode"
-            ng-change='fetchAddress(signup.address_zipcode)'
-            ng-model-options="{ debounce: { 'default': 500 } }"
-            class="form-control"/>
+
+        <div class="col-sm-7">
+
+          <input type="text"
+               class="form-control"
+               placeholder="{{'Digite um local para busca' | translate }}"
+               ng-model="selectedAddress"
+               ng-model-options="{ debounce: { 'default': 400 } }"
+               uib-typeahead="address as address.formatted_address for address in getLocation($viewValue)"
+               typeahead-on-select="onSelectLocation($item)"
+               typeahead-min-length="3"
+               typeahead-loading="searchLoading"
+               typeahead-no-results="searchEmpty" >
+
         </div>
-        <div class="col-sm-9">
-           <span form-error="address_zipcode.object_required" class="help-block" translate>
-             Favor informar o código postal
-           </span>
+        <div class="col-sm-offset-3 col-sm-9">
+          <span ng-show="searchEmpty" class="help-block has-error has-feedback" translate>
+            Nenhum resultado encontrado
+          </span>
+          <span ng-show="searchLoading" class="help-block" translate>
+            Carregando ...
+          </span>
         </div>
       </div>
 
-      <!-- FIX  DISABLED -->
-      <!-- change-signal="country:changed" -->
+      <div class="form-group has-feedback">
+        <label class="col-sm-3 control-label" translate>
+          <span class="required" translate> * </span> Código Postal:
+        </label>
+        <div class="col-sm-3">
+          <input type="text" required
+            ng-model="signup.address_zipcode"
+            class="form-control"/>
+          <span  form-error="address_zipcode.object_required" class="help-block" translate>
+             Favor informar o código postal
+           </span>
+        </div>
+        <div class="col-sm-offset-3 col-sm-9">
+
+        </div>
+      </div>
+
       <div class="form-group has-feedback">
         <label class="col-sm-3 control-label" translate>
           <span class="required" translate> * </span> País:
-          <small class="help-block" translate>(Sigla)</small>
         </label>
         <div class="col-sm-2">
             <input type="text" required
                    name="country"
-                   minlength="2" maxlength="2"
-                   placeholder="BR"
+                   placeholder="Brasil"
                    ng-model="signup.country"
-                   class="form-control text-uppercase" />
+                   class="form-control text-capitalize" />
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-offset-3 col-sm-9">
           <span form-error="country.object_required" class="help-block" translate>
-            Por favor, informe a sigla de seu país dois digitos
+            Por favor, informe o seu país
           </span>
         </div>
       </div>
@@ -349,7 +464,7 @@
           <span class="required" translate> * </span> Endereço:
         </label>
         <div class="col-sm-6">
-             <input type="text" required
+             <input type="text"
               minlength="2" maxlength="80"
               ng-model="signup.address_street"
               class="form-control" />
@@ -357,6 +472,9 @@
         <div class="col-sm-offset-3 col-sm-9">
           <span form-error="address_street.object_required" class="help-block" translate>
             Por favor informar o endereço
+          </span>
+          <span form-error="address_street.string_length_short" class="help-block" translate>
+            Endereço de ter no mínimo cinco digitos
           </span>
         </div>
       </div>
@@ -395,11 +513,3 @@
 
    </fieldset>
 
-    <div class="text-center">
-      <button class="btn btn-md btn-primary" ng-click="submit()" translate>
-        Atualizar dados conta
-      </button>
-    </div>
-
-  </form>
-</fieldset>

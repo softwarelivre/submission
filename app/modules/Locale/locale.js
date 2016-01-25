@@ -43,46 +43,53 @@
       return self;
     })
     .service('AddressResolver', function(Config, $http, $q) {
-
         return {
-          getAddress: function (zipcode) {
+          fetchLocation: function(address) {
             var api = Config.GOOGLE_GEO_API;
-            var params = {address: zipcode, sensor: false};
+            var params = {address: address, sensor: false, language: 'pt-BR'};
             var deferred = $q.defer();
-            if (zipcode == undefined)
-            {
-              deferred.reject({'message': 'invalid zipcode'});
-            }
-            else {
-              $http.get(api, {params: params}).then(function (success) {
-                var data = success.data;
-                var result = {};
-                if( data.status == 'OK')
-                {
-                  result.zipcode = zipcode;
-                  angular.forEach(data.results[0].address_components, function (address_component) {
-                    if (address_component.types[0] == "country"){
-                        result.country = address_component.short_name;
-                    }
-                    if (address_component.types[0] == "administrative_area_level_1"){
-                        result.state = address_component.short_name;
-                    }
-                    if (address_component.types[0] == "administrative_area_level_2"){
-                        result.city = address_component.long_name;
-                    }
-                  });
-                }
-                if(Object.keys(result).length === 0) {
-                  deferred.reject({'message': 'not found'});
-                } else {
-                  deferred.resolve(result);
-                }
-              }, function (error) {
-                deferred.reject({'message': 'invalid number'});
-              });
-            }
+
+            $http.get(api, {params: params}).then(function (success) {
+              var data = success.data;
+              if (data.status == 'OK') {
+                deferred.resolve(data.results);
+              }
+              else {
+                deferred.reject({'message': 'Not found'});
+              }
+            }, function (error) {
+              deferred.reject({'message': 'Not found'});
+            });
             return deferred.promise;
-          }
+          },
+          convertToAddress: function(geoApiResult) {
+            var address = {};
+            address.id = geoApiResult.place_id;
+            angular.forEach(geoApiResult.address_components, function (address_component) {
+              var component_type = address_component.types[0];
+              if (component_type == 'postal_code')
+              {
+                address.zipcode = address_component.long_name;
+              }
+              if (component_type == "country"){
+                address.country = address_component.long_name;
+              }
+              if (component_type == 'administrative_area_level_1'){
+                address.state = address_component.short_name;
+              }
+              if (component_type == 'administrative_area_level_2'){
+                address.city = address_component.long_name;
+              }
+              if(component_type == 'sublocality_level_1') {
+                address.neighborhood = address_component.long_name;
+              }
+              if(component_type == 'route') {
+                address.street = address_component.long_name;
+              }
+            });
+            return address;
+          },
+
         };
     })
     .service('UserLocation', function(Config, $http, $q, $localStorage) { //FIX REMOVE REPLACE

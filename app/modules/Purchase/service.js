@@ -25,6 +25,7 @@
       extensions.purchase = function(product_id) {
         return function(buyer_data) {
           var product = service.one(product_id);
+          console.log(buyer_data);
           return product.post('purchase', buyer_data);
         };
       };
@@ -57,13 +58,15 @@
       extensions.saveIt = function(object) {
         return object.save();
       };
-      extensions.pay = function(method) {
+      extensions.pay = function(method, amount) {
         return function(purchaseObject) {
           var p = service.one(purchaseObject.id).get().then(function(purchase) {
-            if (purchase.status == "paid")
+            if (purchase.status == "paid") {
               return purchase;
-            else
+            } else {
+              purchase.amount = amount;
               return purchase.post('pay/' + method);
+            }
           });
           return p;
         };

@@ -33,6 +33,7 @@
       'segue.submission.reception',
       'segue.submission.judge',
       'segue.submission.certificate',
+      'segue.submission.survey',
     ])
     .controller('SubmissionController', function($scope, $state, Config, Auth, $stateParams) {
       $scope.CONFIG = Config;
@@ -62,7 +63,17 @@
         }
       };
       $scope.enforceAuth = function() {
-        if (Auth.credentials()) { return; }
+        if (Auth.credentials()) {  //FIX
+            var credentials = Auth.credentials();
+            if( credentials.dirty )
+            {
+                $state.go('account.update');
+                return;
+            }
+            else {
+                return;
+            }
+        }
         $state.go('authenticate', { next: $state.current.name });
       };
     })

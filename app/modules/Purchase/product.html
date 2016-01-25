@@ -1,69 +1,90 @@
 <fieldset class="products">
-  <legend translate>qual ingresso você quer comprar?</legend>
-  <span translate ng-show="productsByPeriod.length">(clique abaixo no ingresso desejado)</span>
-  <p>
-    <p>
-      <label class="wide" translate>insira aqui seu código promocional:</label>
-      <input class="input-promocode" ng-readonly="isPromoCode" name="promocode" ng-model="promocode.hash" type="text" />
-      <button ng-click="verifyPromoCode()" ng-hide="isPromoCode" class="button-promocode" translate>verificar</button>
-      <button ng-hide="!isPromoCode" ng-disabled="isPromoCode" class="button-promocode button-promocode-valid" translate>verificado!</button>
-      <span class="promocode-error" ng-hide="!promoCodeError">Código promocional inválido ou já utilizado</span>
-      <span class="promocode-discount" ng-show="haveDiscount && isPromoCode">Ingresso com desconto parcial: {{discountValue}}%</span>
-      <span class="promocode-discount free" ng-show="!haveDiscount && isPromoCode">Ingresso cortesia</span>
-    </p>
-    <table ng-show="productsByPeriod.length && !isPromoCode">
+
+<div class="container-fluid">
+  <h3 class="text-primary" translate>Contribua com a ASL fazendo uma doação</h3>
+  <table class="table">
+    <thead>
       <tr>
-        <th class="date">disponível até...</th>
-        <th ng-hide="isCaravan || isPromoCode" class="category">individual</th>
-        <th ng-hide="isCaravan || isPromoCode" class="category">estudante</th>
-        <th ng-show="isCaravan" class="category">caravana</th>
-        <th ng-show="isPromoCode" class="category">código promocional</th>
+        <th>Campanha</th>
+        <th>Valor</th>
+        <th>Pagar</th>
       </tr>
-      <tr class="rows" ng-repeat="period in productsByPeriod">
-        <td class="date">
-          {{ period[0] | dateFromTimestamp }}
+    </thead>
+    <tbody>
+      <tr ng-repeat="product in products | filter:'donation' ">
+        <td>
+          {{product.description}}
         </td>
-        <td class="price" ng-repeat="(category,tickets) in period[1]">
-          <input id="product_{{tickets[0].id}}" type="radio"
-                 ng-value="tickets[0].id"
+        <td ng-if="product.price">
+            {{ product.price | realbrasileiro }}
+        </td>
+        <td ng-if="!product.price" class="col-sm-4">
+            <input
+                 name="amount"
+                 type="number"
+                 min="10"
+                 class="form-control"
+                 ng-model="payment.amount"  />
+        </td>
+        <td>
+          <input id="product_{{product.id}}" type="radio"
+                 ng-value="product.id"
                  name="productId"
-                 ng-model="productId">
-          <label ng-click="updateSelectedProduct(tickets[0].id)"
-                 for="product_{{tickets[0].id}}">{{ tickets[0].price | realbrasileiro }}</label>
-        </td>
-        <td ng-if="$last">
-          somente para pagamento em dinheiro
+                 ng-model="productId"
+                 ng-click="updateSelectedProduct(product.id)">
         </td>
       </tr>
-    </table>
+    </tbody>
+  </table>
 
-    <p ng-hide="productsByPeriod.length" class="error">
-      Erro: não há nenhum produto disponível.
-      <span ng-show="isProponent || isCaravan">
-        Se você recebeu esse link por email, verifique
-        que o mesmo foi copiado corretamente
-      </span>
-    </p>
-    <p ng-show="isProponent && productsByPeriod.length" class="alert alert-danger">
-      atenção: os preços aqui oferecidos são os mesmos
-      vigentes à época do envio da sua primeira proposta
-      de palestra. Essa oferta é exclusiva para proponentes
-      não selecionados e não é passível de transferência
-      para terceiros.
-    </p>
+  <div ng-show="selectedProduct.information">
+    <h4 class="text-primary" translate>Informações adicionais</h4>
+   <div class="alert alert-info" role="alert">
+    {{ selectedProduct.information}}
+  </div>
+  </div>
 
-    <p ng-hide="isCaravan || isProponent" class="alert alert-danger">
-      atenção:
-      <br />
-      <br />
-          - valores pagos nesta categoria de inscrição não serão tranferidos para outas modalidades de inscrição (Caravanas, Corporativa e Empenho)
-      <br />
-          - não utilize este espaço para se inscrever como caravaneiro.
-      <br />
-          - para inscrições em caravanas deve ser utilizado apenas o link que você recebeu através do e-mail.
-      <br />
-    </p>
+  <div ng-show="selectedProduct.id == productSurvery.survey.productId">
+    <!--survey -->
+    <div class="form-group">
+    <label class="col-md-4 control-label" translate>Como você deseja receber a camiseta:</label>
+    <div class="col-md-4">
+      <label class="radio-inline">
+        <input name="delivery"
+               value="at_fisl" ng-model="productSurvery.answers.delivery" type="radio"> No evento
+      </label>
+      <label class="radio-inline" translate>
+        <input name="delivery"
+               value="at_home" ng-model="productSurvery.answers.delivery" type="radio"> Em casa
+      </label>
+    </div>
+    </div>
 
-  </p>
+    <div class="form-group">
+    <label class="col-md-4 control-label" ranslate>Qual o tamanho de camiseta você usa:</label>
+    <div class="col-md-4">
+      <label class="radio-inline" translate>
+        <input name="size"  value="P" checked="checked" type="radio">P
+      </label>
+      <label class="radio-inline">
+        <input name="size"
+               value="M" ng-model="productSurvery.answers.size" type="radio">M
+      </label>
+      <label class="radio-inline">
+        <input name="size"
+               value="G" ng-model="productSurvery.answers.size" type="radio">G
+      </label>
+      <label class="radio-inline">
+        <input name="size" ng-model="productSurvery.answers.size" value="GG" type="radio">GG
+      </label>
+      <label class="radio-inline">
+        <input name="size" ng-model="productSurvery.answers.size"  value="XG" type="radio">XG
+      </label>
+    </div>
+    </div>
+  </div>
+
+</div>
+
 
 </fieldset>

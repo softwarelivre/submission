@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form novalidate  class="form-horizontal">
+
+      <div ng-if="credentials.dirty">
+        <div class="alert alert-danger" role="alert">
+          <span translate>Por favor atualize seus dados antes de fazer uma nova operação</span>
+        </div>
+      </div>
+
+      <div ng-if="state.name == 'account.signup'">
+        <div class="alert alert-info" role="alert">
+          <span translate>Bla bla nova conta</span>
+        </div>
+      </div>
+
+      <div ng-include="'modules/Account/fieldset.html'" ></div>
+
+      <div class="text-center">
+        <button class="btn btn-md btn-primary" ng-click="submit()">
+          <span ng-if="state.name == 'account.update'" translate>
+            Atualizar conta
+          </span>
+          <span ng-if="state.name == 'account.signup'" translate>
+            Criar conta
+          </span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

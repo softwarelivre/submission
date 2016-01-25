@@ -27,7 +27,7 @@
           parent: 'purchase',
           url: '^/purchase/new?caravan_hash',
           views: {
-            form: { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/form.html' }
+            form: { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/baseform.html' }
           },
           resolve: {
             currentPurchase: function(Purchases, $window) { return Purchases.current(); },
@@ -119,7 +119,20 @@
     .controller('NewPurchaseController', function($rootScope, $scope, $stateParams,
                                                   Config, Auth, Validator, FormErrors, ContractModal,
                                                   focusOn, products, currentPurchase, purchaseMode,
-                                                  Products, Purchases, Account, AddressResolver) {
+                                                  Products, Purchases, Account, AddressResolver, Survey) {
+      $scope.enforceAuth();
+
+      $scope.productSurvery = {
+        survey: {
+          name : 'fisl17_donation_shirt',
+          productId: 1,
+        },
+        answers: {
+          delivery: 'at_fisl',
+          size: 'G',
+        },
+      };
+
       $scope.selectedProduct = {};
       $scope.purchaseMode = purchaseMode;
 
@@ -145,7 +158,7 @@
       $scope.updateSelectedProduct = function(newId) {
         $scope.selectedProduct = _($scope.products).findWhere({ id: newId });
         if ($scope.selectedProduct.category == 'student') {
-          $scope.buyer.kind = 'person';
+        //  $scope.buyer.kind = 'person';
           $scope.showDialog('student');
         }
         resetPaymentMethod();
@@ -155,10 +168,8 @@
 
       $scope.showDialog = ContractModal.show;
 
-      $scope.$watch('buyer', Purchases.localSave);
-      $scope.buyer = currentPurchase;
-      $scope.buyer.kind = 'person';
-      $scope.payment = { method: 'boleto' };
+      $scope.buyer = {};
+      $scope.payment = { method: 'boleto', amount: 10 };
       $scope.temp_name = $scope.buyer.name;
       delete $scope.buyer.id;
 
@@ -175,16 +186,15 @@
       resetPaymentMethod();
 
       $scope.changeBuyerType = function() {
-        if ($scope.buyer.kind == 'company') {
+      /*  if ($scope.buyer.kind == 'company') {
           $scope.temp_name = $scope.buyer.name;
           $scope.buyer.name = '';
         } else {
           $scope.buyer.name = $scope.temp_name;
-        }
+        }*/
       };
 
       $scope.verifyPromoCode = function() {
-        console.log($scope.promocode.hash);
         Purchases.verifyPromoCode($scope.promocode.hash).then(
           function(ret) {
             $scope.promoCodeError = false;
@@ -221,40 +231,47 @@
         });
       };
 
-      $scope.$on('auth:changed', function(data) {
-        if($scope.credentials) {
-          Account.get().then(function(account) {
-            $scope.temp_name             = account.name;
-            $scope.buyer.name            = account.name;
-            $scope.buyer.address_country = account.country;
-            $scope.buyer.address_state   = account.address_state;
-            $scope.buyer.address_city    = account.city;
-            $scope.buyer.address_neighborhood = account.address_neighborhood;
-            $scope.buyer.address_extra = account.address_extra;
-            $scope.buyer.address_number = account.address_number;
-            $scope.buyer.address_street = account.address_street;
-            $scope.buyer.address_zipcode = account.address_zipcode;
-            $scope.buyer.document        = account.document;
-            if ($stateParams.caravan_hash) {
-              $scope.buyer.caravan_invite_hash = $stateParams.caravan_hash;
-            }
-          });
+
+      Account.get().then(function(account) {
+        $scope.buyer.name            = account.name;
+        $scope.buyer.kind            = account.type;
+        $scope.buyer.contact         = account.phone;
+        $scope.buyer.address_country = account.country;
+        $scope.buyer.address_state   = account.address_state;
+        $scope.buyer.address_city    = account.city;
+        $scope.buyer.address_neighborhood = account.address_neighborhood;
+        $scope.buyer.address_extra = account.address_extra;
+        $scope.buyer.address_number = account.address_number;
+        $scope.buyer.address_street = account.address_street;
+        $scope.buyer.address_zipcode = account.address_zipcode;
+        $scope.buyer.document        = account.document;
+        if ($stateParams.caravan_hash) {
+          $scope.buyer.caravan_invite_hash = $stateParams.caravan_hash;
         }
-     });
+      });
+
 
       $scope.isDirty = function() {
         return $scope.credentials && $scope.selectedProduct.id && $scope.purchase_form.$dirty;
       };
 
+      function submitSurvey() {
+        if($scope.selectedProduct.id == $scope.productSurvery.survey.productId )
+        {
+          console.log($scope.productSurvery);
+          Survey.submitAnswers($scope.productSurvery);
+        }
+      }
+
       $scope.submit = function() {
         // This is UGLY, fix it later
         $scope.buyer.payment_method = $scope.payment.method;
-
         Validator.validate($scope.buyer, 'purchases/buyer')
                  .then(Products.purchase($scope.selectedProduct.id))
-                 .then(Purchases.pay($scope.payment.method))
+                 .then(Purchases.pay($scope.payment.method, $scope.payment.amount))
                  .then(Purchases.followPaymentInstructions)
                  .then(Purchases.localForget)
+                 .then(submitSurvey)
                  .catch(FormErrors.set);
       };
     });

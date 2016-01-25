@@ -5,3 +5,4 @@ dist
 locale/*.mo
 .DS_Store
 .idea/
+ansible/
