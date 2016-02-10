@@ -1,16 +1,8 @@
-<div class="panel panel-default">
-  <div class="panel-body">
     <form novalidate  class="form-horizontal">
 
       <div ng-if="credentials.dirty">
         <div class="alert alert-danger" role="alert">
           <span translate>Por favor atualize seus dados antes de fazer uma nova operação</span>
-        </div>
-      </div>
-
-      <div ng-if="state.name == 'account.signup'">
-        <div class="alert alert-info" role="alert">
-          <span translate>Bla bla nova conta</span>
         </div>
       </div>
 
@@ -25,8 +17,14 @@
             Criar conta
           </span>
         </button>
+        <a ng-if="state.name == 'account.signup'"
+           class="btn btn-default"
+           ui-sref="splash" translate>Voltar</a>
+        <a ng-if="state.name == 'account.update'"
+           class="btn btn-default"
+           ui-sref="home" translate>Voltar</a>
       </div>
 
+
+
     </form>
-  </div>
-</div>

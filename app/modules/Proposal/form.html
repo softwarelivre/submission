@@ -6,9 +6,10 @@
     em breve.
   </p>
 </fieldset>
+
 <form novalidate name="proposal_form" class="lines" ng-show="cfpState == 'open'">
   <ng-include src="'modules/Proposal/proposal.html'"></ng-include>
-  <ng-include src="'modules/Proposal/author.html'"></ng-include>
+  <!-- <ng-include src="'modules/Proposal/author.html'"></ng-include> -->
   <ng-include src="'modules/Proposal/coauthors.html'"></ng-include>
 
   <aside class="centered action" ng-show="isDirty()">

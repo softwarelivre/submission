@@ -19,31 +19,29 @@
     <script src='config.js'></script>
   </head>
   <body ng-controller="SubmissionController" class="{{ topState }}">
+
     <header class=" {{ topState }}" ui-view="header">
     </header>
 
     <toast translate></toast>
 
-
-
-
     <main>
       <div class="container">
-        <div class="row">
-          <div class="{{ topState }} container" ui-view="main"></div>
-        </div>
+          <div class="{{ topState }}" ui-view="main"></div>
       </div>
     </main>
 
 
     <footer>
       <div class="container-fluid footer">
-        <div class="col-sm-6">
+        <div class="pull-left">
             <strong translate>Problemas?</strong>&nbsp;
-              <a href="mailto:financeiro@espacodeprojetos.com.br?subject=[BUG] Notificação&body=Descreva seu problema:">financeiro@espacodeprojetos.com.br</a>
+              <a href="mailto:financeiro@espacodeprojetos.com.br?subject=[BUG] Notificação&body=Descreva seu problema:">
+                financeiro@espacodeprojetos.com.br
+              </a>
             </span>
         </div>
-        <div class="col-sm-offset-4 col-sm-2">
+        <div class="pull-right">
           <span> {{ state.name }} </span>
         </div>
       </div>

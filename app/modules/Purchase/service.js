@@ -22,9 +22,10 @@
         return service.one('proponent').getList(hash).catch(anEmptyList);
       };
 
-      extensions.purchase = function(product_id) {
+      extensions.purchase = function(product_id, amount) {
         return function(buyer_data) {
           var product = service.one(product_id);
+          buyer_data['amount'] = amount
           console.log(buyer_data);
           return product.post('purchase', buyer_data);
         };
@@ -58,13 +59,12 @@
       extensions.saveIt = function(object) {
         return object.save();
       };
-      extensions.pay = function(method, amount) {
+      extensions.pay = function(method) {
         return function(purchaseObject) {
           var p = service.one(purchaseObject.id).get().then(function(purchase) {
             if (purchase.status == "paid") {
               return purchase;
             } else {
-              purchase.amount = amount;
               return purchase.post('pay/' + method);
             }
           });
@@ -72,7 +72,7 @@
         };
       };
       extensions.followPaymentInstructions = function(response) {
-        var instructions_url = "";
+       var instructions_url = "";
         if (_.has(response, '$type')) {
           if (response['$type'] == 'Purchase.normal') {
             instructions_url = "/#/purchase/" + response['id'] + "/payment/" + response['payments'][0].id + "/guide";
@@ -81,7 +81,7 @@
         else {
           instructions_url = response.redirectUserTo;
         }
-        $window.location.href = instructions_url;
+        $window.open(instructions_url);
       };
       extensions.getOwnedByCredentials = function() {
         var credentials = Auth.credentials();

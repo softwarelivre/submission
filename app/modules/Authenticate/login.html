@@ -1,15 +1,18 @@
-<div class="container-fluid login">
-  <div class="panel panel-default">
-    <div class="panel-body">
-    <legend>Entrar na minha conta</legend>
-    <form novalidate name="login_form" grab-focus >
+<div class="container">
+  <div class="col-sm-offset-3 col-sm-5">
+
+
+
+    <form novalidate name="login_form" grab-focus class="form">
+      <legend class="text-primary">Entrar na minha conta</legend>
       <div class="form-group has-feedback">
         <label class="control-label">
            <span class="required"> * </span> E-mail:
         </label>
-        <input type="text"
-                maxlength=80
-                focusable required
+        <input  name="email"
+                type="text"
+                maxlength=20
+                focusable
                 ng-model="login.email"
                 class="form-control" />
       </div>
@@ -17,27 +20,37 @@
         <label class="control-label">
            <span class="required"> * </span> Senha:
         </label>
-          <input type="password"
-                 required
-                 maxlength=80
+          <input name="password"
+                 type="password"
+                 maxsize=20
                  ng-model="login.password"
                  class="form-control"/>
       </div>
 
       <div class="form-group has-feedback">
+
+        <p class="text-center">Se você participou do FISL16, basta se logar. Caso contrário, crie uma nova conta.</p>
+
+
         <div class="text-center">
-          <button class="btn btn-primary"
+          <a class="btn btn-primary"
                   ng-click="tryLogin()"
                   translate>
             Entrar!
-          </button>
-
+          </a>
           <a href="#" class="btn btn-default" translate
-           ng-click="forgotPassword()">Esqueci a minha senha!</a>
+           ng-click="forgotPassword()">Recuperar senha!</a>
         </div>
+
+        <br>
+
+        <div class="text-center">
+          <a ui-sref="account.signup"
+             class="btn btn-md btn-info" translate>Criar nova conta</a>
+        </div>
+
       </div>
 
     </form>
-    </div>
   </div>
 </div>

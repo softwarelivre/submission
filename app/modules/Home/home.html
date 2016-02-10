@@ -1,11 +1,26 @@
-<div class="panel panel-default">
-  <div class="panel-body">
-      <p class="text-center">blalbalblalbalblalbalbla</p>
-      <div class="text-center">
-        <a ui-sref="purchase.new" class="btn btn-primary">Fazer doação</a>
-      </div>
-  </div>
-</div>
+
+    <div class="row" >
+      <h2 class="text-center text-primary" translate>Bem-vindo!</h2>
+      <p class="text-center" translate>Você está na área de relacionamento do SEGUE.</p>
+      <p class="text-center" translate>Neste espaço você poderá participar das campanhas de doação da ASL.Org, inscrever-se em eventos, submeter palestras e emitir certificados.</p>
+    </div>
+
+
+    <hr>
+
+     <div class="row text-center">
+
+         <div class="col-md-4">
+            <a  class="btn btn-default disabled" translate>Inscrições Fisl17 (Em breve)</a>
+         </div>
+         <div class="col-md-4 ">
+            <a ui-sref="purchase.new" class="btn btn-primary">Fazer doação</a>
+         </div>
+         <div class="col-md-4">
+            <a  class="btn btn-default disabled" translate> Submissão de Palestras (Em breve)</a>
+         </div>
+     </div>
+
 <!--
 <div class="panel panel-default" ng-show="myCertificates.length > 0">
   <div class="panel-body">
@@ -38,33 +53,50 @@
   </div>
 </div>
 -->
+     <hr>
 
-<div class="panel panel-default" ng-show="myPurchases.length > 0">
-  <div class="panel-body">
+<div class="row" ng-show="myPurchases.length > 0">
+    <div class="container">
     <legend translate class="text-primary"> Minhas doações </legend>
 
       <table class="table">
           <thead>
+            <th translate>Identificador</th>
             <th translate>Campanha</th>
             <th translate>Valor</th>
             <th translate>Data</th>
             <th translate>Status</th>
           </thead>
           <tbody>
-            <tr ng-repeat="purchase in myPurchases">
+          <!-- FIX -->
+            <tr ng-repeat="purchase in myPurchases"
+                ng-class="{'bg-success':  purchase.status == 'paid'}">
+
+                <p>{{ purchase.status }}</p>
+
+                <td>{{ purchase.id }}</td>
                 <td>{{ purchase.product.description }}</td>
-                <td>{{ purchase.product.price | realbrasileiro}}</td>
+                <td ng-if="purchase.product.price">
+                    {{ purchase.product.price | realbrasileiro}}
+                </td>
+                <td ng-if="!purchase.product.price"> <!-- donation -->
+                    {{ purchase.payments[0].amount | realbrasileiro}}
+                </td>
                 <td>{{ purchase.created | date_locale }}</td>
                 <td ng-show="canStartPayment(purchase)">
-                    <button
-                            class="btn btn-default"
-                            ng-click="payment.method[purchase.id] = 'show'"
-                            translate>Pagar</button>
+                    <strong>Aguardando confirmação</strong>
+                    <button class="btn btn-default" ng-click="tryToPay(purchase)" translate>Doar</button>
                 </td>
                <td ng-show="isExpired(purchase)">
-                    <button class="button-expired" translate >
+                    <span translate >
                         Expirou em <span class="date_small">{{ purchase.product.sold_until | date_locale }}</span>
-                    </button>
+                    </span>
+                </td>
+                <td ng-show="isCancelled(purchase)">
+                    <span  translate ><strong>Cancelada</strong></span>
+                </td>
+                <td ng-show="isReimbursed(purchase)">
+                    <span  translate >Devolvida</span>
                 </td>
           <!--      <td  ng-show="payment.method[purchase.id] == 'clone'">
                   <button class="button-expired button-clone-expired" ng-click="clonePayment(purchase)" translate>
@@ -78,17 +110,17 @@
                             translate ng-click="doPayment(purchase, 'pagseguro')">Cartão</button>
                 </td>
                 <td ng-show="purchase.status == 'paid'" translate>
-                    Pago número:<b>{{ purchase.id }}</b></td>
+                    <strong>Confirmado</strong></b>
                 </td>
             </tr>
           </tbody>
       </table>
-  </div>
+    </div>
 </div>
 
 
-<div class="panel panel-default" ng-show="myProposals.length > 0">
-    <div class="panel-body">
+<div class="row" ng-show="myProposals.length > 0">
+    <div class="conatiner">
     <legend translate class="text-primary"> Minhas propostas de palestra </legend>
     <ul>
         <li class="unsaved" ng-show="currentProposal" ui-sref="proposal.new">

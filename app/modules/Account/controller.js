@@ -82,6 +82,7 @@
           membership: false,
       };
 
+      $scope.selectedAddress = '';
 
       $scope.getLocation = function(address) {
         return AddressResolver.fetchLocation(address).then(function(results){
@@ -105,15 +106,6 @@
       $scope.occupationTypes = Account.getOccupationTypes();
       $scope.educationTypes = Account.getEducationTypes();
 
-      $scope.fetchAddress = function(zipcode) {
-        AddressResolver.getAddress(zipcode)
-        .then(function(success) {
-          $scope.signup.country = success.country;
-          $scope.signup.city = success.city;
-          $scope.signup.address_state = success.state;
-        });
-      };
-
       function finishedSignUp() {
         Auth.login($scope.signup.email, $scope.signup.password);
         $scope.signup = null;
@@ -124,9 +116,12 @@
       }
 
       $scope.submit = function() {
+        if($scope.signup.membership === 'true') { $scope.signup.membership = true; }
+        if($scope.signup.membership === 'false') { $scope.signup.membership = false; }
+
         var schema =  'accounts/signup';
-            if($scope.signup.type == 'company')  {
-                schema = 'accounts/company_account';
+            if($scope.signup.type == 'corporate')  {
+                schema = 'accounts/corporate';
         }
 
         Validator.validate($scope.signup, schema)
@@ -138,7 +133,7 @@
     })
     .controller("UpdateAccountController", function($scope, $state,
                                              Account, Auth, AuthModal, Validator, FormErrors, UserLocation,
-                                             focusOn, AddressResolver, ngToast, Config, $http) {
+                                             focusOn, AddressResolver, ngToast) {
 
       $scope.enforceAuth();
 
@@ -171,20 +166,18 @@
 
       Account.get().then(function(data){
         $scope.signup = data;
+        if( $scope.signup.role == 'corporate')
+        {
+            $scope.signup.type = 'corporate';
+        } else {
+            $scope.signup.type = 'person';
+        }
+
       });
 
       $scope.disabilityTypes =  Account.getDisabilityTypes();
       $scope.occupationTypes = Account.getOccupationTypes();
       $scope.educationTypes = Account.getEducationTypes();
-
-      $scope.fetchAddress = function(zipcode) {
-        AddressResolver.getAddress(zipcode)
-        .then(function(success) {
-          $scope.signup.country = success.country;
-          $scope.signup.city = success.city;
-          $scope.signup.address_state = success.state;
-        });
-      };
 
       function finishedUpdate() {
         ngToast.create({ content: 'Sua conta foi atualizada com sucesso.' }); //FIX ME
@@ -193,9 +186,13 @@
       }
 
       $scope.submit = function() {
+
+            if($scope.signup.membership === 'true') { $scope.signup.membership = true; }
+            if($scope.signup.membership === 'false') { $scope.signup.membership = false; }
+
             var schema =  'accounts/edit_account';
-            if($scope.signup.type == 'company')  {
-                schema = 'accounts/edit_company_account';
+            if($scope.signup.type == 'corporate')  {
+                schema = 'accounts/edit_corporate';
             }
 
             Validator.validate($scope.signup, schema)

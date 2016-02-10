@@ -19,7 +19,7 @@
 
       self.set = function(raw) {
         $rootScope.$broadcast('errors:clear');
-        var errors = (raw.data)? raw.data.errors:raw;
+        var errors = (raw.data)? raw.data.error:raw;
         _.each(errors, function(error) {
           var paramKey = (error.params)?   error.params.key               : null;
           var dataPath = (error.dataPath)? error.dataPath.replace('/','') : null;

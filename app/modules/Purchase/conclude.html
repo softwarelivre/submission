@@ -1,28 +1,29 @@
-<div class="panel panel-default">
-  <div class="panel-body">
-  <legend translate>
-    Conclusão do pagamento
+
+  <legend translate class="text-primary">
+    Conclusão da doação
   </legend>
 
   <div class="info" ng-hide="purchase.status == 'paid'">
-    <strong>Inscrição aguardando pagamento.</strong> Sua inscrição será confirmada tão logo
+    <strong>Aguardando pagamento.</strong> Sua inscrição será confirmada tão logo
     seu pagamento seja processado. Caso você tenha optado por meios de pagamento
     off-line (por exemplo, boleto bancário), fique atento à data de vencimento
     impressa no mesmo.
   </div>
 
   <div class="info" ng-show="purchase.status == 'paid'">
-    <strong>Ingresso confirmado!</strong>
+    <strong>Confirmado!</strong>
 
     Seu pagamento foi recebido e processado com sucesso. Em breve você receberá uma
-    mensagem por e-mail confirmando todos os dados de seu ingresso.
+    mensagem por e-mail confirmando todos os  da operação.
 
   </div>
 
   <ul>
-    <li><b>Tipo de ingresso:</b> {{ purchase.product.description }}</li>
-    <li><b>Valor:</b>{{ purchase.product.price | realbrasileiro }}</li>
-    <li><b>Status:</b>{{ purchase.status }}</li>
+    <li><b>Campanha:</b> {{ purchase.product.description }}</li>
+    <li ng-if="purchase.product.price">
+      <b>Valor:</b>{{ purchase.product.price | realbrasileiro }}</li>
+    <li ng-if="!purchase.product.price">
+      <b>Valor:</b>{{ purchase.payments[0].amount | realbrasileiro}}</li>
+    <li><b>Status:</b> {{ purchase.status  | translate }}</li>
   </ul>
-  </div>
-</div>
+

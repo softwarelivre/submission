@@ -2,15 +2,15 @@
 
 
         <p class="alert alert-warning" translate>
-          Atenção: não é possível alterar os dados do comprador após a realização da compra
+            Atenção: não é possível alterar os dados do doador após a realização da doação
         </p>
 
         <p class="alert alert-info" translate>
-          Os dados abaixo são necessários para realização do pagamento e posterior emissão de nota fiscal
+          Os dados abaixo são necessários para realização do pagamento e posterior emissão de recibo
         </p>
 
 <fieldset >
-  <legend translate>Dados do comprador</legend>
+  <legend class="text-primary" translate>Dados do doador (Para quem será emitido o recibo)</legend>
 
     <!--
   <p>
@@ -28,7 +28,7 @@
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
         <span class="required"> * </span>
-        <span ng-show="buyer.kind == 'person'" translate>Nome do comprador:</span>
+        <span ng-show="buyer.kind == 'person'" translate>Nome do Doador:</span>
         <span ng-show="buyer.kind == 'company'" translate>Razão social:</span>
       </label>
       <div class="col-sm-4">
@@ -106,7 +106,7 @@
 </fieldset>
 
   <fieldset>
-    <legend translate>Dados do pagamento</legend>
+    <legend translate class="text-primary">Dados do pagamento</legend>
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
         Forma de pagamento:
@@ -138,21 +138,27 @@
 
 
   <fieldset>
-      <legend translate>Dados do endereço</legend>
+      <legend translate class="text-primary">Dados do endereço</legend>
 
       <div class="form-group has-feedback">
         <label class="col-sm-3 control-label" translate>
           <span class="required" translate> * </span> Código Postal:
-          <small class="help-block" translate>(Somente números)</small>
         </label>
         <div class="col-sm-3">
           <input type="text" required
             ng-model="buyer.address_zipcode"
+            placeholder="00000-000"
             class="form-control"/>
         </div>
         <div class="col-sm-offset-3 col-sm-9">
-           <span form-error="address_zipcode.object_required" class="help-block" translate>
+          <span  form-error="address_zipcode.object_required" class="help-block" translate>
              Favor informar o código postal
+           </span>
+          <span  form-error="address_zipcode.string_length_long" class="help-block" translate>
+             Código postal é muito grande
+           </span>
+          <span  form-error="address_zipcode.invalid_format" class="help-block" translate>
+             Código postal inválido
            </span>
         </div>
       </div>
@@ -201,7 +207,7 @@
         <input type="text" required
             minlength="3" maxsize="80"
             ng-model="buyer.address_city"
-            class="form-control"/>
+            class="form-control text-capitalize"/>
         </div>
         <div class="col-sm-offset-3 col-sm-9">
           <span form-error="address_city.object_required"  class="help-block" translate>
@@ -218,7 +224,7 @@
              <input type="text" required
               minlength="2" maxlength="20" required
               ng-model="buyer.address_neighborhood"
-              class="form-control" />
+              class="form-control text-capitalize" />
         </div>
         <div class="col-sm-offset-3 col-sm-9">
           <span form-error="address_neighborhood.object_required" class="help-block" translate>
@@ -279,7 +285,3 @@
       </div>
 
    </fieldset>
-
-        </div>
-    </div>
-</div>

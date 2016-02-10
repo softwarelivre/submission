@@ -2,36 +2,45 @@
   <div class="panel panel-default">
     <div class="panel-body">
 
-    <form novalidate id="reset_form" name="reset_form">
-     <legend translate>recuperação de senha</legend>
-    <p>
+    <form novalidate id="reset_form" name="reset_form" class="form-horizontal">
+     <legend translate class="text-primary">Recuperação de senha</legend>
 
-      <label class="notip">
-        <span translate>código de recuperação</span>
+
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label">
+        <span class="required"translate> * </span> Código de recuperação:
       </label>
-      <input type="text" readonly
-            minlength="8" maxsize="80"
+      <div class="col-sm-4">
+        <input type="text" readonly
+              class="form-control"
             ng-model="reset.hash_code"/>
-    </p>
+      </div>
+    </div>
 
-    <p>
-      <label class="">
-        <span translate>nova senha</span>
-        <small translate>(mínimo 8 caracteres)</small>
+    <div class="form-group has-feedback">
+      <label class="col-sm-3 control-label">
+        <span class="required"translate> * </span> Senha:
+        <small class="help-block" translate>(mínimo 8 caracteres)</small>
       </label>
-      <input type="password" required
-            placeholder="{{ 'password' || translate }}"
-            minlength="8" maxsize="80" focusable
+      <div class="col-sm-4">
+        <input type="password" required
+               placeholder="{{ 'senha' || translate }}"
+               minlength="8" maxsize="80"
+              class="form-control"
             ng-model="reset.password"/>
-      <i class="fa fa-check only-expanded"></i>
-      <span form-error="password.object_required" translate>por favor, defina uma senha com no mínimo 8 caracteres</span>
-    </p>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+        <span form-error="password.object_required" class="help-block" translate>
+          Por favor, defina uma senha com no mínimo 8 caracteres
+        </span>
+      </div>
+    </div>
 
-    <p class="centered action only-expanded">
-      <button ng-click="submit()" translate>
-        recuperar acesso!
+    <div class="text-center">
+      <button class="btn btn-primary" ng-click="submit()" translate>
+        Recuperar acesso!
       </button>
-    </p>
+    </div>
   </form>
   </div>
 </div>

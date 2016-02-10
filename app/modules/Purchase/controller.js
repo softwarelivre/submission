@@ -119,12 +119,12 @@
     .controller('NewPurchaseController', function($rootScope, $scope, $stateParams,
                                                   Config, Auth, Validator, FormErrors, ContractModal,
                                                   focusOn, products, currentPurchase, purchaseMode,
-                                                  Products, Purchases, Account, AddressResolver, Survey) {
+                                                  $state, Products, Purchases, Account, AddressResolver, Survey) {
       $scope.enforceAuth();
 
       $scope.productSurvery = {
         survey: {
-          name : 'fisl17_donation_shirt',
+          name : 'fisl17_donation_shirt_purchase_',
           productId: 1,
         },
         answers: {
@@ -234,7 +234,13 @@
 
       Account.get().then(function(account) {
         $scope.buyer.name            = account.name;
-        $scope.buyer.kind            = account.type;
+        if (account.role == 'corporate')  /*  FIX */
+        {
+          $scope.buyer.kind = 'corporate';
+        } else {
+          $scope.buyer.kind = 'person';
+        }
+
         $scope.buyer.contact         = account.phone;
         $scope.buyer.address_country = account.country;
         $scope.buyer.address_state   = account.address_state;
@@ -255,23 +261,30 @@
         return $scope.credentials && $scope.selectedProduct.id && $scope.purchase_form.$dirty;
       };
 
-      function submitSurvey() {
+      function submitSurvey(response) {
         if($scope.selectedProduct.id == $scope.productSurvery.survey.productId )
         {
-          console.log($scope.productSurvery);
+          $scope.productSurvery.survey.name += response.parentResource.id;
           Survey.submitAnswers($scope.productSurvery);
         }
+      }
+
+      function finish(response) {
+
+        Purchases.followPaymentInstructions(response);
+        submitSurvey(response);
+        Purchases.localForget();
+
+        $state.go('home');
       }
 
       $scope.submit = function() {
         // This is UGLY, fix it later
         $scope.buyer.payment_method = $scope.payment.method;
         Validator.validate($scope.buyer, 'purchases/buyer')
-                 .then(Products.purchase($scope.selectedProduct.id))
-                 .then(Purchases.pay($scope.payment.method, $scope.payment.amount))
-                 .then(Purchases.followPaymentInstructions)
-                 .then(Purchases.localForget)
-                 .then(submitSurvey)
+                 .then(Products.purchase($scope.selectedProduct.id,  $scope.payment.amount))
+                 .then(Purchases.pay($scope.payment.method))
+                 .then(finish)
                  .catch(FormErrors.set);
       };
     });

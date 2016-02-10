@@ -1,13 +1,14 @@
 <fieldset class="products">
 
-<div class="container-fluid">
-  <h3 class="text-primary" translate>Contribua com a ASL fazendo uma doação</h3>
+<div class="conteiner-fluid">
+
+  <h3 class="text-primary" translate>Campanha de Doação 2016</h3>
   <table class="table">
     <thead>
       <tr>
         <th>Campanha</th>
         <th>Valor</th>
-        <th>Pagar</th>
+        <th>Doar</th>
       </tr>
     </thead>
     <tbody>
@@ -22,7 +23,6 @@
             <input
                  name="amount"
                  type="number"
-                 min="10"
                  class="form-control"
                  ng-model="payment.amount"  />
         </td>
@@ -48,43 +48,45 @@
     <!--survey -->
     <div class="form-group">
     <label class="col-md-4 control-label" translate>Como você deseja receber a camiseta:</label>
-    <div class="col-md-4">
+    <div class="col-md-7">
       <label class="radio-inline">
         <input name="delivery"
                value="at_fisl" ng-model="productSurvery.answers.delivery" type="radio"> No evento
       </label>
       <label class="radio-inline" translate>
         <input name="delivery"
-               value="at_home" ng-model="productSurvery.answers.delivery" type="radio"> Em casa
+               value="at_home" ng-model="productSurvery.answers.delivery" type="radio"> Pelos correios (VIA PAC - entrega em até 15 dias úteis)
       </label>
     </div>
+    <div class="col-md-offset-4 col-md-7" ng-if="productSurvery.answers.delivery == 'at_home'">
+       <span class="text-danger" translate=>A Camiseta será entregue no endereço cadastrado abaixo, em Dados do Doador.</span>
+    </div>
+
     </div>
 
     <div class="form-group">
-    <label class="col-md-4 control-label" ranslate>Qual o tamanho de camiseta você usa:</label>
-    <div class="col-md-4">
-      <label class="radio-inline" translate>
-        <input name="size"  value="P" checked="checked" type="radio">P
-      </label>
-      <label class="radio-inline">
-        <input name="size"
-               value="M" ng-model="productSurvery.answers.size" type="radio">M
-      </label>
-      <label class="radio-inline">
-        <input name="size"
-               value="G" ng-model="productSurvery.answers.size" type="radio">G
-      </label>
-      <label class="radio-inline">
-        <input name="size" ng-model="productSurvery.answers.size" value="GG" type="radio">GG
-      </label>
-      <label class="radio-inline">
-        <input name="size" ng-model="productSurvery.answers.size"  value="XG" type="radio">XG
-      </label>
+      <label class="col-md-4 control-label" ranslate>Escolha o tamanho de sua camiseta:</label>
+      <div class="col-md-4">
+        <label class="radio-inline" translate>
+          <input name="size"  value="P" checked="checked" type="radio">P
+        </label>
+        <label class="radio-inline">
+          <input name="size"
+                 value="M" ng-model="productSurvery.answers.size" type="radio">M
+        </label>
+        <label class="radio-inline">
+          <input name="size"
+                 value="G" ng-model="productSurvery.answers.size" type="radio">G
+        </label>
+        <label class="radio-inline">
+          <input name="size" ng-model="productSurvery.answers.size" value="GG" type="radio">GG
+        </label>
+        <label class="radio-inline">
+          <input name="size" ng-model="productSurvery.answers.size"  value="XG" type="radio">XG
+        </label>
+      </div>
     </div>
-    </div>
+
   </div>
-
-</div>
-
 
 </fieldset>

@@ -38,8 +38,8 @@
                                            Auth, Proposals, Purchases, Account,
                                            myPurchases, myProposals, myInvites, myCaravan, myCertificates,
                                            currentProposal, signup, cfpState,
-                                           Validator, FormErrors, purchaseMode, ngToast) {
-      if (!Auth.credentials()) { $state.go('splash'); } //FIX ME
+                                           Validator, FormErrors, purchaseMode, ngToast, Restangular) {
+      $scope.enforceAuth(); //FIX ME
 
       $scope.myCaravan       = myCaravan;
       $scope.myPurchases     = myPurchases;
@@ -92,6 +92,26 @@
                       .then(Purchases.followPaymentInstructions);
       };
 
+      $scope.tryToPay = function(purchase) { //FIX ME DADY
+          if(purchase.payments)
+          {
+              var payment = purchase.payments[0];
+              var documents = Restangular.service('documents')
+              if(payment.type == 'boleto')
+              {
+                  var url = documents
+                        .one('boleto-'+payment.document_hash+'.pdf')
+                        .getRequestedUrl();
+                  $window.open(url);
+              }
+              else if(payment.type == 'pagseguro') {
+                  $scope.doPayment(purchase, 'pagseguro');
+              }
+
+          }
+      };
+
+
       $scope.canStartPayment = function(purchaseObject) {
         return $scope.purchaseMode == 'online' &&
                $scope.isPending(purchaseObject) &&
@@ -108,6 +128,15 @@
       $scope.isPending = function(purchaseObject) {
         return purchaseObject.status == 'pending';
       };
+
+      $scope.isReimbursed = function(purchaseObject) {
+        return purchaseObject.status == 'reimbursed';
+      };
+
+      $scope.isCancelled = function(purchaseObject) {
+        return purchaseObject.status == 'cancelled';
+      };
+
 
       $scope.isTimely = function(purchaseObject) {
         var today = new Date();

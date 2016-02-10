@@ -17,14 +17,14 @@
           },
           resolve: {
             cfpState: function(Proposals) { return Proposals.cfpState(); },
-            purchaseMode: function(Purchases) { return Purchases.purchaseMode(); }
+            purchaseMode: function(Purchases) { return Purchases.purchaseMode();}
           }
         });
     });
 
   angular
     .module('segue.submission.splash.controller', [])
-    .controller('SplashController', function($rootScope, $scope, $state, $window, cfpState, purchaseMode, Auth, ContractModal) {
+    .controller('SplashController', function($rootScope, $scope, $state, $window, cfpState, purchaseMode, Auth, ContractModal, $http, Config) {
       $scope.purchaseMode = purchaseMode;
       $scope.cfpState = cfpState;
 
@@ -42,6 +42,16 @@
           $window.location = "#/caravan/new";
         }
       });
+
+      <!-- FIX -->
+      function donationsCountFetch() {
+         $http.get(Config.API_HOST + Config.API_PATH + "/purchases/donations/count" )
+            .then(function (result) {
+                $scope.donationsCount = result.data.total;
+            });
+      }
+
+       donationsCountFetch();
 
       $scope.showInfo = ContractModal.show;
     });
