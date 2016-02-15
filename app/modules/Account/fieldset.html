@@ -254,7 +254,7 @@
                 name="occupation"
                 ng-model="signup.occupation"
                 class="form-control"
-                ng-options="occupation.key as occupation.value | translate for occupation in occupationTypes">
+                ng-options="occupation as occupation | humanize for occupation in occupationTypes">
           <option value="" translate>Selecione uma opção</option>
         </select>
       </div>
@@ -277,7 +277,7 @@
         <select name="education"
                 ng-model="signup.education"
                 class="form-control"
-                ng-options="education.key as education.value | translate for education in educationTypes">
+                ng-options="education as education | humanize for education in educationTypes">
           <option value="" translate>Selecione uma opção</option>
       </select>
       </div>
@@ -302,7 +302,7 @@
             class="form-control"
             ng-model="signup.disability"
             ng-init="signup.disability = signup.disability || 'none'"
-            ng-options="disability.key as disability.value | translate for disability in disabilityTypes">
+            ng-options="disability as disability | humanize for disability in disabilityTypes">
         </select>
       </div>
     </div>
