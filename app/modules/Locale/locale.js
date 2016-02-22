@@ -69,7 +69,7 @@
               var component_type = address_component.types[0];
               if (component_type == 'postal_code')
               {
-                address.zipcode = address_component.long_name;
+                address.zipcode = address_component.long_name.replace(/[^0-9]/g, '');
               }
               if (component_type == "country"){
                 address.country = address_component.long_name;
