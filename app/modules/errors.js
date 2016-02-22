@@ -16,7 +16,7 @@
         $rootScope.$broadcast('errors:set', path);
         console.log(path);
       };
-
+      /* TODO: REMOVE SET FUNCTION */
       self.set = function(raw) {
         $rootScope.$broadcast('errors:clear');
         var errors = (raw.data)? raw.data.error:raw;
@@ -26,6 +26,17 @@
           var field = error.field || paramKey || dataPath;
           var label = error.label || codes[error.code].toLowerCase();
           self.setOne(field, label);
+        });
+      };
+      self.setError = function(raw) {
+        $rootScope.$broadcast('errors:clear');
+        var error = (raw.data)? raw.data.error:raw;
+        _.each(_.keys(error.errors), function(field) {
+            var fieldError = {
+                'field': field,
+                'msgs': error.errors[field]
+            }
+            $rootScope.$broadcast('errors:set', fieldError);
         });
       };
       return self;
@@ -63,7 +74,6 @@
           if (name.match(myError)) {
 
               attr.uibTooltip = 'After today restriction';
-
               //FIX ME PLEASE FIND THE FORM GROUP
             first_parent = elem.parent();
             second_parent = elem.parent().parent();
@@ -75,6 +85,30 @@
             {
                 second_parent.addClass("has-error");
             }
+            elem.removeClass("ng-hide");
+          }
+        });
+      };
+    })
+    .directive('fieldError', function($timeout) {
+      return function(scope, elem, attr) {
+        elem.addClass("ng-hide");
+        elem.addClass("error");
+        var myError = attr.fieldError
+
+        scope.$on('errors:clear', function(e, error) {
+            formGroup = elem.parent();
+            formGroup.removeClass("has-error");
+            elem.addClass("ng-hide");
+            elem.empty();
+        });
+        scope.$on('errors:set', function(e, error) {
+          if (error.field == myError) {
+            formGroup = elem.parent();
+            formGroup.addClass("has-error");
+            _.each(error.msgs, function(msg) {
+                elem.append('<p class=help-block>'+ msg + '</p>');
+            });
             elem.removeClass("ng-hide");
           }
         });
