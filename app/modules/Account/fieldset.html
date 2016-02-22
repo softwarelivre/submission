@@ -385,7 +385,8 @@
         <div class="col-sm-3">
           <input type="text" required
             ng-model="signup.address_zipcode"
-            placeholder="00000-000"
+            ui-mask="99999999"
+            placeholder="00000000"
             class="form-control"/>
          </div>
         <div class="col-sm-offset-3 col-sm-8">
@@ -396,7 +397,7 @@
              Código postal é muito grande
            </span>
           <span  form-error="address_zipcode.invalid_format" class="help-block" translate>
-             Código postal inválido formato (00000-000)
+             Código postal inválido formato (00000000)
            </span>
         </div>
       </div>
