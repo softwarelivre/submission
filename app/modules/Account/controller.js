@@ -168,6 +168,11 @@
       Account.get().then(function(data){
         $scope.signup = data;
         $scope.type = 'person';
+        /*TODO: REMOVE THIS HACK OLD ACCOUNTS WITHOUT A DOCUMENT SO DOC WAS SET TO ID*/
+        if ($scope.signup.document == $scope.signup.id )
+        {
+           delete $scope.signup.document
+        }
         if( $scope.signup.role == 'corporate')
         {
             $scope.type = 'corporate';
