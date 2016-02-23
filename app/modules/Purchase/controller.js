@@ -236,7 +236,7 @@
         $scope.buyer.name            = account.name;
         if (account.role == 'corporate')  /*  FIX */
         {
-          $scope.buyer.kind = 'corporate';
+          $scope.buyer.kind = 'company';
         } else {
           $scope.buyer.kind = 'person';
         }
@@ -246,7 +246,6 @@
         $scope.buyer.address_state   = account.address_state;
         $scope.buyer.address_city    = account.city;
         $scope.buyer.address_neighborhood = account.address_neighborhood;
-        $scope.buyer.address_extra = account.address_extra;
         $scope.buyer.address_number = account.address_number;
         $scope.buyer.address_street = account.address_street;
         $scope.buyer.address_zipcode = account.address_zipcode;
