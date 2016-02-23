@@ -1,4 +1,4 @@
-  <fieldset>
+<fieldset xmlns="http://www.w3.org/1999/html">
     <legend class="text-primary" translate>Dados de Acesso</legend>
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label">
@@ -93,14 +93,12 @@
           <label class="radio-inline">
             <input type="radio"
                    value="person"
-                   name="account_type"
-                   ng-model="signup.type" translate>Pessoal
+                   ng-model="$parent.type">Pessoal
           </label>
           <label class="radio-inline">
-            <input type="radio" value="corporate"
-                   name="account_type"
-                   ng-model="signup.type"
-                   translate>Empresarial
+            <input type="radio"
+                   value="corporate"
+                   ng-model="$parent.type">Empresarial
           </label>
         </div>
         <div class="col-sm-offset-3 col-sm-9">
@@ -114,14 +112,13 @@
     <fieldset>
       <legend class="text-primary" translate>Dados pessoais</legend>
 
-      <div class="form-group has-feedback">
+    <div class="form-group has-feedback" ng-show="type == 'person'">
       <label class="col-sm-3 control-label" translate>
         <span class="required"> * </span>
-        <span ng-show="signup.type == 'person'"> Nome completo: </span>
-        <span ng-show="signup.type == 'corporate'"> Razão social: </span>
+        <span> Nome completo: </span>
       </label>
       <div class="col-sm-4">
-        <input type="text" required focusable
+        <input type="text"
             minlength="5" maxsize="80"
             ng-model="signup.name"
             class="form-control"/>
@@ -130,11 +127,32 @@
         <span form-error="name.object_required" class="help-block" translate>
           Por favor, informe um valor válido</span>
         <span form-error="name.string_pattern" class="help-block" translate>
-          <span ng-show="signup.type == 'person'"> Por favor, informe seu nome completo </span>
-          <span ng-show="signup.type == 'corporate'"> Por favor, informe a razão social da empresa</span>
+          <span> Por favor, informe seu nome completo </span>
         </span>
       </div>
     </div>
+
+    <div class="form-group has-feedback" ng-show="type == 'corporate'">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span>
+        <span>Razão social:</span>
+      </label>
+      <div class="col-sm-4">
+        <input type="text"
+            minlength="5" maxsize="80"
+            ng-model="signup.name"
+            class="form-control"/>
+      </div>
+      <div class="col-sm-offset-3 col-sm-9">
+        <span form-error="name.object_required" class="help-block" translate>
+          Por favor, informe um valor válido</span>
+        <span form-error="name.string_pattern" class="help-block" translate>
+          <span> Por favor, informe a razão social da empresa</span>
+        </span>
+      </div>
+    </div>
+
+
 <!--
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
@@ -147,16 +165,16 @@
       </div>
     </div>
 -->
-    <div class="form-group has-feedback">
+
+    <div class="form-group has-feedback" ng-show="type == 'person'">
       <label class="col-sm-3 control-label" translate>
         <span class="required"> * </span>
-        <span ng-show="signup.type == 'person'" translate> CPF ou Passaporte: </span>
-        <span ng-show="signup.type == 'corporate'"> CNPJ: </span>
+        <span translate> CPF ou Passaporte: </span>
         <small class="help-block" translate>(Somente números e letras)</small>
       </label>
       <div class="col-sm-4">
         <input type="text" required
-            ng-model="signup.document"
+            ng-model="signup.cpf"
             minlength="1" maxsize="16"
             class="form-control"/>
       </div>
@@ -165,7 +183,29 @@
           Por favor, informar um documento válido
         </span>
         <span form-error="document.invalid_format"  class="help-block" translate>
-          Residentes no Brasil, número do CPF ou CNPJ inválido (utilize somente números)
+          Residentes no Brasil, número do CPF inválido (utilize somente números)
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group has-feedback" ng-show="type == 'corporate'">
+      <label class="col-sm-3 control-label" translate>
+        <span class="required"> * </span>
+        <span> CNPJ: </span>
+        <small class="help-block" translate>(Somente números e letras)</small>
+      </label>
+      <div class="col-sm-4">
+        <input type="text" required
+            ng-model="signup.cnpj"
+            minlength="1" maxsize="16"
+            class="form-control"/>
+      </div>
+      <div class="col-sm-9">
+        <span form-error="document.object_required" class="help-block" translate>
+          Por favor, informar um documento válido
+        </span>
+        <span form-error="document.invalid_format"  class="help-block" translate>
+          Residentes no Brasil, número do CNPJ inválido (utilize somente números)
         </span>
       </div>
     </div>
@@ -188,7 +228,7 @@
       </div>
     </div>
 
-    <div ng-show="signup.type == 'person'">
+    <div ng-show="type == 'person'">
       <!--
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>

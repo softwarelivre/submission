@@ -76,10 +76,11 @@
                                              Account, Auth, Validator, FormErrors, UserLocation,
                                              focusOn, $http, AddressResolver) {
 
+      $scope.type = 'person';
+
       $scope.signup = {
-          type: 'person',
           sex: 'M',
-          membership: false,
+          membership: false
       };
 
       $scope.selectedAddress = '';
@@ -119,10 +120,10 @@
         if($scope.signup.membership === 'true') { $scope.signup.membership = true; }
         if($scope.signup.membership === 'false') { $scope.signup.membership = false; }
 
-        var schema =  'accounts/signup';
-            if($scope.signup.type == 'corporate')  {
-                schema = 'accounts/corporate';
-        }
+         var schema =  'accounts/signup';
+         if($scope.type == 'corporate')  {
+             schema = 'accounts/corporate';
+         }
 
         Validator.validate($scope.signup, schema)
                  .then(Account.post)
@@ -166,13 +167,17 @@
 
       Account.get().then(function(data){
         $scope.signup = data;
+        $scope.type = 'person';
         if( $scope.signup.role == 'corporate')
         {
-            $scope.signup.type = 'corporate';
-        } else {
-            $scope.signup.type = 'person';
+            $scope.type = 'corporate';
+            $scope.signup.cnpj = $scope.signup.document
+        } else if ( $scope.signup.role == 'person') {
+            $scope.signup.cpf = $scope.signup.document
+        } else if( $scope.signup.role == 'foreign') {
+            $scope.signup.passport = $scope.signup.document
         }
-
+        delete $scope.signup.document;
       });
 
       $scope.disabilityTypes =  Account.getDisabilityTypes();
@@ -191,7 +196,7 @@
             if($scope.signup.membership === 'false') { $scope.signup.membership = false; }
 
             var schema =  'accounts/edit_account';
-            if($scope.signup.type == 'corporate')  {
+            if($scope.type == 'corporate')  {
                 schema = 'accounts/edit_corporate';
             }
 
