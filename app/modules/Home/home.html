@@ -135,8 +135,8 @@
           <i class="box-icon fa fa-newspaper-o"></i>
           <span class="title">{{ proposal.title }}</span>
           <span class="authors">
-              <b>{{ proposal.owner.name }}</b><!--
-            --><span ng-repeat="invitee in proposal.invites" class="{{ invitee.status }}">
+              <b>{{ proposal.owner.name }}</b>
+              <span ng-repeat="invitee in proposal.invites" class="{{ invitee.status }}">
                   {{ invitee.name }}
               </span>
           </span>
@@ -159,8 +159,8 @@
         <li ng-repeat="proposal in myInvites">
         <span class="title">{{ proposal.title }}</span>
         <span class="authors">
-            <b>{{ proposal.owner.name }}</b><!--
-          --><span ng-repeat="invitee in proposal.invites" class="{{ invitee.status }}">
+            <b>{{ proposal.owner.name }}</b><
+            <span ng-repeat="invitee in proposal.invites" class="{{ invitee.status }}">
                 {{ invitee.name }}
             </span>
         </span>
