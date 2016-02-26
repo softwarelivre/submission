@@ -81,7 +81,7 @@
         else {
           instructions_url = response.redirectUserTo;
         }
-        $window.open(instructions_url);
+        $window.open(instructions_url, 'segue', '_blank');
       };
       extensions.getOwnedByCredentials = function() {
         var credentials = Auth.credentials();
