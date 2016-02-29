@@ -45,7 +45,7 @@
 
         // ocupation types
         //'student': 'Estudante',
-        'private_employee': 'Funcionário',
+        'private_employee': 'Empregado',
         'public_employee': 'Funcionário Público',
         'businessman': 'Empresário',
         'freelancer': 'Autônomo',
