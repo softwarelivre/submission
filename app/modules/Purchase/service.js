@@ -99,5 +99,17 @@
       };
 
       return _.extend(service, extensions);
+    })
+    .factory('Promocodes', function(Restangular, Auth) {
+      var service = Restangular.service('promocodes');
+      var extensions = {};
+
+      extensions.getOwnedByCredentials = function() {
+        var credentials = Auth.credentials();
+        if (!credentials) { return; }
+        return service.getList({ creator_id: credentials.id });
+      };
+
+      return _.extend(service, extensions);
     });
 })();

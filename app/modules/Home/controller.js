@@ -24,6 +24,7 @@
             myInvites:        function(Proposals)    { return Proposals.getByCoAuthors(); },
             myPurchases:      function(Purchases)    { return Purchases.getOwnedByCredentials(); },
             myCertificates:   function(Certificates) { return Certificates.getOwnedByCredentials(); },
+            myPromocodes:     function(Promocodes)   { return Promocodes.getOwnedByCredentials(); },
             currentProposal:  function(Proposals)    { return Proposals.current(); },
             signup:           function(Account)      { return Account.get(); },
             cfpState:         function(Proposals)    { return Proposals.cfpState(); },
@@ -37,6 +38,7 @@
     .controller('HomeController', function($scope, $state, $stateParams, $window,
                                            Auth, Proposals, Purchases, Account,
                                            myPurchases, myProposals, myInvites, myCaravan, myCertificates,
+                                           myPromocodes,
                                            currentProposal, signup, cfpState,
                                            Validator, FormErrors, purchaseMode, ngToast, Restangular) {
       $scope.enforceAuth(); //FIX ME
@@ -46,6 +48,7 @@
       $scope.myProposals     = myProposals;
       $scope.myInvites       = myInvites;
       $scope.myCertificates  = myCertificates;
+      $scope.myPromocodes    = myPromocodes;
       $scope.purchaseMode    = purchaseMode;
       $scope.currentProposal = (_.isEmpty(currentProposal))? null : currentProposal;
       $scope.caravan_hash    = $stateParams.caravan_hash;

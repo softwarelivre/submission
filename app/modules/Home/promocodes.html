@@ -2,15 +2,23 @@
     <div class="container">
     <legend class="text-primary" translate> Meus códigos promocionais </legend>
 
-      <table class="table table-striped table-responsive">
+      <table class="table table-responsive">
           <thead>
             <th translate>Código</th>
+            <th translate>Descrição</th>
+            <th translate>Desconto</th>
             <th translate>Status</th>
           </thead>
           <tbody>
-            <tr ng-repeat="promocode in myPromocodes">
-                <td></td>
-                <td></td>
+            <tr ng-repeat="promocode in myPromocodes"
+                ng-class="{'bg-success': promocode.used }">
+                <td>{{promocode.hash_code}}</td>
+                <td>{{promocode.description}}</td>
+                <td>{{promocode.discount * 100}} %</td>
+                <td>
+                    <span ng-show="!promocode.used" translate>Disponível</span>
+                    <span ng-show="promocode.used" translate>Usado</span>
+                </td>
             </tr>
           </tbody>
       </table>
