@@ -1,8 +1,17 @@
 <div>
-  <div class="intro" translate>
+  <div class="alert alert-info" translate>
     Para participar como co-autor desta palestra, é
     necessário cadastrar-se em nosso sistema. Por favor
     preencha os dados abaixo.
   </div>
-  <ng-include src="'modules/Account/signup.html'"/>
+    <form novalidate  class="form">
+      <div ng-include="'modules/Account/fieldset.html'" ></div>
+
+      <div class="text-center">
+        <button class="btn btn-md btn-primary" ng-click="submit()" translate>
+          Criar conta
+        </button>
+      </div>
+
+    </form>
 </div>

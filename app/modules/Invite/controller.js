@@ -48,20 +48,50 @@
     ])
     .controller("RegisterInviteController", function($scope,
                                                      Validator, Auth, Account, FormErrors, UserLocation, Invites,
-                                                     invite, focusOn) {
+                                                     invite, focusOn, AddressResolver) {
       Auth.logout();
+
       $scope.signup = { name: invite.name, email: invite.recipient };
+      $scope.signup.sex = 'M';
+      $scope.signup.membership = false;
+
       $scope.lockEmail = true;
       //UserLocation.autobind($scope, 'signup');
 
       focusOn('signup.name', 100);
+
+      $scope.type = 'person';
+      $scope.lockType = true;
+      $scope.disabilityTypes =  Account.getDisabilityTypes();
+      $scope.occupationTypes = Account.getOccupationTypes();
+      $scope.educationTypes = Account.getEducationTypes();
+
+      $scope.selectedAddress = '';
+
+      $scope.getLocation = function(address) {
+        return AddressResolver.fetchLocation(address).then(function(results){
+            return results.map(function(item){
+                return item;
+            });
+        });
+      };
+
+      $scope.onSelectLocation = function($item){
+        var address = AddressResolver.convertToAddress($item);
+        $scope.signup.country = address.country;
+        $scope.signup.address_state = address.state;
+        $scope.signup.city = address.city;
+        $scope.signup.address_zipcode = address.zipcode;
+        $scope.signup.address_neighborhood = address.neighborhood;
+        $scope.signup.address_street = address.street;
+      };
+
 
       function finishedSignUp(signup) {
         Auth.login($scope.signup.email, $scope.signup.password);
         $scope.signup = null;
         $scope.home();
       }
-
       $scope.submit = function() {
         Validator.validate($scope.signup, 'accounts/signup')
                  .then(Invites.registerInvitee(invite))
@@ -70,16 +100,20 @@
       };
     })
     .controller("AnswerInviteController", function($scope, $state, Auth, AuthModal, Invites, invite) {
+      /*
+      #TODO: USER MUST BE LOGGED IF HE HAVE AN ACCOUNT TO ACCEPT OR DECLINE
+       */
       Auth.logout();
 
       $scope.account = Auth.glue($scope, 'account');
       $scope.invite = invite;
 
-      function retryWithLogin() {
+      // TODO CREATE ACTION PASS FUNCTION PARAMETER
+      function retryWithLogin(action) {
         AuthModal.login().closePromise.then(function(data) {
           if (_(data.value).isString()) { return; }
           if (_(data.value).isEmpty()) { return; }
-          $scope.accept();
+          action();
         });
       }
       function moveToNextState(invite) {
@@ -90,8 +124,13 @@
       $scope.accept  = function() {
         Invites.accept(invite)
                .then(moveToNextState)
-               .catch(retryWithLogin);
+               .catch(retryWithLogin($scope.accept));
       };
-      $scope.decline = _.partial(Invites.decline, invite);
+
+      $scope.decline = function () {
+        Invites.decline(invite)
+               .then(moveToNextState)
+               .catch($scope.decline());
+      }
     });
 })();
