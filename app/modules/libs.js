@@ -52,9 +52,18 @@
       $scope.rejectContract = function() {
         $window.location = "/";
       }
+
+
+
     })
     .factory('ContractModal', function (ngDialog, $rootScope) {
-      var contractConfig  = { controller: "ContractController",  template: 'modules/common/contract.html' };
+      var contractConfig  = {
+        controller: "ContractController",
+        template: 'modules/common/contract.html',
+        showClose: false,
+        closeByDocument: false,
+        closeByEscape: false
+      };
       return {
         show:  function(contract_type, dialog_size) {
           if (!_.include($rootScope.accepted_contracts, contract_type)) {
