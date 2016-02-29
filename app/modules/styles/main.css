@@ -11,7 +11,8 @@
     width: 960px;
   }
 }
-.required {
+/* TODO: REPLACE ON ACCOUNT FORM*/
+span.required {
     color: #ba1820;
 }
 
@@ -22,6 +23,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
 .footer {
   position: absolute;
   color: #FFFFFF;
@@ -35,23 +37,13 @@ body {
   color: #FFFFFF;
 }
 
-.splash-login {
-  .login {
+.splash-login .login {
     width: 80%;
-  }
-}
-
-.login {
-    width: 40%;
 }
 
 /* FIX REMOVE */
 .contract {
-  height:30em;
 
-  .only-expanded {
-    width:100%;
-  }
 }
 
 .contract_large {
@@ -65,10 +57,22 @@ body {
   background-color:white;
   padding:15px;
   border:1px solid #ccc;
+  overflow: auto;
+  height:400px;
+  margin-bottom: 10px;
 
   p {
-    height:26em;
     overflow-y: auto;
     font-size:small;
   }
+}
+
+/* Required Inputs */
+.form-group label.required:before {
+  content:"*";
+  color:red;
+}
+
+.contract_large.ngdialog-content {
+    width:75% !important;
 }
