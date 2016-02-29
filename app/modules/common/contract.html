@@ -1,17 +1,27 @@
 <section class="contract">
-  <header translate>leia o texto abaixo:</header>
-  <form novalidate name="contract_form" grab-focus class="inside">
+  <header translate>Leia o texto abaixo:</header>
+  <form novalidate class="form-inline" name="contract_form" grab-focus>
     <div class="contract_text">
-      <ng-include src="contract_type">
-        
-      </ng-include>
+        <div ng-include="contract_type" ></div>
     </div>
-  
-    <button ng-click="acceptContract()" class="only-expanded" translate>
-      li e aceito
-    </button>
-    <button ng-click="rejectContract()" class="only-expanded" translate>
-      li e não aceito
-    </button>
+    <div class="row">
+      <div class="container-fluid">
+        <div class="pull-left">
+           <input type="checkbox" ng-model="agree" ng-init="agree = false"/>
+          <span translate>Li e concordo com os termos acima</span>
+        </div>
+        <div class="pull-right">
+          <button  ng-disabled="!agree"
+                   class="btn btn-primary"
+                   ng-e ng-click="acceptContract()" translate>
+            Continuar
+          </button>
+          <button class="btn btn-default" ng-click="rejectContract()" translate>
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
   </form>
 </section>
