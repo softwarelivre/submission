@@ -1,4 +1,4 @@
-    <form novalidate  class="form-horizontal">
+    <form novalidate  class="form">
 
       <div ng-if="credentials.dirty">
         <div class="alert alert-danger" role="alert">
@@ -7,6 +7,11 @@
       </div>
 
       <div ng-include="'modules/Account/fieldset.html'" ></div>
+
+      <div form-error-any class="alert alert-danger" role="alert">
+          <span translate>Por favor verifique as mensagens acima e tente novamente
+          </span>
+      </div>
 
       <div class="text-center">
         <button class="btn btn-md btn-primary" ng-click="submit()">
@@ -24,7 +29,4 @@
            class="btn btn-default"
            ui-sref="home" translate>Voltar</a>
       </div>
-
-
-
     </form>
