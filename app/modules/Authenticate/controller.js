@@ -17,7 +17,7 @@
             "header": { templateUrl: 'modules/common/nav.html' },
             "main":   { templateUrl: 'modules/Authenticate/master.html', controller: 'AuthController' },
             "left@authenticate":  { controller: 'LoginController',  templateUrl: 'modules/Authenticate/login.html' },
-            "right@authenticate": { controller: 'SignUpController', templateUrl: 'modules/Account/signup.html' }
+            "right@authenticate": { templateUrl: 'modules/Account/signup.html' }
           },
         })
         .state('forgot', {
