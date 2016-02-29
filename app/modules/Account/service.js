@@ -27,7 +27,7 @@
       };
       extensions.getOccupationTypes = function() {
         return [
-          'student', 'private_employee', 'public_employee', 'businessman', 'freelancer'
+          'student', 'private_employee', 'public_employee', 'professor', 'businessman', 'freelancer'
         ]
       };
       extensions.getEducationTypes = function() {

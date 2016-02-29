@@ -49,6 +49,7 @@
         'public_employee': 'Funcionário Público',
         'businessman': 'Empresário',
         'freelancer': 'Autônomo',
+        'professor': 'Professor',
 
         // education
         'post_graduation_stricto': 'Mestrado/Doutorado',
