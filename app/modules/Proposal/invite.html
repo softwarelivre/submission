@@ -1,16 +1,28 @@
 <section class="invite">
-  <header translate>convidar co-autor</header>
-  <form novalidate>
-    <input type="email" maxlength=80
-          placeholder="{{ 'e-mail do convidado' | translate }}"
-          focusable required ng-model="invite.recipient" />
-    <div form-error="recipient.*" translate>por favor, informe o e-mail do convidado</div>
-    <input type="text" maxlength=80
-          placeholder="{{ 'nome do convidado' | translate }}"
-          ng-model="invite.name" />
-    <div form-error="name.*" translate>por favor, informe o nome do convidado</div>
-    <button ng-click="submitInvite()" class="only-expanded" translate>
-      convidar!
-    </button>
+  <h4 translate>Convidar co-autor</h4>
+  <form novalidate class="form">
+
+    <div class="form-group">
+      <label class="required" translate>
+        Nome do convidado:
+      </label>
+      <input type="text" maxlength=40
+             ng-model="invite.name" />
+      <div form-error="name.*" class="help-block" translate>Este campo é obrigatório</div>
+    </div>
+
+    <div class="form-group">
+      <label class="required" translate>
+        Email do convidado:
+      </label>
+      <input type="text" maxlength=40
+             ng-model="invite.recipient" />
+      <div form-error="recipient.*" class="help-block" translate>Este campo é obrigatório</div>
+    </div>
+    <div class="text-center">
+      <button ng-click="submitInvite()" class="btn btn-primary" translate>
+        Convidar!
+      </button>
+    </div>
   </form>
 </section>

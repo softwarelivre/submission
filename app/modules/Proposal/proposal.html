@@ -1,65 +1,146 @@
-<fieldset class="proposal">
-  <legend translate>o que você está propondo?</legend>
-<p>
-  <label>
-    <span translate>título da palestra</span>
-    <small translate>(de 5 até 80 caracteres)</small>
-  </label>
-  <input type="text" required focusable
-        minlength="5" maxlength="80"
-        ng-model="proposal.title"/>
-  <i class="fa fa-check"></i>
-  <span form-error="title.object_required"     translate>o título da palestra é obrigatório</span>
-  <span form-error="title.string_length_short" translate>o título deve ter no mínimo 5 caracteres</span>
-  <span form-error="title.string_length_long"  translate>o título deve ter no máximo 80 caracteres</span>
-</p>
+<div>
+  <legend translate class="text-primary">O que você está propondo?</legend>
 
-<p>
-  <label>
-    <span translate>proposta</span>
-    <small translate>(até 2000 caracteres)</small>
-  </label>
-  <textarea required minlength="5" maxlength="2000"
-            ng-model="proposal.full" class="large"></textarea>
-  <i class="fa fa-check"></i>
-  <span form-error="full.object_required"     translate>a proposta completa da palestra é obrigatória</span>
-  <span form-error="full.string_length_short" translate>a proposta completa deve ter no mínimo 5 caracteres</span>
-  <span form-error="full.string_length_long"  translate>a proposta completa deve ter no máximo 2000 caracteres</span>
-</p>
+    <div class="col-sm-6">
+    <div class="form-group has-feedback">
+      <label class="required">
+        <span translate>Tipo da atividade:</span>
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="talk" name="type" ng-model="proposal.type" translate>Palestra
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="workshop" name="type" ng-model="proposal.type" translate>Oficina
+      </label>
+      <span field-error="type"></span>
+    </div>
 
-<p>
-  <label class="notip" translate>trilha</label>
-  <select if-locale="pt" ng-model="proposal.track_id" ng-options="t.id as t.name_pt for t in tracks">
-    <option class="empty" value="" ng-hide="proposal.track_id" translate>escolha uma trilha</option>
-  </select>
-  <select if-locale="en" ng-model="proposal.track_id" ng-options="t.id as t.name_en for t in tracks">
-    <option class="empty" value="" ng-hide="proposal.track_id" translate>escolha uma trilha</option>
-  </select>
-  <span form-error="track_id.invalid_type" translate>por favor, informe uma trilha válida</span>
-</p>
+    <div class="form-group has-feedback">
+      <label  class="required">
+        <span translate>Título da atividade:</span>
+        <small class="text-muted"translate>(de 5 até 80 caracteres)</small>
+      </label>
+      <input type="text"
+             maxlength="80"
+             class="form-control"
+             ng-model="proposal.title"/>
+      <span field-error="title"></span>
+    </div>
 
-<p>
-  <label>
-    <span translate>língua</span>
-  </label>
-  <span ng-repeat="lang in languages">
-    <input type="radio" id="lang_{{lang.abbr}}" value="{{ lang.abbr }}" ng-model="proposal.language" />
-    <label for="lang_{{lang.abbr}}">{{ lang.name | translate }}</label>
-  </span>
-  <span form-error="language.object_required" translate>a língua da palestra é obrigatória</span>
-</p>
+    <div class="form-group  has-feedback">
+      <label  class="required">
+        <span translate>Trilha:</span>
+      </label>
+      <select class="form-control"
+              if-locale="pt"
+              ng-model="proposal.track_id" ng-options="t.id as t.name_pt for t in tracks">
+        <option value="" ng-hide="proposal.track_id" translate>Escolha uma trilha</option>
+      </select>
+      <select class="form-control"
+              if-locale="en" ng-model="proposal.track_id" ng-options="t.id as t.name_en for t in tracks">
+        <option value="" ng-hide="proposal.track_id" translate>Escolha uma trilha</option>
+      </select>
+      <span field-error="track_id"></span>
+    </div>
 
-<p>
-  <label>
-    <span translate>nível da palestra</span>
-  </label>
-  <span ng-repeat="level in levels">
-    <input type="radio" id="level_{{level}}" value="{{ level }}"
-           ng-model="proposal.level" />
-    <label for="level_{{level}}">{{ level | translate }}</label>
-  </span>
-  <span form-error="level.object_required" translate>o nível técnico da palestra é obrigatório</span>
-</p>
+  </div>
+
+  <div class="col-sm-6">
+
+  <div class="form-group has-feedback">
+    <label class="required">
+      <span translate>Língua:</span>
+    </label>
+    <label ng-repeat="lang in languages"
+             class="radio-inline">
+      <input id="lang_{{lang.abbr}}"
+             type="radio"
+             value="{{ lang.abbr }}"
+             ng-model="proposal.language" /> {{ lang.name | translate }}
+    </label>
+    <div>
+      <span field-error="language"></span>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback" >
+    <label class="required">
+      <span translate>Nível da atividade:</span>
+    </label>
+    <label  ng-repeat="level in levels"
+            class="radio-inline"
+            for="level_{{level}}">
+       <input id="level_{{level}}"
+              type="radio"
+              value="{{ level }}"
+              ng-model="proposal.level" /> {{ level | humanize }}
+    </label>
+    <div>
+      <span field-error="level">O nível técnico da palestra é obrigatório</span>
+    </div>
+  </div>
+
+    <div class="form-group has-feedback" ng-show="proposal.type == 'workshop'">
+      <label class="required">
+        <span translate>Carga horária ideal:</span>
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="1.00" name="expected_duration" ng-model="proposal.expected_duration" translate>1h
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="2.00" name="expected_duration" ng-model="proposal.expected_duration" translate>2h
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="3.00" name="expected_duration" ng-model="proposal.expected_duration" translate>3h
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="4.00" name="expected_duration" ng-model="proposal.expected_duration" translate>4h
+      </label>
+      <span field-error="expected_duration"></span>
+   </div>
+
+
+</div>
+
+  <div class="col-sm-12">
+
+    <div class="form-group has-feedback">
+      <label  class="required">
+        <span translate>Descrição da atividade:</span>
+        <small translate class="text-muted">(até 2000 caracteres)</small>
+      </label>
+      <textarea rows="5"
+                maxlength="2000"
+                ng-model="proposal.full"
+                class="form-control"></textarea>
+      <span field-error="full"></span>
+    </div>
+
+    <div class="form-group has-feedback" ng-show="proposal.type == 'workshop'">
+      <label>
+        <span translate>Descreva a infra-estrutura necessária para sua oficina:</span>
+        <small translate class="text-muted">(até 500 caracteres)</small>
+      </label>
+      <textarea maxlength="500"
+                ng-model="proposal.demands"
+                class="form-control"></textarea>
+      <span field-error="demands"></span>
+    </div>
+
+    <div class="form-group has-feedback">
+      <label>
+        <span translate>Se você tiver alguma restrição de dia e/ou horário para apresentar a sua atividade, favor informar abaixo:</span>
+        <small translate class="text-muted">(até 500 caracteres)</small>
+      </label>
+      <textarea maxlength="500"
+                ng-model="proposal.restrictions"
+                class="form-control"></textarea>
+      <span field-error="restrictions"></span>
+    </div>
+
+  </div>
+
+  </div>
 
 </fieldset>
 

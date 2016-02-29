@@ -28,9 +28,6 @@
           url: '^/proposal/new',
           views: {
             form: { controller: 'NewProposalController', templateUrl: 'modules/Proposal/form.html' }
-          },
-          resolve: {
-            currentProposal: function(Proposals) { return Proposals.current(); }
           }
         })
         .state('proposal.edit', {
@@ -53,6 +50,7 @@
   angular
     .module('segue.submission.proposal.controller', ['segue.submission.proposal'])
     .controller('ProposalController', function($scope, Config, Auth, cfpState, tracks, focusOn) {
+      $scope.enforceAuth();
       focusOn('proposal.title');
       $scope.credentials = Auth.glue($scope, 'credentials');
 
@@ -69,8 +67,6 @@
       $scope.invites = invites;
       $scope.newInvites = [];
 
-      $scope.$on('auth:changed', $scope.home);
-
       $scope.isDirty = function() {
         return $scope.credentials && (($scope.proposal_form.$dirty) || ($scope.newInvites.length > 0));
       };
@@ -79,11 +75,10 @@
       };
 
       $scope.submit = function() {
-        Validator.validate($scope.proposal, 'proposals/edit_proposal')
-                 .then(Proposals.saveIt)
+            Proposals.saveIt($scope.proposal)
                  .then(Proposals.createInvites($scope.newInvites))
                  .then($scope.home)
-                 .catch(FormErrors.set);
+                 .catch(FormErrors.setError);
       };
 
       $scope.openInviteModal = function() {
@@ -99,11 +94,8 @@
 
     })
     .controller('NewProposalController', function($scope, ngDialog,
-                                                  FormErrors, Validator, Proposals,
-                                                  currentProposal) {
-      $scope.proposal = currentProposal;
-      $scope.$watch('proposal', Proposals.localSave);
-
+                                                  FormErrors, Proposals) {
+      $scope.proposal = {};
       $scope.newInvites = [];
 
       $scope.isDirty = function() {
@@ -111,16 +103,17 @@
       };
 
       $scope.canInviteMore = function() {
-        return (1 + $scope.newInvites.length) < 5;
+        //TODO: CHECK IT LATER
+        return true;
+        //return (1 + $scope.newInvites.length) < 5;
       };
 
       $scope.submit = function() {
-        Validator.validate($scope.proposal, 'proposals/new_proposal')
-                 .then(Proposals.post)
+         Proposals.post($scope.proposal)
                  .then(Proposals.createInvites($scope.newInvites))
                  .then(Proposals.localForget)
                  .then($scope.home)
-                 .catch(FormErrors.set);
+                 .catch(FormErrors.setError);
       };
 
       $scope.openInviteModal = function() {

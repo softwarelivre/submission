@@ -1,35 +1,58 @@
-<fieldset class="coauthors">
-  <legend translate>quem vai apresentar?</legend>
+<fieldset>
+  <legend translate class="text-primary">Quem vai apresentar?</legend>
 
   <div ng-hide="credentials" translate>
-    você pode convidar até três pessoas para
+    Você pode convidar até três pessoas para
     ajudar na apresentação dessa palestra
-
   </div>
 
-  <ul ng-show="credentials" class="coauthor_list">
-    <li class="coauthor main">
-      <img gravatar-src="credentials.email" gravatar-size="50">
-      <div class="name">{{ credentials.name }}</div>
-      <div class="recipient">{{ credentials.email }}</div>
-      <div class="status you" translate>este é você!</div>
-    </li>
-    <li class="coauthor" ng-repeat="invite in invites">
-      <img gravatar-src="invite.recipient" gravatar-size="50">
-      <div class="name">{{ invite.name }}</div>
-      <div class="recipient">{{ invite.recipient }}</div>
-      <div class="status {{invite.status}}">{{ invite.status }}</div>
-    </li>
-    <li class="coauthor in-progress" ng-repeat="invite in newInvites">
-      <img gravatar-src="invite.recipient" gravatar-size="50">
-      <div class="name">{{ invite.name }}</div>
-      <div class="recipient">{{ invite.recipient }}</div>
-      <div class="status {{invite.status}}" translate>será convidado ao salvar</div>
-    </li>
-    <li class="coauthor invite-new" ng-click="openInviteModal()" ng-show="canInviteMore()">
-      <i class="fa fa-plus"></i>
-      <span ng-show="invites" translate>convidar outro co-autor...</span>
-      <span ng-hide="invites" translate>convidar co-autor...</span>
-    </li>
-  </ul>
+    <p ng-show="canInviteMore()" class="container">
+       <a class="btn btn-primary" role="button" ng-click="openInviteModal()">
+          <i class="fa fa-plus"></i>
+          <span translate>Convidar co-autor...</span>
+       </a>
+    </p>
+
+    <div class="col-sm-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span translate>Autor</span>
+        </div>
+        <div class="panel-body">
+          <div><strong>{{ credentials.name }}</strong></div>
+          <div>{{ credentials.email }}</div>
+          <div translate>Este é você!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3" ng-repeat="invite in invites">
+      <div class="panel"
+           ng-class="{ 'panel-warning': invite.status == 'pending',
+                       'panel-success': invite.status == 'accepted',
+                       'panel-danger': invite.status == 'declined'}">
+        <div class="panel-heading">
+          Co-autor
+        </div>
+        <div class="panel-body">
+          <div><strong>{{ invite.name }}</strong></div>
+          <div>{{ invite.recipient }}</div>
+          <div>{{ invite.status }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3" ng-repeat="invite in newInvites">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          Co-autor
+        </div>
+        <div class="panel-body">
+          <div><strong>{{ invite.name }}</strong></div>
+          <div>{{ invite.recipient }}</div>
+          <div translate>Será convidado ao salvar</div>
+        </div>
+      </div>
+    </div>
+
 </fieldset>

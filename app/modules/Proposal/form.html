@@ -1,26 +1,28 @@
-<fieldset ng-hide="cfpState == 'open'" class="cfpClosed">
-  <legend translate>submissão de propostas encerrada!</legend>
-  <p translate>
+<div class="page-header">
+  <h2 ng-hide="cfpState == 'open'" translate>Submissão de propostas encerrada</h2>
+  <h2 ng-show="cfpState == 'open'" translate>Submissão de propostas</h2>
+</div>
+<p ng-hide="cfpState == 'open'" translate>
     O período de envio de propostas de palestra encerrou-se no dia 19 de Abril.
     O procedimento de seleção e avaliação com participação do público começará
     em breve.
-  </p>
-</fieldset>
+</p>
 
-<form novalidate name="proposal_form" class="lines" ng-show="cfpState == 'open'">
+
+<form name="proposal_form" class="form" ng-show="cfpState == 'open'" >
   <ng-include src="'modules/Proposal/proposal.html'"></ng-include>
   <!-- <ng-include src="'modules/Proposal/author.html'"></ng-include> -->
   <ng-include src="'modules/Proposal/coauthors.html'"></ng-include>
 
   <aside class="centered action" ng-show="isDirty()">
-    <div form-error-any>
-      <span translate>por favor verifique as mensagens acima e tente novamente</span>
+    <div class="alert alert-danger" form-error-any >
+      <span translate>Por favor verifique as mensagens acima e tente novamente</span>
     </div>
-    <button ng-hide="proposal.id" ng-click="submit()" translate>
-      criar proposta
+    <button class="btn btn-primary" ng-hide="proposal.id" ng-click="submit()" translate>
+      Criar proposta
     </button>
-    <button ng-show="proposal.id" ng-click="submit()" translate>
-      salvar alterações
+    <button class="btn btn-primary" ng-show="proposal.id" ng-click="submit()" translate>
+      Salvar alterações
     </button>
   </aside>
 
