@@ -1,0 +1,64 @@
+<div class="row" ng-show="myPurchases.length > 0">
+    <div class="container">
+    <legend translate class="text-primary"> Minhas doações </legend>
+
+      <table class="table table-striped table-responsive">
+          <thead>
+            <th translate>Identificador</th>
+            <th translate>Campanha</th>
+            <th translate>Valor</th>
+            <th translate>Data</th>
+            <th translate>Status</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="purchase in myPurchases"
+                ng-class="{'bg-success':  purchase.status == 'paid'}">
+
+                <p>{{ purchase.status }}</p>
+
+                <td>{{ purchase.id }}</td>
+                <td>{{ purchase.product.description }}</td>
+                <td ng-if="purchase.product.price">
+                    {{ purchase.product.price | realbrasileiro}}
+                </td>
+                <td ng-if="!purchase.product.price"> <!-- donation -->
+                    {{ purchase.payments[0].amount | realbrasileiro}}
+                </td>
+                <td>{{ purchase.created | date_locale }}</td>
+                <td ng-show="canStartPayment(purchase)">
+                    <strong>Aguardando confirmação</strong>
+                    <button class="btn btn-default" ng-click="tryToPay(purchase)">
+                        <span translate ng-show="purchase.payments[0].type=='boleto'">Boleto</span>
+                        <span translate ng-show="purchase.payments[0].type=='pagseguro'">PagSeguro</span>
+                    </button>
+                </td>
+               <td ng-show="isExpired(purchase)">
+                    <span translate >
+                        Expirou em <span class="date_small">{{ purchase.product.sold_until | date_locale }}</span>
+                    </span>
+                </td>
+                <td ng-show="isCancelled(purchase)">
+                    <span  translate ><strong>Cancelada</strong></span>
+                </td>
+                <td ng-show="isReimbursed(purchase)">
+                    <span  translate >Devolvida</span>
+                </td>
+          <!--      <td  ng-show="payment.method[purchase.id] == 'clone'">
+                  <button class="button-expired button-clone-expired" ng-click="clonePayment(purchase)" translate>
+                    Comprar o mesmo ingresso no próximo lote
+                  </button>
+                </td> -->
+                <td  ng-show="payment.method[purchase.id] == 'show'">
+                    <button class="btn btn-default"
+                            translate ng-click="doPayment(purchase, 'boleto')">Boleto bancário</button>
+                    <button class="btn btn-default"
+                            translate ng-click="doPayment(purchase, 'pagseguro')">Cartão</button>
+                </td>
+                <td ng-show="purchase.status == 'paid'" translate>
+                    <strong>Confirmado</strong></b>
+                </td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+</div>

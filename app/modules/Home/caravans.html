@@ -1,0 +1,18 @@
+<div class="panel panel-default" ng-show="hasCaravan">
+    <div class="panel-body">
+    <legend translate>
+        minha caravana
+    </legend>
+    <ul>
+        <li ui-sref="caravan.edit({ id: myCaravan.id })">
+        <i class="box-icon fa fa-bus"></i>
+        <span class="title">{{ myCaravan.name }}</span>
+        <span class="city">{{ myCaravan.city }}</span>
+        </li>
+        <li ng-hide="hasCaravan" class="new" ui-sref="caravan.new">
+        <i class="fa fa-plus"></i>
+        <span translate>criar uma caravana</span>
+        </li>
+    </ul>
+    </div>
+</div>

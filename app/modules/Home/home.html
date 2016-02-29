@@ -1,202 +1,30 @@
+<div class="row" >
+    <h2 class="text-center text-primary" translate>Bem-vindo!</h2>
+    <p class="text-center" translate>Você está na área de relacionamento do SEGUE.</p>
+    <p class="text-center" translate>Neste espaço você poderá participar das campanhas de doação da ASL.Org, inscrever-se em eventos, submeter palestras e emitir certificados.</p>
+</div>
 
-    <div class="row" >
-      <h2 class="text-center text-primary" translate>Bem-vindo!</h2>
-      <p class="text-center" translate>Você está na área de relacionamento do SEGUE.</p>
-      <p class="text-center" translate>Neste espaço você poderá participar das campanhas de doação da ASL.Org, inscrever-se em eventos, submeter palestras e emitir certificados.</p>
-    </div>
+<hr>
 
 
-    <hr>
 
-     <div class="row text-center">
-
-         <div class="col-md-4">
-            <a  class="btn btn-default disabled" translate>Inscrições Fisl17 (Em breve)</a>
-         </div>
-         <div class="col-md-4 ">
-            <a ui-sref="purchase.new" class="btn btn-primary">Fazer doação</a>
-         </div>
-         <div class="col-md-4">
-            <a ui-sref="proposal.new" class="btn btn-default" translate> Submissão de Palestras</a>
-         </div>
-     </div>
-
-<!--
-<div class="panel panel-default" ng-show="myCertificates.length > 0">
-  <div class="panel-body">
-          <legend translate class="text-primary"> Meus certificados</legend>
-          <ul>
-            <li ng-repeat="cert in myCertificates">
-              <span class="title">{{ cert.kind | humanize }}</span>
-              <span class="number" ng-show="cert.kind == 'attendant'">
-                  número: <b>{{ cert.person }}</b>
-              </span>
-              <span ng-hide="cert.name" class="talk">{{ cert.talk }}</span>
-              <small ng-show="cert.name" class="name">{{ cert.name }} - {{ cert.talk }}</small>
-              <span ng-hide="cert.name" class="empty" translate>grafia não confirmada</span>
-              <a ng-show="cert.status == 'issued'" class="status issued" href="{{cert.full_url}}" target="_blank" translate>
-                emitido no dia {{ cert.issue_date | date_locale }}
-              </a>
-              <span ng-hide="cert.status == 'issued'" class="status {{ cert.status }}" translate>
-                {{ cert.status | humanize }}
-              </span>
-            </li>
-            <li class="button" ui-sref="certificate.survey" ng-show="canIssueNewCerts()">
-              <span translate translate-n="myCertificates.length" translate-plural="emitir certificados..." translate>
-                emitir certificado...
-              </span>
-            </li>
-          </ul>
-          <div class="container" ng-if="!myCertificates.length && !canIssueNewCerts()" translate>
-              Nenhum certificado disponível para impressão
-          </div>
+<div class="btn-group btn-group-justified" role="group" >
+  <div class="btn-group" role="group">
+    <a ui-sref="purchase.new" class="btn btn-default" translate>Inscrições Fisl17</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a ui-sref="donation.new" class="btn btn-primary">Fazer doação</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a ui-sref="proposal.new" class="btn btn-default" translate> Submissão de Palestras</a>
   </div>
 </div>
--->
-     <hr>
 
-<div class="row" ng-show="myPurchases.length > 0">
-    <div class="container">
-    <legend translate class="text-primary"> Minhas doações </legend>
+<hr>
 
-      <table class="table">
-          <thead>
-            <th translate>Identificador</th>
-            <th translate>Campanha</th>
-            <th translate>Valor</th>
-            <th translate>Data</th>
-            <th translate>Status</th>
-          </thead>
-          <tbody>
-          <!-- FIX -->
-            <tr ng-repeat="purchase in myPurchases"
-                ng-class="{'bg-success':  purchase.status == 'paid'}">
-
-                <p>{{ purchase.status }}</p>
-
-                <td>{{ purchase.id }}</td>
-                <td>{{ purchase.product.description }}</td>
-                <td ng-if="purchase.product.price">
-                    {{ purchase.product.price | realbrasileiro}}
-                </td>
-                <td ng-if="!purchase.product.price"> <!-- donation -->
-                    {{ purchase.payments[0].amount | realbrasileiro}}
-                </td>
-                <td>{{ purchase.created | date_locale }}</td>
-                <td ng-show="canStartPayment(purchase)">
-                    <strong>Aguardando confirmação</strong>
-                    <button class="btn btn-default" ng-click="tryToPay(purchase)" translate>Doar</button>
-                </td>
-               <td ng-show="isExpired(purchase)">
-                    <span translate >
-                        Expirou em <span class="date_small">{{ purchase.product.sold_until | date_locale }}</span>
-                    </span>
-                </td>
-                <td ng-show="isCancelled(purchase)">
-                    <span  translate ><strong>Cancelada</strong></span>
-                </td>
-                <td ng-show="isReimbursed(purchase)">
-                    <span  translate >Devolvida</span>
-                </td>
-          <!--      <td  ng-show="payment.method[purchase.id] == 'clone'">
-                  <button class="button-expired button-clone-expired" ng-click="clonePayment(purchase)" translate>
-                    Comprar o mesmo ingresso no próximo lote
-                  </button>
-                </td> -->
-                <td  ng-show="payment.method[purchase.id] == 'show'">
-                    <button class="btn btn-default"
-                            translate ng-click="doPayment(purchase, 'boleto')">Boleto bancário</button>
-                    <button class="btn btn-default"
-                            translate ng-click="doPayment(purchase, 'pagseguro')">Cartão</button>
-                </td>
-                <td ng-show="purchase.status == 'paid'" translate>
-                    <strong>Confirmado</strong></b>
-                </td>
-            </tr>
-          </tbody>
-      </table>
-    </div>
-</div>
-
-
-<div class="row" ng-show="myProposals.length > 0">
-    <div class="container">
-    <legend translate class="text-primary"> Minhas propostas de palestra </legend>
-    <ul>
-        <li class="unsaved" ng-show="currentProposal" ui-sref="proposal.new">
-          <span class="title">{{ currentProposal.title }}</span>
-          <span class="title empty" ng-hide="currentProposal.title" translate> sem título</span>
-          <span class="track">{{ currentProposal.track }}</span>
-          <span class="authors"><b>{{ account.name }}</b></span>
-          <span class="when" translate>proposta ainda não enviada!</span>
-          <span class="delete" ng-click="removeCurrent($event)" translate>remover</span>
-        </li>
-        <li ng-repeat="proposal in myProposals" ui-sref="proposal.edit({ id: proposal.id })">
-          <i class="box-icon fa fa-newspaper-o"></i>
-          <span class="title">{{ proposal.title }}</span>
-          <span class="authors">
-              <b>{{ proposal.owner.name }}</b>
-              <span ng-repeat="invitee in proposal.invites" class="{{ invitee.status }}">
-                  {{ invitee.name }}
-              </span>
-          </span>
-          <span class="track" if-locale="pt">{{ proposal.track.name_pt }}</span>
-          <span class="track" if-locale="en">{{ proposal.track.name_en }}</span>
-          <span class="when" translate>modificada em {{ proposal.last_updated | date_locale }} </span>
-        </li>
-        <li class="new" ng-hide="currentProposal || cfpState == 'closed'" ui-sref="proposal.new">
-          <i class="fa fa-plus"></i>
-          <span translate>criar nova proposta de palestra</span>
-        </li>
-    </ul>
-    </div>
-</div>
-
-<div class="panel panel-default" ng-show="myInvites.length > 0">
-    <div class="panel-body">
-    <legend translate class="text-primary"> Como co-autor </legend>
-    <ul>
-        <li ng-repeat="proposal in myInvites">
-        <span class="title">{{ proposal.title }}</span>
-        <span class="authors">
-            <b>{{ proposal.owner.name }}</b><
-            <span ng-repeat="invitee in proposal.invites" class="{{ invitee.status }}">
-                {{ invitee.name }}
-            </span>
-        </span>
-        <span class="track" if-locale="pt">{{ proposal.track.name_pt }}</span>
-        <span class="track" if-locale="en">{{ proposal.track.name_en }}</span>
-        <span class="when" translate>modificada em {{ proposal.last_updated | date_locale }} </span>
-        </li>
-    </ul>
-    </div>
-</div>
-
-<div class="panel panel-default" ng-show="hasCaravan">
-    <div class="panel-body">
-    <legend translate>
-        minha caravana
-    </legend>
-    <ul>
-        <li ui-sref="caravan.edit({ id: myCaravan.id })">
-        <i class="box-icon fa fa-bus"></i>
-        <span class="title">{{ myCaravan.name }}</span>
-        <span class="city">{{ myCaravan.city }}</span>
-        </li>
-        <li ng-hide="hasCaravan" class="new" ui-sref="caravan.new">
-        <i class="fa fa-plus"></i>
-        <span translate>criar uma caravana</span>
-        </li>
-    </ul>
-    </div>
-</div>
-
-<!-- FIX ME REMOVER
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="container-fluid">
-            <ng-include src="'modules/Account/form.html'">
-        </div>
-    </div>
-</div>
--->
+<div ng-include="'modules/Home/donations.html'"></div>
+<div ng-include="'modules/Home/purchases.html'"></div>
+<div ng-include="'modules/Home/proposals.html'" ></div>
+<div ng-include="'modules/Home/caravans.html'" ></div>
+<div ng-include="'modules/Home/promocodes.html'"></div>
+<div ng-include="'modules/Home/certificates.html'"></div>

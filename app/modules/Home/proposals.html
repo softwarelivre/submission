@@ -1,0 +1,90 @@
+<div class="row" ng-show="myProposals.length > 0">
+    <div class="container-fluid">
+    <legend translate class="text-primary"> Minhas propostas de palestra </legend>
+
+        <p ng-show="cfpState == 'open'"
+             class="container"  ui-sref="proposal.new">
+             <a class="btn btn-primary" role="button">
+                 <i class="fa fa-plus"></i>
+                 <span translate>Criar nova</span>
+             </a>
+        </p>
+
+        <div class="col-sm-6" ng-repeat="proposal in myProposals" ui-sref="proposal.edit({ id: proposal.id })">
+          <div class="panel"
+               ng-class="{ 'panel-info': proposal.status == 'proposal',
+                       'panel-success': proposal.status == 'accepted',
+                       'panel-danger': proposal.status == 'declined'}">
+            <div class="panel-heading">
+                <i class="box-icon fa fa-newspaper-o"></i>
+                <span> {{ proposal.title }} </span>
+            </div>
+            <div class="panel-body">
+              <div>
+                  <strong translate>Autores:</strong>
+                  <span class="authors">
+                    <i>{{ proposal.owner.name }}</i>
+                    <span ng-repeat="invitee in proposal.invites"
+                          ng-class="{'panel-warning': invite.status == 'pending',
+                                     'panel-success': invite.status == 'accepted',
+                                     'panel-danger': invite.status == 'declined'}">
+                      {{ invitee.name }}
+                    </span>
+                  </span>
+              </div>
+              <div>
+                <strong translate>Trilha:</strong>
+                <span class="track" if-locale="pt">{{ proposal.track.name_pt }}</span>
+                <span class="track" if-locale="en">{{ proposal.track.name_en }}</span>
+              </div>
+              <div ng-show="proposal.last_updated">
+                <strong>Última modificação:</strong> {{ proposal.last_updated | date_locale }} </span>
+              </div>
+              <br ng-show="!proposal.last_updated"><!-- align the panels -->
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="myInvites.length > 0">
+    <div class="container-fluid">
+    <legend translate class="text-primary"> Como co-autor </legend>
+
+        <div class="col-sm-6" ng-repeat="proposal in myInvites">
+            <div class="panel"
+                 ng-class="{'panel-info': proposal.status == 'proposal',
+                            'panel-success': proposal.status == 'accepted',
+                            'panel-danger': proposal.status == 'declined'}">
+                <div class="panel-heading">
+                    <i class="box-icon fa fa-newspaper-o"></i>
+                    {{ proposal.title }}
+                </div>
+                <div class="panel-body">
+                    <div>
+                    <strong translate>Autores:</strong>
+                        <span class="authors">
+                        <i>{{ proposal.owner.name }}</i>
+                        <span ng-repeat="invitee in proposal.invites"
+                              ng-class="{'panel-warning': invite.status == 'pending',
+                                         'panel-success': invite.status == 'accepted',
+                                         'panel-danger': invite.status == 'declined'}">
+                          {{ invitee.name }}
+                        </span>
+                      </span>
+                  </div>
+                  <div>
+                      <strong translate>Trilha:</strong>
+                      <span class="track" if-locale="pt">{{ proposal.track.name_pt }}</span>
+                        <span class="track" if-locale="en">{{ proposal.track.name_en }}</span>
+                  </div>
+                  <div ng-show="proposal.last_updated">
+                        <strong>Última modificação:</strong> {{ proposal.last_updated | date_locale }} </span>
+                  </div>
+                  <br ng-show="!proposal.last_updated"><!-- align the panels -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
