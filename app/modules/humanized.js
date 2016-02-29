@@ -32,6 +32,10 @@
         'issued':    'emitido',
         'issuable':  'pendente',
 
+        // proposal levels
+        'beginner': 'iniciante',
+        'advanced': 'avançado',
+
         // disability types
         'none':     'Não',
         'physical': 'Física',
