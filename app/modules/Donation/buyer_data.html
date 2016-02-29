@@ -1,18 +1,18 @@
 <p class="alert alert-warning" translate>
-    Atenção: não é possível alterar os dados do comprador após a realização da inscrição
+    Atenção: não é possível alterar os dados do doador após a realização da doação
 </p>
 
 <p class="alert alert-info" translate>
-    Os dados abaixo são necessários para realização do pagamento e posterior emissão da nota fiscal
+    Os dados abaixo são necessários para realização do pagamento e posterior emissão de recibo
 </p>
 
 <fieldset >
-  <legend class="text-primary" translate>Dados do comprador (Para quem será emitido a nota fiscal)</legend>
+  <legend class="text-primary" translate>Dados do doador (Para quem será emitido o recibo)</legend>
 
     <div class="row">
       <div class="form-group has-feedback col-sm-6">
       <label class="required">
-        <span ng-show="buyer.kind != 'company'" translate>Nome completo:</span>
+        <span ng-show="buyer.kind != 'company'" translate>Nome do Doador:</span>
         <span ng-show="buyer.kind == 'company'" translate>Razão social:</span>
       </label>
         <input type="text"

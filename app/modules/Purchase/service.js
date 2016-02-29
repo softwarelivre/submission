@@ -26,10 +26,16 @@
         return function(buyer_data) {
           var product = service.one(product_id);
           buyer_data['amount'] = amount
-          console.log(buyer_data);
           return product.post('purchase', buyer_data);
         };
       };
+
+      extensions.doAPurchase = function(buyer_data, product_id, amount) {
+          var product = service.one(product_id);
+          buyer_data['amount'] = amount
+          return product.post('purchase', buyer_data);
+      };
+
 
       return _.extend(service, extensions);
     })

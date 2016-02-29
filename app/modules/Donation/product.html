@@ -1,0 +1,87 @@
+<h2 class="page-header" translate>Campanha de Doação 2016</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Campanha</th>
+      <th>Valor</th>
+      <th>Doar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="product in donationProducts()">
+      <td>
+        {{product.description}}
+      </td>
+      <td ng-if="product.price">
+          {{ product.price | realbrasileiro }}
+      </td>
+      <td ng-if="!product.price" class="col-sm-4">
+          <input
+               name="amount"
+               type="number"
+               class="form-control"
+               ng-model="payment.amount"  />
+      </td>
+      <td>
+        <input id="product_{{product.id}}" type="radio"
+               ng-value="product.id"
+               name="productId"
+               ng-model="productId"
+               ng-click="updateSelectedProduct(product.id)">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div ng-show="selectedProduct.information">
+  <h4 class="text-primary" translate>Informações adicionais</h4>
+ <div class="alert alert-info" role="alert">
+  {{ selectedProduct.information}}
+</div>
+</div>
+
+<div ng-show="selectedProduct.id == productSurvery.survey.productId">
+  <!--survey -->
+  <div class="row">
+    <div class="form-group col-sm-12">
+    <label translate>Como você deseja receber a camiseta:</label>
+    <label class="radio-inline">
+      <input name="delivery"
+             value="at_fisl"
+             ng-model="productSurvery.answers.delivery" type="radio"> No evento
+      </label>
+      <label class="radio-inline" translate>
+        <input name="delivery"
+               value="at_home"
+               ng-model="productSurvery.answers.delivery" type="radio"> Pelos correios (VIA PAC - entrega em até 15 dias úteis)
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="text-center" ng-if="productSurvery.answers.delivery == 'at_home'">
+       <p class="text-danger" translate=>A Camiseta será entregue no endereço cadastrado abaixo, em Dados do Doador.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-sm-12">
+      <label class="control-label" translate>Escolha o tamanho de sua camiseta:</label>
+        <label class="radio-inline" translate>
+          <input name="size"  value="P" checked="checked" type="radio">P
+        </label>
+        <label class="radio-inline">
+          <input name="size"
+                 value="M" ng-model="productSurvery.answers.size" type="radio">M
+        </label>
+        <label class="radio-inline">
+          <input name="size"
+                 value="G" ng-model="productSurvery.answers.size" type="radio">G
+        </label>
+        <label class="radio-inline">
+          <input name="size" ng-model="productSurvery.answers.size" value="GG" type="radio">GG
+        </label>
+        <label class="radio-inline">
+          <input name="size" ng-model="productSurvery.answers.size"  value="XG" type="radio">XG
+        </label>
+    </div>
+  </div>

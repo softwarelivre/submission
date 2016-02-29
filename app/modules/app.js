@@ -27,6 +27,7 @@
       'segue.submission.proposal',
       'segue.submission.invite',
       'segue.submission.purchase',
+      'segue.submission.donation',
       'segue.submission.caravan',
       'segue.submission.caravaninvite',
       'segue.submission.notification',

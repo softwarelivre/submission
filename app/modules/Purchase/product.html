@@ -1,30 +1,28 @@
 <fieldset class="products">
 
-<div class="conteiner-fluid">
+<div class="container-fluid">
 
-  <h3 class="text-primary" translate>Campanha de Doação 2016</h3>
-  <table class="table">
+  <h2 class="page-header" translate>Ingressos</h2>
+
+  <table class="table table-striped table-responsive">
     <thead>
       <tr>
-        <th>Campanha</th>
+        <th>Categoria</th>
+        <th>Período</th>
         <th>Valor</th>
-        <th>Doar</th>
+        <th>Comprar</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="product in products | filter:'donation' ">
+      <tr ng-repeat="product in products">
         <td>
           {{product.description}}
         </td>
+        <td>
+          {{product.sold_until }}
+        </td>
         <td ng-if="product.price">
             {{ product.price | realbrasileiro }}
-        </td>
-        <td ng-if="!product.price" class="col-sm-4">
-            <input
-                 name="amount"
-                 type="number"
-                 class="form-control"
-                 ng-model="payment.amount"  />
         </td>
         <td>
           <input id="product_{{product.id}}" type="radio"
@@ -39,54 +37,10 @@
 
   <div ng-show="selectedProduct.information">
     <h4 class="text-primary" translate>Informações adicionais</h4>
-   <div class="alert alert-info" role="alert">
-    {{ selectedProduct.information}}
+     <div class="alert alert-info" role="alert">
+      {{ selectedProduct.information}}
+    </div>
   </div>
-  </div>
 
-  <div ng-show="selectedProduct.id == productSurvery.survey.productId">
-    <!--survey -->
-    <div class="form-group">
-    <label class="col-md-4 control-label" translate>Como você deseja receber a camiseta:</label>
-    <div class="col-md-7">
-      <label class="radio-inline">
-        <input name="delivery"
-               value="at_fisl" ng-model="productSurvery.answers.delivery" type="radio"> No evento
-      </label>
-      <label class="radio-inline" translate>
-        <input name="delivery"
-               value="at_home" ng-model="productSurvery.answers.delivery" type="radio"> Pelos correios (VIA PAC - entrega em até 15 dias úteis)
-      </label>
-    </div>
-    <div class="col-md-offset-4 col-md-7" ng-if="productSurvery.answers.delivery == 'at_home'">
-       <span class="text-danger" translate=>A Camiseta será entregue no endereço cadastrado abaixo, em Dados do Doador.</span>
-    </div>
-
-    </div>
-
-    <div class="form-group">
-      <label class="col-md-4 control-label" ranslate>Escolha o tamanho de sua camiseta:</label>
-      <div class="col-md-4">
-        <label class="radio-inline" translate>
-          <input name="size"  value="P" checked="checked" type="radio">P
-        </label>
-        <label class="radio-inline">
-          <input name="size"
-                 value="M" ng-model="productSurvery.answers.size" type="radio">M
-        </label>
-        <label class="radio-inline">
-          <input name="size"
-                 value="G" ng-model="productSurvery.answers.size" type="radio">G
-        </label>
-        <label class="radio-inline">
-          <input name="size" ng-model="productSurvery.answers.size" value="GG" type="radio">GG
-        </label>
-        <label class="radio-inline">
-          <input name="size" ng-model="productSurvery.answers.size"  value="XG" type="radio">XG
-        </label>
-      </div>
-    </div>
-
-  </div>
 
 </fieldset>

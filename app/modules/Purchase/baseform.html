@@ -1,15 +1,19 @@
-<form novalidate name="purchase_form" class="form-horizontal">
+<form novalidate name="purchase_form" class="form">
 
-  <ng-include src="'modules/Purchase/product.html'"></ng-include>
+  <div ng-show="products.length > 0">
+    <ng-include src="'modules/Purchase/product.html'"></ng-include>
+  </div>
+  <div ng-show="products.length == 0">
+    <ng-include src="'modules/Purchase/no_products.html'"></ng-include>
+  </div>
 
 
-
-  <div  ng-show="selectedProduct.id">
+  <div class="container-fluid" ng-show="selectedProduct.id">
 
     <hr>
 
     <div ng-include="'modules/Purchase/buyer_data.html'"></div>
-      <div class="conteiner-fluid text-center" ng-show="isDirty()">
+      <div class="container-fluid text-center" ng-show="isDirty()">
 
         <div form-error-any class="alert alert-danger" role="alert">
           <span translate>Por favor verifique as mensagens acima e tente novamente

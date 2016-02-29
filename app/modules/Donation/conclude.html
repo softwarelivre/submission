@@ -1,10 +1,9 @@
-
-  <legend translate class="text-primary">
-    Conclusão da compra
-  </legend>
+  <h2  class="page-header" translate>
+    Conclusão da doação
+  </h2>
 
   <div class="info" ng-hide="purchase.status == 'paid'">
-    <strong>Aguardando pagamento.</strong> Sua inscrição será confirmada tão logo
+    <strong>Aguardando pagamento.</strong> Seu pagamento será confirmado tão logo
     seu pagamento seja processado. Caso você tenha optado por meios de pagamento
     off-line (por exemplo, boleto bancário), fique atento à data de vencimento
     impressa no mesmo.
@@ -12,10 +11,8 @@
 
   <div class="info" ng-show="purchase.status == 'paid'">
     <strong>Confirmado!</strong>
-
     Seu pagamento foi recebido e processado com sucesso. Em breve você receberá uma
     mensagem por e-mail confirmando todos os  da operação.
-
   </div>
 
   <ul>
@@ -26,4 +23,3 @@
       <b>Valor:</b>{{ purchase.payments[0].amount | realbrasileiro}}</li>
     <li><b>Status:</b> {{ purchase.status  | translate }}</li>
   </ul>
-

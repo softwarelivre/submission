@@ -1,0 +1,21 @@
+<form novalidate name="purchase_form" class="form">
+
+  <ng-include src="'modules/Donation/product.html'"></ng-include>
+
+  <div ng-show="selectedProduct.id">
+
+    <div ng-include="'modules/Donation/buyer_data.html'"></div>
+
+    <div class="container text-center">
+      <div form-error-any class="alert alert-danger" role="alert">
+        <span translate>Por favor verifique as mensagens acima e tente novamente</span>
+      </div>
+
+      <button class="btn btn-primary" ng-hide="purchase.id" ng-click="submit()" translate>
+        Comprar ingresso
+      </button>
+    </div>
+
+  </div>
+
+</form>

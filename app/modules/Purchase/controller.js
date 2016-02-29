@@ -9,7 +9,6 @@
       'segue.submission.purchase.controller',
       'segue.submission.purchase.service',
       'segue.submission.authenticate',
-      'ngDialog'
     ])
     .config(function($stateProvider) {
       $stateProvider
@@ -64,7 +63,7 @@
           parent: 'purchase',
           url: '^/proponent-offer/:proponent_hash',
           views: {
-            "main@": { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/form.html' }
+            "main@": { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/baseform.html' }
           },
           resolve: {
             currentPurchase: function(Purchases, $window) { return Purchases.current(); },
@@ -117,21 +116,10 @@
       $scope.human_category = HUMAN_CATEGORIES[$scope.product.category];
     })
     .controller('NewPurchaseController', function($rootScope, $scope, $stateParams,
-                                                  Config, Auth, Validator, FormErrors, ContractModal,
+                                                  Config, Auth, FormErrors,
                                                   focusOn, products, currentPurchase, purchaseMode,
-                                                  $state, Products, Purchases, Account, AddressResolver, Survey) {
+                                                  $state, Products, Purchases, Account, ContractModal) {
       $scope.enforceAuth();
-
-      $scope.productSurvery = {
-        survey: {
-          name : 'fisl17_donation_shirt_purchase_',
-          productId: 1,
-        },
-        answers: {
-          delivery: 'at_fisl',
-          size: 'G',
-        },
-      };
 
       $scope.selectedProduct = {};
       $scope.purchaseMode = purchaseMode;
@@ -139,10 +127,14 @@
       $scope.haveDiscount = false;
       $scope.isPromoCode = false;
       $scope.discountValue = 0;
-      $scope.products = products;
+      $scope.products = _.filter(products, function(element) {
+          return (element.category != 'donation')
+      });
 
       $scope.promoCodeError = false;
       $scope.promocode = { "hash": "" };
+
+      $scope.showDialog = ContractModal.show
 
       $scope.isCaravan = $stateParams.caravan_hash !== undefined;
       $scope.isProponent = $stateParams.proponent_hash !== undefined;
@@ -158,20 +150,16 @@
       $scope.updateSelectedProduct = function(newId) {
         $scope.selectedProduct = _($scope.products).findWhere({ id: newId });
         if ($scope.selectedProduct.category == 'student') {
-        //  $scope.buyer.kind = 'person';
-          $scope.showDialog('student');
+          $scope.buyer.kind = 'person';
+          $scope.showDialog('student', 'contract_large');
         }
         resetPaymentMethod();
       };
 
       $scope.productsByPeriod = $scope.refreshProducts($scope.products);
 
-      $scope.showDialog = ContractModal.show;
-
       $scope.buyer = {};
-      $scope.payment = { method: 'boleto', amount: 10 };
-      $scope.temp_name = $scope.buyer.name;
-      delete $scope.buyer.id;
+      $scope.payment = {};
 
       function resetPaymentMethod() {
         if (!$scope.selectedProduct) { return; }
@@ -184,15 +172,6 @@
         }
       }
       resetPaymentMethod();
-
-      $scope.changeBuyerType = function() {
-      /*  if ($scope.buyer.kind == 'company') {
-          $scope.temp_name = $scope.buyer.name;
-          $scope.buyer.name = '';
-        } else {
-          $scope.buyer.name = $scope.temp_name;
-        }*/
-      };
 
       $scope.verifyPromoCode = function() {
         Purchases.verifyPromoCode($scope.promocode.hash).then(
@@ -222,23 +201,19 @@
         })
       }
 
-      $scope.fetchAddress = function(zipcode) {
-        AddressResolver.getAddress(zipcode)
-        .then(function(success) {
-          $scope.buyer.address_country = success.country;
-          $scope.buyer.address_city = success.city;
-          $scope.buyer.address_state = success.state;
-        });
-      };
-
-
       Account.get().then(function(account) {
-        $scope.buyer.name            = account.name;
-        if (account.role == 'corporate')  /*  FIX */
+        $scope.buyer.name = account.name;
+        $scope.buyer.kind = 'person';
+        $scope.buyer.cpf  = account.document;
+        if (account.role == 'corporate')
         {
           $scope.buyer.kind = 'company';
-        } else {
-          $scope.buyer.kind = 'person';
+          $scope.buyer.cnpj  = account.document;
+        }
+        else if (account.role == 'foreign')
+        {
+          $scope.buyer.kind = 'foreign';
+          $scope.buyer.passport  = account.document;
         }
 
         $scope.buyer.contact         = account.phone;
@@ -249,7 +224,6 @@
         $scope.buyer.address_number = account.address_number;
         $scope.buyer.address_street = account.address_street;
         $scope.buyer.address_zipcode = account.address_zipcode;
-        $scope.buyer.document        = account.document;
         if ($stateParams.caravan_hash) {
           $scope.buyer.caravan_invite_hash = $stateParams.caravan_hash;
         }
@@ -260,31 +234,20 @@
         return $scope.credentials && $scope.selectedProduct.id && $scope.purchase_form.$dirty;
       };
 
-      function submitSurvey(response) {
-        if($scope.selectedProduct.id == $scope.productSurvery.survey.productId )
-        {
-          $scope.productSurvery.survey.name += response.parentResource.id;
-          Survey.submitAnswers($scope.productSurvery);
-        }
-      }
-
       function finish(response) {
-
         Purchases.followPaymentInstructions(response);
-        submitSurvey(response);
         Purchases.localForget();
-
+        /* VERIFICAR */
         $state.go('home');
       }
 
       $scope.submit = function() {
         // This is UGLY, fix it later
         $scope.buyer.payment_method = $scope.payment.method;
-        Validator.validate($scope.buyer, 'purchases/buyer')
-                 .then(Products.purchase($scope.selectedProduct.id,  $scope.payment.amount))
+        Products.doAPurchase($scope.buyer, $scope.selectedProduct.id, $scope.payment.amount)
                  .then(Purchases.pay($scope.payment.method))
                  .then(finish)
-                 .catch(FormErrors.set);
+                 .catch(FormErrors.setError)
       };
     });
 })();
