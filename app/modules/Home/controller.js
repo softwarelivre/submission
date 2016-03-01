@@ -109,6 +109,10 @@
               }
               else if(payment.type == 'pagseguro') {
                   $scope.doPayment(purchase, 'pagseguro');
+                  url = Config.PAGSEGURO_CHECKOUT + '?code=' + payment.code;
+              }
+              if( url != '') {
+                $window.location.href = url
               }
 
           }
