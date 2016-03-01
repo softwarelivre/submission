@@ -39,7 +39,7 @@
                                            Auth, Proposals, Purchases, Account,
                                            myPurchases, myProposals, myInvites, myCaravan, myCertificates,
                                            myPromocodes,
-                                           currentProposal, signup, cfpState,
+                                           currentProposal, signup, cfpState, Config,
                                            Validator, FormErrors, purchaseMode, ngToast, Restangular) {
       $scope.enforceAuth(); //FIX ME
 
