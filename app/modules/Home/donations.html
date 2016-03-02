@@ -8,6 +8,7 @@
             <th translate>Campanha</th>
             <th translate>Valor</th>
             <th translate>Data</th>
+            <th translate>Data limete</th>
             <th translate>Status</th>
           </thead>
           <tbody>
@@ -25,6 +26,8 @@
                     {{ purchase.payments[0].amount | realbrasileiro}}
                 </td>
                 <td>{{ purchase.created | date_locale }}</td>
+                <!--TODO: FIX DATE FORMAT USE THE USER LOCALE -->
+                <td>{{ purchase.due_date | amDateFormat: 'DD/MM/YYYY' }}</td>
                 <td ng-show="canStartPayment(purchase)">
                     <strong>Aguardando confirmação</strong>
                     <button class="btn btn-default" ng-click="tryToPay(purchase)">
@@ -34,7 +37,7 @@
                 </td>
                <td ng-show="isExpired(purchase)">
                     <span translate >
-                        Expirou em <span class="date_small">{{ purchase.product.sold_until | date_locale }}</span>
+                       Aguardando confirmação
                     </span>
                 </td>
                 <td ng-show="isCancelled(purchase)">

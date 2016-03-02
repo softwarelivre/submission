@@ -105,7 +105,6 @@
                   var url = documents
                         .one('boleto-'+payment.document_hash+'.pdf')
                         .getRequestedUrl();
-                  $window.open(url);
               }
               else if(payment.type == 'pagseguro') {
                   $scope.doPayment(purchase, 'pagseguro');
@@ -147,7 +146,8 @@
 
       $scope.isTimely = function(purchaseObject) {
         var today = new Date();
-        return to_date(purchaseObject.product.sold_until) >= today;
+        var due_date = moment(purchaseObject.due_date);
+        return due_date >= today;
       };
 
       $scope.paymentMethodIsBlank = function() {
