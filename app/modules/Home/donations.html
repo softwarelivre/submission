@@ -29,7 +29,7 @@
                 <!--TODO: FIX DATE FORMAT USE THE USER LOCALE -->
                 <td>{{ purchase.due_date | amDateFormat: 'DD/MM/YYYY' }}</td>
                 <td ng-show="canStartPayment(purchase)">
-                    <strong>Aguardando confirmação</strong>
+                    <span translate>Aguardando confirmação</span>
                     <button class="btn btn-default" ng-click="tryToPay(purchase)">
                         <span translate ng-show="purchase.payments[0].type=='boleto'">Boleto</span>
                         <span translate ng-show="purchase.payments[0].type=='pagseguro'">PagSeguro</span>
