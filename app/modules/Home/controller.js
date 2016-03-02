@@ -145,9 +145,9 @@
 
 
       $scope.isTimely = function(purchaseObject) {
-        var today = new Date();
-        var due_date = moment(purchaseObject.due_date);
-        return due_date >= today;
+        var today = moment(new Date())
+        var due_date = moment(purchaseObject.due_date)
+        return due_date.diff(today, 'days') >= 0
       };
 
       $scope.paymentMethodIsBlank = function() {
