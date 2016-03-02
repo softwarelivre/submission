@@ -164,12 +164,11 @@
         }
         /* FIX PERMISSIONS */
         $scope.type = 'person'
+        $scope.signup.cpf = $scope.signup.document;
         if( $scope.signup.role == 'corporate')
         {
             $scope.type = 'corporate';
             $scope.signup.cnpj = $scope.signup.document;
-        } else if ( $scope.signup.role == 'user') {
-            $scope.signup.cpf = $scope.signup.document;
         } else if( $scope.signup.role == 'foreign') {
             $scope.type = 'foreign'
             $scope.signup.passport = $scope.signup.document;
