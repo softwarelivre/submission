@@ -16,6 +16,7 @@
       'ui.utils.masks', //FIX REMOVE
       'ui.bootstrap',
       'ui.mask',
+      'angularMoment',
 
       'segue.submission.libs',
       'segue.submission.filters',
