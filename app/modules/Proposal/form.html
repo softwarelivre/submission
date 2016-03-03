@@ -10,11 +10,15 @@
 
 
 <form name="proposal_form" class="form" ng-show="cfpState == 'open'" >
-  <ng-include src="'modules/Proposal/proposal.html'"></ng-include>
-  <!-- <ng-include src="'modules/Proposal/author.html'"></ng-include> -->
-  <ng-include src="'modules/Proposal/coauthors.html'"></ng-include>
 
-  <aside class="centered action" ng-show="isDirty()">
+  <div class="container-fluid">
+    <div ng-include src="'modules/Proposal/proposal.html'"></div>
+  </div>
+  <div class="container-fluid">
+    <div ng-include="'modules/Proposal/coauthors.html'"></div>
+  </div>
+
+  <div class="centered action" ng-show="isDirty()">
     <div class="alert alert-danger" form-error-any >
       <span translate>Por favor verifique as mensagens acima e tente novamente</span>
     </div>
@@ -24,6 +28,6 @@
     <button class="btn btn-primary" ng-show="proposal.id" ng-click="submit()" translate>
       Salvar alterações
     </button>
-  </aside>
+  </div>
 
 </form>
