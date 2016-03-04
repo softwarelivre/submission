@@ -99,18 +99,23 @@
           if(purchase.payments)
           {
               var payment = purchase.payments[0];
-              var documents = Restangular.service('documents')
+              var documents = Restangular.service('documents');
+              var url = '';
               if(payment.type == 'boleto')
               {
-                  var url = documents
-                        .one('boleto-'+payment.document_hash+'.pdf')
-                        .getRequestedUrl();
+                  url = documents
+                            .one('boleto-'+payment.document_hash+'.pdf')
+                            .getRequestedUrl();
               }
               else if(payment.type == 'pagseguro') {
                   $scope.doPayment(purchase, 'pagseguro');
                   url = Config.PAGSEGURO_CHECKOUT + '?code=' + payment.code;
               }
-              if( url != '') {
+              else if(payment.type == 'paypal' ) {
+                  /* The max age of the paypal token is 3 hours */
+                  $scope.doPayment(purchase, 'paypal');
+              }
+              if( url.length > 0) {
                 $window.location.href = url
               }
 
