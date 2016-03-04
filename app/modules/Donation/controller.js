@@ -139,7 +139,6 @@
       function finish(response) {
         Purchases.followPaymentInstructions(response);
         submitSurvey(response);
-        $state.go('home');
       }
 
       $scope.submit = function() {
