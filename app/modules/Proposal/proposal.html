@@ -58,9 +58,7 @@
              value="{{ lang.abbr }}"
              ng-model="proposal.language" /> {{ lang.name | translate }}
     </label>
-    <div>
-      <span field-error="language"></span>
-    </div>
+    <span field-error="language"></span>
   </div>
 
   <div class="form-group has-feedback" >
@@ -75,9 +73,7 @@
               value="{{ level }}"
               ng-model="proposal.level" /> {{ level | humanize }}
     </label>
-    <div>
-      <span field-error="level">O nível técnico da palestra é obrigatório</span>
-    </div>
+    <span field-error="level"></span>
   </div>
 
     <div class="form-group has-feedback" ng-show="proposal.type == 'workshop'">
