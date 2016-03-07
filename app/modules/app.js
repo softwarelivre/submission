@@ -13,9 +13,8 @@
       'restangular',
       'angular-loading-bar',
       'ngToast',
-      'ui.utils.masks', //FIX REMOVE
+      'ngMask',
       'ui.bootstrap',
-      'ui.mask',
       'angularMoment',
 
       'segue.submission.libs',
