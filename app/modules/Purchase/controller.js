@@ -118,7 +118,7 @@
     .controller('NewPurchaseController', function($rootScope, $scope, $stateParams,
                                                   Config, Auth, FormErrors,
                                                   focusOn, products, currentPurchase, purchaseMode,
-                                                  $state, Products, Purchases, Account, ContractModal) {
+                                                  $state, Restangular, Upload, Products, Purchases, Account, ContractModal) {
       $scope.enforceAuth();
 
       $scope.selectedProduct = {};
@@ -237,9 +237,18 @@
       function finish(response) {
         Purchases.followPaymentInstructions(response);
         Purchases.localForget();
-        /* VERIFICAR */
         $state.go('home');
       }
+
+      $scope.uploadDocument = function(file) {
+        $scope.fileUploadError = false;
+        Upload.base64DataUrl(file).then(
+          function (result) {
+            $scope.buyer.document_file = result
+          }, function(error) {
+             console.log(error);
+          });
+      };
 
       $scope.submit = function() {
         // This is UGLY, fix it later
@@ -247,7 +256,7 @@
         Products.doAPurchase($scope.buyer, $scope.selectedProduct.id, $scope.payment.amount)
                  .then(Purchases.pay($scope.payment.method))
                  .then(finish)
-                 .catch(FormErrors.setError)
+                 .catch(FormErrors.setError);
       };
     });
 })();

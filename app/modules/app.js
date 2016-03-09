@@ -16,6 +16,7 @@
       'ngMask',
       'ui.bootstrap',
       'angularMoment',
+      'ngFileUpload',
 
       'segue.submission.libs',
       'segue.submission.filters',

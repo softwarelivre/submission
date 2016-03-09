@@ -75,9 +75,7 @@
       <span field-error="passport"></span>
     </div>
     </div>
-
-
-</fieldset>
+</fieldset >
 
   <fieldset>
     <legend translate class="text-primary">Dados do pagamento</legend>
@@ -106,6 +104,59 @@
     </div>
 
   </fieldset>
+
+<fieldset ng-show="selectedProduct.category == 'student'">
+  <legend class="text-primary" translate>Declaração de vínculo estudantil</legend>
+
+  <div class="alert alert-info">
+      <p translate>Por favor, forneça um documento que comprove o seu vínculo estudantil ou
+                   então forneça a sua carteira nacional de identificação estudantil.
+                   Para a validação da carteira nacional de identificação estudantil,
+                   a data nascimento fornecida no seu cadastro irá ser utilizada.
+      </p>
+  </div>
+
+  <div class="row">
+   <div class="form-group has-feedback col-sm-6">
+      <label>
+        <span translate>Carteira Nacional de Identifição Estudantil:</span>
+        <small class="text-muted" translate>
+          <a href="https://www.documentodoestudante.com.br/" target="_blank">(Mais informações)</a>
+        </small>
+      </label>
+      <input type="text"
+             ng-model="buyer.extra_document"
+             maxlength="64"
+             class="form-control"/>
+      <span field-error="extra_document"></span>
+    </div>
+  </div>
+
+  <div class="row">
+   <div class="form-group has-feedback col-sm-12">
+      <label>
+        <span>Comprovante do vínculo com instituição de ensino:</span>
+        <small class="text-muted">(pdf tamanho máximo 2MB)</small>
+      </label>
+      <input name="file"
+             type="file"
+             ng-model="buyer_document"
+             ng-model-options="{allowInvalid: false}"
+             ngf-select="uploadDocument($file)"
+             ngf-max-files="1"
+             ngf-validate="{size: {max: '2MB'}, pattern: '.pdf' }" />
+      <p class="text-danger" ng-show="purchase_form.file.$error.maxSize">
+          O tamanho máximo permitido é 2MB, por favor selecione um outro arquivo.
+      </p>
+      <p class="text-danger" ng-show="purchase_form.file.$error.pattern">
+          Formato do arquivo inválido, por favor selecione um outro arquivo.
+      </p>
+      <p class="text-danger" ng-show="fileUploadError">
+          Houve um erro ao fazer o upload do arquivo.
+      </p>
+   </div>
+  </div>
+</fieldset>
 
 <fieldset>
   <legend translate class="text-primary">Dados do endereço</legend>
