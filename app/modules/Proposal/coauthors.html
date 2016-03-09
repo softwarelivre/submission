@@ -1,4 +1,3 @@
-<fieldset>
   <legend translate class="text-primary">Quem vai apresentar?</legend>
 
   <div ng-hide="credentials" translate>
@@ -6,14 +5,18 @@
     ajudar na apresentação dessa palestra
   </div>
 
+  <div class="container-fluid">
     <p ng-show="canInviteMore()" class="container">
        <a class="btn btn-primary" role="button" ng-click="openInviteModal()">
           <i class="fa fa-plus"></i>
           <span translate>Convidar co-autor...</span>
        </a>
     </p>
+  </div>
 
-    <div class="col-sm-3">
+  <div class="container-fluid">
+
+    <div class="col-sm-4">
       <div class="panel panel-default">
         <div class="panel-heading">
           <span translate>Autor</span>
@@ -26,7 +29,7 @@
       </div>
     </div>
 
-    <div class="col-sm-3" ng-repeat="invite in invites">
+    <div class="col-sm-4" ng-repeat="invite in invites">
       <div class="panel"
            ng-class="{ 'panel-warning': invite.status == 'pending',
                        'panel-success': invite.status == 'accepted',
@@ -42,7 +45,7 @@
       </div>
     </div>
 
-    <div class="col-sm-3" ng-repeat="invite in newInvites">
+    <div class="col-sm-4" ng-repeat="invite in newInvites">
       <div class="panel panel-info">
         <div class="panel-heading">
           Co-autor
@@ -55,4 +58,4 @@
       </div>
     </div>
 
-</fieldset>
+  </div>
