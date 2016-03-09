@@ -14,10 +14,11 @@
           <div class="panel"
                ng-class="{ 'panel-info': proposal.status == 'proposal',
                        'panel-success': proposal.status == 'accepted',
+                       'panel-success': proposal.status == 'confirmed',
                        'panel-danger': proposal.status == 'declined'}">
             <div class="panel-heading">
                 <i class="box-icon fa fa-newspaper-o"></i>
-                <span> {{ proposal.title }} </span>
+                <span> {{ proposal.title }} - {{ proposal.status }} </span>
             </div>
             <div class="panel-body">
               <div>
