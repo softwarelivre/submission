@@ -291,6 +291,20 @@
       </div>
     </div>
 
+    <div class="row">
+      <div class="form-group has-feedback col-sm-12">
+        <label>
+          <span translate>Minicurrículo:</span>
+          <small class="text-muted" translate>(máximo 400 caracteres)</small>
+        </label>
+        <textarea rows="4"
+                  maxlength="400"
+                  ng-model="signup.resume"
+                  class="form-control"></textarea>
+        <span field-error="resume"></span>
+      </div>
+    </div>
+
     </fieldset>
 
 <fieldset>
