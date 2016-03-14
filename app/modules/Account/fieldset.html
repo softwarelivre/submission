@@ -165,7 +165,7 @@
         </label>
         <input type="phone"
                ng-model="signup.phone"
-               mask="(99) 9?999-9999" clean="true"
+               mask="(99) 9?9?999-9999" clean="true"
                class="form-control" />
         <span field-error="phone"></span>
       </div>
@@ -177,7 +177,7 @@
         </label>
         <input type="phone"
                class="form-control"
-               ng-model="account.phone"
+               ng-model="signup.phone"
                mask="+99 99 9?9999-9999" clean="true" />
         <span field-error="phone"></span>
       </div>
@@ -293,9 +293,9 @@
 
     <div class="row">
       <div class="form-group has-feedback col-sm-12">
-        <label>
+        <label class="required">
           <span translate>Minicurrículo:</span>
-          <small class="text-muted" translate>(máximo 400 caracteres)</small>
+          <small class="text-muted" translate>(O preenchimento deste campo é obrigatório apenas se você for participar da submissão de palestras, máximo 400 caracteres)</small>
         </label>
         <textarea rows="4"
                   maxlength="400"
