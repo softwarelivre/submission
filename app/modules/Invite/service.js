@@ -17,6 +17,10 @@
             return object.post('register', signup);
           };
         },
+        registerInviteAndCreateAccount: function(object, signup) {
+            object.id = object.hash;
+            return object.post('register', signup);
+        },
         accept: function(object) {
           object.id = object.hash;
           return object.post('accept', {});

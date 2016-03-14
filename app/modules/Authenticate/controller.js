@@ -92,9 +92,10 @@
 
     .factory('AuthModal', function (ngDialog) {
       var loginConfig  = { controller: "LoginController",  template: 'modules/Authenticate/login.html' };
+      var inviteLoginConifg = { controller: "LoginController",  template: 'modules/Invite/login.modal.html' };
       return {
-        login:  function() { return ngDialog.open(loginConfig); }
-
+        login:  function() { return ngDialog.open(loginConfig) },
+        inviteLogin:  function() { return ngDialog.open(inviteLoginConifg) },
       };
     });
 })();

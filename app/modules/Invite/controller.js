@@ -51,7 +51,11 @@
                                                      invite, focusOn, AddressResolver) {
       Auth.logout();
 
-      $scope.signup = { name: invite.name, email: invite.recipient };
+      $scope.signup = {
+        name: invite.name,
+        email: invite.recipient,
+        email_confirm: invite.recipient
+      };
       $scope.signup.sex = 'M';
       $scope.signup.membership = false;
 
@@ -61,7 +65,7 @@
       focusOn('signup.name', 100);
 
       $scope.type = 'person';
-      $scope.lockType = true;
+      $scope.lockType = false;
       $scope.disabilityTypes =  Account.getDisabilityTypes();
       $scope.occupationTypes = Account.getOccupationTypes();
       $scope.educationTypes = Account.getEducationTypes();
@@ -93,10 +97,9 @@
         $scope.home();
       }
       $scope.submit = function() {
-        Validator.validate($scope.signup, 'accounts/signup')
-                 .then(Invites.registerInvitee(invite))
+          Invites.registerInviteAndCreateAccount(invite, $scope.signup)
                  .then(finishedSignUp)
-                 .catch(FormErrors.set);
+                 .catch(FormErrors.setError);
       };
     })
     .controller("AnswerInviteController", function($scope, $state, Auth, AuthModal, Invites, invite) {
@@ -107,10 +110,18 @@
 
       $scope.account = Auth.glue($scope, 'account');
       $scope.invite = invite;
+      $scope.login = {};
 
       // TODO CREATE ACTION PASS FUNCTION PARAMETER
       function retryWithLogin(action) {
-        AuthModal.login().closePromise.then(function(data) {
+        AuthModal.inviteLogin().closePromise.then(function(data) {
+          console.log('teste')
+          console.log(_(data.value))
+          if (data.value == 'register')
+          {
+             $state.go('invite.register', $state.params);
+             return;
+          }
           if (_(data.value).isString()) { return; }
           if (_(data.value).isEmpty()) { return; }
           action();
@@ -130,7 +141,7 @@
       $scope.decline = function () {
         Invites.decline(invite)
                .then(moveToNextState)
-               .catch($scope.decline());
+               .catch(retryWithLogin($scope.decline));
       }
     });
 })();

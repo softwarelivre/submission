@@ -1,0 +1,41 @@
+    <form novalidate name="login_form" grab-focus class="form">
+      <legend class="text-primary">Entrar na minha conta</legend>
+      <div class="form-group has-feedback">
+        <label class="required">
+           <span>E-mail:</span>
+        </label>
+        <input  name="email"
+                type="text"
+                maxlength=40
+                focusable
+                ng-model="login.email"
+                class="form-control" />
+      </div>
+      <div class="form-group has-feedback">
+        <label class="required">
+           <span>Senha:</span>
+        </label>
+          <input name="password"
+                 type="password"
+                 maxsize=20
+                 ng-model="login.password"
+                 class="form-control"/>
+      </div>
+      <div class="form-group has-feedback">
+
+        <p class="text-center">Se você participou do FISL16, basta se logar. Caso contrário, crie uma nova conta.</p>
+
+        <div class="text-center">
+          <a class="btn btn-primary"
+                  ng-click="tryLogin()"
+                  translate>Entrar!</a>
+          <a href="#" class="btn btn-default" translate
+           ng-click="forgotPassword(); closeThisDialog()">Recuperar senha!</a>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a class="btn btn-md btn-info" ng-click="closeThisDialog('register')" translate>Criar nova conta</a>
+      </div>
+
+    </form>
