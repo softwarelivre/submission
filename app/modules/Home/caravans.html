@@ -1,18 +1,20 @@
-<div class="panel panel-default" ng-show="hasCaravan">
-    <div class="panel-body">
-    <legend translate>
-        minha caravana
-    </legend>
-    <ul>
-        <li ui-sref="caravan.edit({ id: myCaravan.id })">
-        <i class="box-icon fa fa-bus"></i>
-        <span class="title">{{ myCaravan.name }}</span>
-        <span class="city">{{ myCaravan.city }}</span>
-        </li>
-        <li ng-hide="hasCaravan" class="new" ui-sref="caravan.new">
-        <i class="fa fa-plus"></i>
-        <span translate>criar uma caravana</span>
-        </li>
-    </ul>
+<div class="container-fluid" ng-show="hasCaravan">
+    <legend translate class="page-header text-primary"> Minha caravana </legend>
+    <div class="row">
+        <div class="col-sm-6" ui-sref="caravan.edit({ id: myCaravan.id })">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="box-icon fa fa-bus"></i> {{ myCaravan.name }}
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <strong translate>Cidade:</strong> {{ myCaravan.city }}
+                    </div>
+                    <div>
+                        <strong translate>Descrição:</strong> {{ myCaravan.description | limitTo:10 }} ...
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

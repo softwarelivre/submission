@@ -1,7 +1,6 @@
-<div class="row" ng-show="myProposals.length > 0">
-    <div class="container-fluid">
+<div class="container-fluid" ng-show="myProposals.length > 0">
     <legend translate class="text-primary"> Minhas propostas de palestra </legend>
-
+    <div class="row">
         <div class="col-sm-6" ng-repeat="proposal in myProposals" ui-sref="proposal.edit({ id: proposal.id })">
           <div class="panel"
                ng-class="{ 'panel-info': proposal.status == 'proposal',
