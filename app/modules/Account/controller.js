@@ -145,7 +145,6 @@
 
       $scope.onSelectLocation = function($item){
         var address = AddressResolver.convertToAddress($item);
-        console.log('ododo');
         $scope.signup.country = address.country;
         $scope.signup.address_state = address.state;
         $scope.signup.city = address.city;
