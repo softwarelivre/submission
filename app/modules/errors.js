@@ -39,6 +39,19 @@
             $rootScope.$broadcast('errors:set', fieldError);
         });
       };
+      self.setScopeError = function($scope) {
+        return function(raw) {
+            $scope.$broadcast('errors:clear');
+            var error = (raw.data) ? raw.data.error : raw;
+            _.each(_.keys(error.errors), function (field) {
+                var fieldError = {
+                    'field': field,
+                    'msgs': error.errors[field]
+                };
+                $scope.$broadcast('errors:set', fieldError);
+            });
+        }
+      };
       return self;
     })
     .directive('formErrorAny', function($timeout) {
