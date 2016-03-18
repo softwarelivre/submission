@@ -44,11 +44,17 @@
       $scope.enforceAuth(); //FIX ME
 
       $scope.myCaravan       = myCaravan;
-      $scope.myPurchases     = myPurchases;
       $scope.myProposals     = myProposals;
       $scope.myInvites       = myInvites;
       $scope.myCertificates  = myCertificates;
       $scope.myPromocodes    = myPromocodes;
+      $scope.myDonatations = _.filter(myPurchases, function(element) {
+          return (element.product.category == 'donation');
+      });
+      $scope.myPurchases = _.filter(myPurchases, function(element) {
+          return (element.product.category != 'donation');
+      });
+
       $scope.purchaseMode    = purchaseMode;
       $scope.currentProposal = (_.isEmpty(currentProposal))? null : currentProposal;
       $scope.caravan_hash    = $stateParams.caravan_hash;

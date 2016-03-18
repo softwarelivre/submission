@@ -1,11 +1,11 @@
-<div class="container-fluid" ng-show="myPurchases.length > 0">
+<div class="container-fluid" ng-show="myDonatations.length > 0">
     <legend translate class="text-primary"> Minhas doações </legend>
     <div class="row">
         <div class="col-sm-12">
 
       <table class="table table-striped table-responsive">
           <thead>
-            <th translate>Identificador</th>
+            <th translate>Código</th>
             <th translate>Campanha</th>
             <th translate>Valor</th>
             <th translate>Data</th>
@@ -13,7 +13,7 @@
             <th translate>Status</th>
           </thead>
           <tbody>
-            <tr ng-repeat="purchase in myPurchases"
+            <tr ng-repeat="purchase in myDonatations"
                 ng-class="{'bg-success':  purchase.status == 'paid'}">
 
                 <p>{{ purchase.status }}</p>

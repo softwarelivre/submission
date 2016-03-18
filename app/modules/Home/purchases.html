@@ -1,0 +1,73 @@
+<div class="container-fluid" ng-show="myPurchases.length > 0">
+    <legend translate class="text-primary"> Meus ingressos </legend>
+    <div class="row">
+        <div class="col-sm-12">
+
+      <table class="table table-striped table-responsive">
+          <thead>
+            <th translate>Código</th>
+            <th translate>Ingresso</th>
+            <th translate>Valor</th>
+            <th translate>Data da compra</th>
+            <th translate>Data limete</th>
+            <th translate>Status</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="purchase in myPurchases"
+                ng-class="{'bg-success':  purchase.status == 'paid'}">
+
+                <p>{{ purchase.status }}</p>
+
+                <td>{{ purchase.id }}</td>
+                <td>{{ purchase.product.description }}</td>
+                <td ng-if="purchase.product.price">
+                    {{ purchase.product.price | realbrasileiro}}
+                </td>
+                <td ng-if="!purchase.product.price"> <!-- donation -->
+                    {{ purchase.payments[0].amount | realbrasileiro}}
+                </td>
+                <td>{{ purchase.created | date_locale }}</td>
+                <!--TODO: FIX DATE FORMAT USE THE USER LOCALE -->
+                <td>{{ purchase.due_date | amDateFormat: 'DD/MM/YYYY' }}</td>
+                <td ng-show="canStartPayment(purchase) && purchase.payments.length > 0">
+                    <span translate>Aguardando confirmação</span>
+                    <button class="btn btn-default" ng-click="tryToPay(purchase)">
+                        <span translate ng-show="purchase.payments[0].type=='boleto'">Boleto</span>
+                        <span translate ng-show="purchase.payments[0].type=='pagseguro'">PagSeguro</span>
+                        <span translate ng-show="purchase.payments[0].type=='paypal'">PayPal</span>
+                    </button>
+               </td>
+               <td ng-show="canStartPayment(purchase) && purchase.payments.length == 0">
+                    <span translate>Aguardando confirmação</span>
+                    <button class="btn btn-default" ng-click="doPayment(purchase, 'boleto')">
+                        Boleto
+                    </button>
+                    <button class="btn btn-default" ng-click="doPayment(purchase, 'pagseguro')">
+                        PagSeguro
+                    </button>
+                    <button ng-show="credentials.role == 'foreign'"
+                            class="btn btn-default"
+                            ng-click="doPayment(purchase, 'paypal')">
+                        Paypal
+                    </button>
+               </td>
+               <td ng-show="isExpired(purchase)">
+                    <span translate >
+                       Aguardando confirmação
+                    </span>
+                </td>
+                <td ng-show="isCancelled(purchase)">
+                    <span  translate ><strong>Cancelada</strong></span>
+                </td>
+                <td ng-show="isReimbursed(purchase)">
+                    <span  translate >Devolvida</span>
+                </td>
+                <td ng-show="purchase.status == 'paid'" translate>
+                    <strong>Confirmado</strong></b>
+                </td>
+            </tr>
+          </tbody>
+      </table>
+      </div>
+    </div>
+</div>
