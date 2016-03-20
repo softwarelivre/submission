@@ -115,6 +115,7 @@
         {
           $scope.buyer.kind = 'foreign';
           $scope.buyer.passport  = account.document;
+          $scope.payment.method = 'paypal';
         }
 
         $scope.buyer.contact         = account.phone;
