@@ -12,13 +12,16 @@
     .config(function($stateProvider) {
       $stateProvider
         .state('authenticate', {
-          url: '^/authenticate/:next',
+          url: '/authenticate/:next',
           views: {
             "header": { templateUrl: 'modules/common/nav.html' },
             "main":   { templateUrl: 'modules/Authenticate/master.html', controller: 'AuthController' },
             "left@authenticate":  { controller: 'LoginController',  templateUrl: 'modules/Authenticate/login.html' },
-            "right@authenticate": { templateUrl: 'modules/Account/signup.html' }
+            "right@authenticate": {}
           },
+          params: {
+            prev: null,
+          }
         })
         .state('forgot', {
           url: '^/forgot/{email}',
@@ -39,6 +42,7 @@
     ])
     .controller('AuthController', function($scope, $state, focusOn) {
       $scope.nextState = $state.params.next;
+      $scope.nextStateParams = $state.params.prev;
       $scope.authMode = "loginOnly";
       focusOn("login.email");
     })
@@ -70,16 +74,14 @@
         {
           $state.go('account.update');
         }
-        else if ($scope.closeThisDialog) {
-          $scope.closeThisDialog(credentials);
-        }
         else if ($scope.nextState) {
-          $state.go($scope.nextState);
+          $state.go($scope.nextState, $scope.nextStateParams);
         }
         else {
           $scope.home();
         }
       }
+      
       $scope.tryLogin = function() {
         Auth.login($scope.login.email, $scope.login.password)
             .then(succeed);
@@ -88,14 +90,15 @@
       $scope.forgotPassword = function() {
         $state.go('forgot', { email: $scope.login.email });
       };
-    })
 
-    .factory('AuthModal', function (ngDialog) {
-      var loginConfig  = { controller: "LoginController",  template: 'modules/Authenticate/login.html' };
-      var inviteLoginConifg = { controller: "LoginController",  template: 'modules/Invite/login.modal.html' };
-      return {
-        login:  function() { return ngDialog.open(loginConfig) },
-        inviteLogin:  function() { return ngDialog.open(inviteLoginConifg) },
-      };
-    });
+      $scope.signup = function() {
+        var params = {
+          nextState: {
+            name: $scope.nextState,
+            params: $scope.nextStateParams,
+          },
+        };
+        $state.go('account.signup', params);
+      }
+    })
 })();

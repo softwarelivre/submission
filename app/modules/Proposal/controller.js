@@ -127,10 +127,9 @@
         });
       };
     })
-    .controller('NewProposalAuthorController', function($scope, AuthModal, focusOn) {
+    .controller('NewProposalAuthorController', function($scope, focusOn) {
       $scope.signup = {};
 
-      $scope.openLoginModal = AuthModal.login;
       $scope.focusName = _.partial(focusOn, 'person.name');
     })
     .controller('NewInviteController', function($scope, FormErrors, Validator, focusOn) {

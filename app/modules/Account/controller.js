@@ -32,10 +32,13 @@
       $stateProvider
         .state('account.signup', {
           parent: 'account',
-          url: '^/account/signup',
+          url: '/account/signup',
           views: {
             "form":   { controller: 'SignUpController', templateUrl: 'modules/Account/baseform.html' },
           },
+          params: {
+            nextState: null,
+          }
         });
     })
     .config(function($stateProvider) {
@@ -88,9 +91,10 @@
 
 
     })
-    .controller("SignUpController", function($scope,
+    .controller("SignUpController", function($scope, $state,
                                              Account, Auth, FormErrors, UserLocation,
                                              focusOn, $http, AddressResolver) {
+
 
       $scope.type = 'person';
 
@@ -98,7 +102,6 @@
           sex: 'M',
           membership: false
       };
-
       $scope.selectedAddress = '';
 
       $scope.onSelectLocation = function($item){
@@ -112,12 +115,13 @@
       };
 
       function finishedSignUp() {
-        Auth.login($scope.signup.email, $scope.signup.password);
-        $scope.signup = null;
-        // HACK: ugly hack to ensure we are not inside the proposal creation form before home()ing
-        if ($scope.$parent.accountOption === undefined) {
-          $scope.home();
-        }
+        Auth.login($scope.signup.email, $scope.signup.password).then(function () {
+            if($state.params.nextState) {
+                $state.go($state.params.nextState.name, $state.params.nextState.params);
+            } else {
+                $scope.home();
+            }
+        });
       }
 
       $scope.submit = function() {
@@ -130,7 +134,7 @@
       };
     })
     .controller("UpdateAccountController", function($scope, $state,
-                                             Account, Auth, AuthModal, FormErrors, UserLocation,
+                                             Account, Auth, FormErrors, UserLocation,
                                              focusOn, AddressResolver, ngToast) {
 
       $scope.enforceAuth();

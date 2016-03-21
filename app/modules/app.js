@@ -76,7 +76,7 @@
                 return;
             }
         }
-        $state.go('authenticate', { next: $state.current.name });
+        $state.go('authenticate', { next:$state.current.name, prev: angular.copy($stateParams)});
       };
     })
 
