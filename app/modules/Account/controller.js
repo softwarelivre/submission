@@ -32,7 +32,7 @@
       $stateProvider
         .state('account.signup', {
           parent: 'account',
-          url: '/account/signup',
+          url: '^/account/signup',
           views: {
             "form":   { controller: 'SignUpController', templateUrl: 'modules/Account/baseform.html' },
           },
@@ -94,7 +94,6 @@
     .controller("SignUpController", function($scope, $state,
                                              Account, Auth, FormErrors, UserLocation,
                                              focusOn, $http, AddressResolver) {
-
 
       $scope.type = 'person';
 
