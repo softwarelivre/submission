@@ -1,47 +1,48 @@
-<fieldset class="caravan">
-  <legend translate>informe os dados da caravana abaixo</legend>
-<p>
-  <label>
-    <span translate>nome da caravana</span>
-    <small translate>(de 5 até 80 caracteres)</small>
-  </label>
-  <input type="text" required focusable
-        minlength="5" maxlength="80"
-        ng-model="caravan.name"/>
-  <i class="fa fa-check"></i>
-  <span form-error="name.object_required"     translate>o nome da caravana é obrigatório</span>
-  <span form-error="name.string_length_short" translate>o nome da caravana deve ter no mínimo 5 caracteres</span>
-  <span form-error="name.string_length_long"  translate>o nome da caravana deve ter no máximo 80 caracteres</span>
-</p>
+<fieldset>
+  <legend translate class="text-primary">Informe os dados da caravana abaixo</legend>
 
-<p>
-  <label>
-    <span translate>cidade</span>
-    <small translate>(de 5 até 80 caracateres)</small>
-  </label>
-  <input type="text" required focusable
-        minlength="5" maxlength="80"
-        ng-model="caravan.city"
-        ng-readonly="lockCity" />
-  <i class="fa fa-check"></i>
-  <span form-error="city.object_required"     translate>a cidade da caravana é obrigatória</span>
-  <span form-error="city.string_length_short" translate>a cidade da caravana deve ter no mínimo 5 caracteres</span>
-  <span form-error="city.string_length_long"  translate>a cidade da caravana deve ter no máximo 80 caracteres</span>
-</p>
+  <div class="row">
+    <div class="form-group has-feedback col-sm-6">
+    <label class="required">
+      <span translate>Nome da caravana:</span>
+      <small class="text-muted" translate>(de 5 até 80 caracteres)</small>
+    </label>
+    <input type="text"
+           maxlength="80"
+           ng-model="caravan.name"
+           class="form-control" />
+      <span field-error="name"></span>
+    </div>
+  </div>
 
-<p>
-  <label>
-    <span translate>descrição</span>
-    <small translate>(de 5 até 400 caracateres)</small>
-  </label>
-  <textarea required focusable
-            minlength="5" maxlength="400"
-            ng-model="caravan.description">
-  </textarea>
-  <i class="fa fa-check"></i>
-  <span form-error="city.object_required"     translate>a cidade da caravana é obrigatória</span>
-  <span form-error="city.string_length_short" translate>a cidade da caravana deve ter no mínimo 5 caracteres</span>
-  <span form-error="city.string_length_long"  translate>a cidade da caravana deve ter no máximo 80 caracteres</span>
-</p>
+  <div class="row">
+  <div class="form-group has-feedback col-sm-6">
+    <label class="required">
+      <span translate>Cidade:</span>
+      <small class="text-muted" translate>(de 5 até 80 caracateres)</small>
+    </label>
+    <input type="text"
+           maxlength="80"
+           ng-model="caravan.city"
+           ng-readonly="lockCity"
+           class="form-control" />
+      <span field-error="city"></span>
+   </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group has-feedback col-sm-12">
+    <label class="required">
+      <span translate>Descrição:</span>
+      <small class="text-muted" translate>(de 5 até 400 caracateres)</small>
+    </label>
+    <textarea maxlength="400"
+              rows="5"
+              ng-model="caravan.description"
+              class="form-control">
+    </textarea>
+    <span field-error="description"></span>
+    </div>
+  </div>
 
 </fieldset>

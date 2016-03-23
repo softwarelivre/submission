@@ -24,15 +24,16 @@
         })
         .state('purchase.new', {
           parent: 'purchase',
-          url: '^/purchase/new?caravan_hash',
+          url: '^/purchase/new',
           views: {
             form: { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/baseform.html' }
           },
           resolve: {
-            currentPurchase: function(Purchases, $window) { return Purchases.current(); },
-            products:        function(Products, $stateParams) {
-              if ($stateParams.caravan_hash) return Products.getCaravanList($stateParams.caravan_hash);
+            products: function(Products) {
               return Products.getList();
+            },
+            buyer: function(Buyer) {
+              return Buyer.createBuyer();
             }
           }
         })
@@ -66,7 +67,6 @@
             "main@": { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/baseform.html' }
           },
           resolve: {
-            currentPurchase: function(Purchases, $window) { return Purchases.current(); },
             products:        function(Products, $stateParams) { return Products.getProponentOffer($stateParams.proponent_hash); }
           }
         });
@@ -115,12 +115,14 @@
       $scope.human_status = HUMAN_STATUSES[guide.purchase.status];
       $scope.human_category = HUMAN_CATEGORIES[$scope.product.category];
     })
-    .controller('NewPurchaseController', function($rootScope, $scope, $stateParams,
+    .controller('NewPurchaseController', function($rootScope, $scope, $state, $stateParams,
                                                   Config, Auth, FormErrors,
-                                                  focusOn, products, currentPurchase, purchaseMode,
-                                                  $state, Restangular, Upload, Products, Purchases, Account, ContractModal) {
+                                                  focusOn, products, purchaseMode, buyer,
+                                                  Upload, Products, Purchases, Account, ContractModal) {
       $scope.enforceAuth();
 
+      $scope.buyer = buyer;
+      $scope.payment = {};
       $scope.selectedProduct = {};
       $scope.purchaseMode = purchaseMode;
 
@@ -128,7 +130,9 @@
       $scope.isPromoCode = false;
       $scope.discountValue = 0;
       $scope.products = _.filter(products, function(element) {
-          return (element.category != 'donation')
+        if(buyer.caravan_invite_hash)
+          return (element.category == 'caravan');
+        return (element.category != 'donation' && element.category != 'caravan')
       });
 
       $scope.promoCodeError = false;
@@ -136,7 +140,6 @@
 
       $scope.showDialog = ContractModal.show
 
-      $scope.isCaravan = $stateParams.caravan_hash !== undefined;
       $scope.isProponent = $stateParams.proponent_hash !== undefined;
 
       $scope.refreshProducts = function(products) {
@@ -158,8 +161,7 @@
 
       $scope.productsByPeriod = $scope.refreshProducts($scope.products);
 
-      $scope.buyer = {};
-      $scope.payment = {};
+
 
       function resetPaymentMethod() {
         if (!$scope.selectedProduct) { return; }
@@ -200,34 +202,6 @@
           $scope.promoCodeError = true;
         })
       }
-
-      Account.get().then(function(account) {
-        $scope.buyer.name = account.name;
-        $scope.buyer.kind = 'person';
-        $scope.buyer.cpf  = account.document;
-        if (account.role == 'corporate')
-        {
-          $scope.buyer.kind = 'company';
-          $scope.buyer.cnpj  = account.document;
-        }
-        else if (account.role == 'foreign')
-        {
-          $scope.buyer.kind = 'foreign';
-          $scope.buyer.passport  = account.document;
-        }
-
-        $scope.buyer.contact         = account.phone;
-        $scope.buyer.address_country = account.country;
-        $scope.buyer.address_state   = account.address_state;
-        $scope.buyer.address_city    = account.city;
-        $scope.buyer.address_neighborhood = account.address_neighborhood;
-        $scope.buyer.address_number = account.address_number;
-        $scope.buyer.address_street = account.address_street;
-        $scope.buyer.address_zipcode = account.address_zipcode;
-        if ($stateParams.caravan_hash) {
-          $scope.buyer.caravan_invite_hash = $stateParams.caravan_hash;
-        }
-      });
 
 
       $scope.isDirty = function() {

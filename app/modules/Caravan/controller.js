@@ -19,19 +19,12 @@
             header: { templateUrl: 'modules/common/nav.html' },
             main:   { template:    "<div ui-view='form'></div>", controller: 'CaravanController' }
           },
-          resolve: {
-
-          }
         })
         .state('caravan.new', {
           parent: 'caravan',
           url: '^/caravan/new',
           views: {
             form: { controller: 'NewCaravanController', templateUrl: 'modules/Caravan/form.html' }
-          },
-          resolve: {
-            currentCaravan: function(Caravans) { return Caravans.current(); },
-            products_list: function(Products) { return Products.getCaravanList(); }
           }
         })
         .state('caravan.edit', {
@@ -46,8 +39,7 @@
             },
             invites: function(Caravans, $stateParams) {
               return Caravans.one($stateParams.id).getList('invites');
-            },
-            products_list: function(Products) { return Products.getCaravanList(); }
+            }
           }
         })
     });
@@ -57,100 +49,74 @@
     .controller('CaravanController', function($scope, Config, Auth, focusOn) {
       $scope.credentials = Auth.glue($scope, 'credentials');
     })
-    .controller('EditCaravanController', function($scope, ngDialog,
-                                                  FormErrors, Validator, Caravans,
-                                                  currentCaravan, invites, products_list) {
+    .controller('EditCaravanController', function($scope, $uibModal,
+                                                  FormErrors, Caravans,
+                                                  currentCaravan, invites) {
       $scope.caravan = currentCaravan;
-      $scope.$watch('caravan', Caravans.localSave);
       $scope.lockCity = true;
       $scope.invites = invites;
 
-      $scope.newInvites = [];
-
-      $scope.isCaravan = true;
-      $scope.selectable = false;
-      $scope.productsByPeriod = _(products_list).groupBy('sold_until')
-                                           .pairs()
-                                           .map(function(p) { return [p[0],_.groupBy(p[1], 'category')]; })
-                                           .value();
-
-      $scope.isDirty = function() {
-        return $scope.credentials && (($scope.caravan_form.$dirty) || ($scope.newInvites.length > 0));
+      $scope.update = function() {
+        console.log('ooo');
+            Caravans.saveIt($scope.caravan)
+                    .then($scope.home)
+                    .catch(FormErrors.setScopeError($scope));
       };
 
-      $scope.submit = function() {
-        Validator.validate($scope.caravan, 'caravans/edit_caravan')
-                 .then(Caravans.saveIt)
-                 .then(Caravans.createInvites($scope.newInvites))
-                 .then(Caravans.localForget)
-                 .then($scope.home)
-                 .catch(FormErrors.set);
-      };
+      $scope.openInviteModal = function () {
 
-      $scope.openInviteModal = function() {
-        return false;
-        /*
-        var inviteConfig = { controller: "NewCaravanInviteController", template: 'modules/Caravan/invite.html' };
-        var dialog = ngDialog.open(inviteConfig);
-        return dialog.closePromise.then(function(data) {
-          FormErrors.clear();
-          if (_(data.value).isString()) { return; }
-          if (_(data.value).isEmpty()) { return; }
-          $scope.newInvites.push(data.value);
-        }); */
-      };
-    })
-    .controller('NewCaravanController', function($scope, ngDialog, Products,
-                                                  FormErrors, Validator, Caravans,
-                                                  currentCaravan, products_list) {
-      $scope.caravan = currentCaravan;
-      $scope.$watch('caravan', Caravans.localSave);
+        var modal = $uibModal.open({
+          animation: false,
+          templateUrl: 'modules/Caravan/invite.html',
+          controller: 'NewCaravanInviteController',
+          resolve: {
+            caravan: function () {
+              return $scope.caravan;
+            }
+          }
+        });
 
-      $scope.newInvites = [];
-
-      $scope.isCaravan = true;
-      $scope.selectable = false;
-      $scope.productsByPeriod = _(products_list).groupBy('sold_until')
-                                           .pairs()
-                                           .map(function(p) { return [p[0],_.groupBy(p[1], 'category')]; })
-                                           .value();
-
-      $scope.isDirty = function() {
-        return $scope.credentials && (($scope.caravan_form.$dirty) || ($scope.newInvites.length > 0));
-      };
-
-      $scope.submit = function() {
-        Validator.validate($scope.caravan, 'caravans/new_caravan')
-                 .then(Caravans.post)
-                 .then(Caravans.createInvites($scope.newInvites))
-                 .then(Caravans.localForget)
-                 .then($scope.home)
-                 .catch(FormErrors.set);
-      };
-
-      $scope.openInviteModal = function() {
-        var inviteConfig = { controller: "NewCaravanInviteController", template: 'modules/Caravan/invite.html' };
-        var dialog = ngDialog.open(inviteConfig);
-        return dialog.closePromise.then(function(data) {
-          FormErrors.clear();
-          if (_(data.value).isString()) { return; }
-          if (_(data.value).isEmpty()) { return; }
-          $scope.newInvites.push(data.value);
+        modal.result.then(function (result) {
+          $scope.invites.push(result);
         });
       };
-    })
-    .controller('NewCaravanAuthorController', function($scope, AuthModal, focusOn) {
-      $scope.signup = {};
 
-      $scope.openLoginModal = AuthModal.login;
-      $scope.focusName = _.partial(focusOn, 'person.name');
     })
-    .controller('NewCaravanInviteController', function($scope, FormErrors, Validator, focusOn) {
+    .controller('NewCaravanController', function($scope, $state,
+                                                  Products, Caravans, FormErrors, Account) {
+
+      $scope.enforceAuth();
+
+      $scope.caravan = {};
+      $scope.lockCity = true;
+
+      Account.get().then(function(account) {
+        $scope.caravan.city = account.city;
+      });
+
+      $scope.finish = function(response) {
+        $state.go('caravan.edit', {id: response.id});
+      };
+
+      $scope.submit = function() {
+        Caravans.post($scope.caravan)
+                .then($scope.finish)
+                .catch(FormErrors.setScopeError($scope));
+      };
+
+    })
+    .controller('NewCaravanInviteController', function($scope, $uibModalInstance,
+                                                       FormErrors, Caravans, caravan) {
       $scope.invite = {};
+
+      $scope.finish = function(response) {
+        $uibModalInstance.close(response);
+      };
+
       $scope.submitInvite = function() {
-        return Validator.validate($scope.invite, 'caravans/new_invite')
-                        .then($scope.closeThisDialog)
-                        .catch(FormErrors.set);
+        Caravans.createInvite(caravan, $scope.invite)
+                  .then($scope.finish)
+                  .catch(FormErrors.setScopeError($scope));
       };
     });
 })();

@@ -8,7 +8,6 @@
     <thead>
       <tr>
         <th>Categoria</th>
-        <th>Período</th>
         <th>Valor</th>
         <th>Comprar</th>
       </tr>
@@ -17,9 +16,6 @@
       <tr ng-repeat="product in products">
         <td>
           {{product.description}}
-        </td>
-        <td>
-          {{product.sold_until }}
         </td>
         <td ng-if="product.price">
             {{ product.price | realbrasileiro }}

@@ -1,16 +1,43 @@
-<section class="invite">
-  <header translate>convidar participante para a caravana</header>
-  <form novalidate>
-    <input type="email" maxlength=80
-          placeholder="{{ 'e-mail do convidado' | translate }}"
-          focusable required ng-model="invite.recipient" />
-    <div form-error="recipient.*" translate>por favor, informe o e-mail do convidado</div>
-    <input type="text" maxlength=80
-          placeholder="{{ 'nome do convidado' | translate }}"
-          ng-model="invite.name" />
-    <div form-error="name.*" translate>por favor, informe o nome do convidado</div>
-    <button ng-click="submitInvite()" class="only-expanded" translate>
-      convidar!
-    </button>
-  </form>
-</section>
+<div class="modal-header">
+    <h4 class="modal-title">
+        <i class="fa fa-envelope"></i>
+        Convidar para a caravana
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="form-group has-feedback">
+            <label class="required">
+              <span translate>Nome:</span>
+              <small class="text-muted" translate>(mínimo 5 caracteres)</small>
+            </label>
+          <input type="text"
+                maxlength="80"
+                class="form-control"
+                ng-model="invite.name"/>
+            <span field-error="name"></span>
+          </div>
+       </div>
+       <div class="row">
+          <div class="form-group has-feedback">
+              <label class="required">
+                 <span translate>E-mail:</span>
+                 <small class="text-muted" translate>(mínimo 5 caracteres)</small>
+              </label>
+              <input type="text"
+                     maxlength="60"
+                     class="form-control"
+                     ng-model="invite.recipient"/>
+              <span field-error="recipient"></span>
+          </div>
+       </div>
+
+       <div class="row">
+           <div class="text-center">
+               <button class="btn btn-primary" ng-click="submitInvite()">Convidar</button>
+           </div>
+       </div>
+    </div>
+
+</div>

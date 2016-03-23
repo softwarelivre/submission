@@ -49,7 +49,6 @@
     .controller("RegisterCaravanInviteController", function($scope, $stateParams, $state,
                                                      Validator, Auth, Account, FormErrors, UserLocation, CaravanInvites,
                                                      invite, focusOn) {
-      Auth.logout();
       $scope.signup = { name: invite.name, email: invite.recipient };
       $scope.lockEmail = true;
       //UserLocation.autobind($scope, 'signup');
@@ -70,31 +69,36 @@
                  .catch(FormErrors.set);
       };
     })
-    .controller("AnswerCaravanInviteController", function($scope, $state, $stateParams, Auth, AuthModal, CaravanInvites, invite) {
-      Auth.logout();
+    .controller("AnswerCaravanInviteController", function($scope, $state, Auth, CaravanInvites, invite) {
+      $scope.enforceAuth();
 
       $scope.account = Auth.glue($scope, 'account');
       $scope.invite = invite;
+      $scope.login = {};
+      $scope.showError = false;
 
-      function retryWithLogin() {
-        AuthModal.login().closePromise.then(function(data) {
-          if (_(data.value).isString()) { return; }
-          if (_(data.value).isEmpty()) { return; }
-          $scope.accept();
-        });
+      function moveToPurchaseArea() {
+        $state.go('purchase.new');
       }
-      function moveToNextState(invite) {
-        if ($scope.account) {
-          $state.go('home', { caravan_hash: $stateParams.hash });
-        }
-        else { $state.go('caravaninvite.register', $state.params); }
+
+      function moveToHome() {
+        $state.go('home');
+      }
+
+      function showError() {
+        $scope.showError = true;
       }
 
       $scope.accept  = function() {
-        CaravanInvites.accept(invite)
-               .then(moveToNextState)
-               .catch(retryWithLogin);
+          CaravanInvites.accept(invite)
+                        .then(moveToPurchaseArea)
+                        .catch(showError);
       };
-      $scope.decline = _.partial(CaravanInvites.decline, invite);
+
+      $scope.decline = function() {
+          CaravanInvites.decline(invite)
+                        .then(moveToHome)
+                        .catch(showError);
+      };
     });
 })();

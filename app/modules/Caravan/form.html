@@ -1,19 +1,23 @@
 <form novalidate name="caravan_form" class="lines">
-  <ng-include src="'modules/Caravan/product.html'"></ng-include>
   <ng-include src="'modules/Caravan/caravan.html'"></ng-include>
-  <ng-include src="'modules/Caravan/author.html'"></ng-include>
-  <ng-include src="'modules/Caravan/invited.html'"></ng-include>
 
-  <aside class="centered action" ng-show="isDirty()">
-    <div form-error-any>
-      <span translate>por favor verifique as mensagens acima e tente novamente</span>
+  <div ng-show="caravan.id"
+       ng-include="'modules/Caravan/invited.html'">
+  </div>
+
+  <div class="text-center">
+    <div class="alert alert-danger" form-error-any>
+      <span translate>Por favor verifique as mensagens acima e tente novamente</span>
     </div>
-    <button ng-hide="caravan.id" ng-click="submit()" translate>
-      criar caravana
+    <div class="alert alert-warning" ng-hide="caravan.id">
+      <span translate>Você precisa criar a caravana antes de enviar os convites</span>
+    </div>
+    <button class="btn btn-primary" ng-hide="caravan.id"  ng-click="submit()" translate>
+      Criar caravana
     </button>
-    <button ng-show="caravan.id" ng-click="submit()" translate>
-      salvar alterações
+    <button class="btn btn-primary" ng-show="caravan.id"  ng-click="update()" translate>
+      Salvar alterações
     </button>
-  </aside>
+  </div>
 
 </form>

@@ -12,13 +12,13 @@
       var extensions = {};
 
       extensions.current = function() {
-        return $localStorage.savedCaravan || {};
+        return {};
       };
       extensions.localSave = function(value) {
-        $localStorage.savedCaravan = value || {};
+        //$localStorage.savedCaravan = value || {};
       };
       extensions.localForget = function() {
-        $localStorage.savedCaravan = {};
+        //$localStorage.savedCaravan = {};
       };
       extensions.saveIt = function(object) {
         return object.save();
@@ -31,6 +31,9 @@
                             .catch(function() { console.log(arguments); });
           }));
         };
+      };
+      extensions.createInvite = function(caravan, invite) {
+        return caravan.post('invites', invite);
       };
       extensions.getOwnedByCredentials = function() {
         var credentials = Auth.credentials();

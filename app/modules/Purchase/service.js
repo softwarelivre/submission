@@ -7,7 +7,7 @@
       'restangular',
       'ngStorage',
     ])
-    .factory('Products', function(Restangular) {
+    .factory('Products', function(Restangular, $q) {
       var service = Restangular.service('products');
       var extensions = {};
 
@@ -16,6 +16,22 @@
       extensions.getCaravanList = function(hash) {
         if (!hash) { return []; }
         return service.one('caravan').getList(hash);
+      };
+
+      extensions.getCaravanProducts = function() {
+        var deferred = $q.defer();
+        service.getList().then(
+            function(result) {
+                var products = _.filter(result, function(element) {
+                 return (element.category == 'caravan');
+                });
+                deferred.resolve(products);
+            },
+            function(error) {
+              deferred.reject(error);
+            }
+        );
+        return deferred.promise;
       };
 
       extensions.getProponentOffer = function(hash) {
@@ -111,5 +127,47 @@
       };
 
       return _.extend(service, extensions);
+    })
+    .factory('Buyer', function(Account, $q) {
+      var service = {};
+
+      service.createBuyer = function() {
+        var deferred = $q.defer();
+
+        Account.get().then(
+            function(account) {
+              var buyer = {};
+              buyer.name = account.name;
+              buyer.kind = 'person';
+              buyer.cpf  = account.document;
+              if (account.role == 'corporate')
+              {
+                buyer.kind = 'company';
+                buyer.cnpj  = account.document;
+              }
+              else if (account.role == 'foreign')
+              {
+                buyer.kind = 'foreign';
+                buyer.passport  = account.document;
+              }
+              buyer.contact         = account.phone;
+              buyer.address_country = account.country;
+              buyer.address_state   = account.address_state;
+              buyer.address_city    = account.city;
+              buyer.address_neighborhood = account.address_neighborhood;
+              buyer.address_number = account.address_number;
+              buyer.address_street = account.address_street;
+              buyer.address_zipcode = account.address_zipcode;
+              buyer.caravan_invite_hash = account.caravan_invite_hash;
+              deferred.resolve(buyer);
+          },
+          function(error) {
+            deferred.reject(error);
+          });
+
+        return deferred.promise;
+      };
+
+      return service;
     });
 })();

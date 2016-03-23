@@ -1,28 +1,45 @@
-<fieldset class="coauthor">
-  <legend translate>quem será convidado?</legend>
+<fieldset>
+  <legend class="text-primary" translate>Quem será convidado?</legend>
 
-  <ul ng-show="credentials" class="invited_list">
-    <li class="invited main">
-      <img gravatar-src="credentials.email" gravatar-size="50">
-      <div class="name">{{ credentials.name }}</div>
-      <div class="recipient">{{ credentials.email }}</div>
-      <div class="status you" translate>este é você!</div>
-    </li>
-    <li class="invited" ng-repeat="invite in invites">
-      <img gravatar-src="invite.recipient" gravatar-size="50">
-      <div class="name">{{ invite.name }}</div>
-      <div class="recipient">{{ invite.recipient }}</div>
-      <div class="status {{invite.status}}">{{ invite.status }}</div>
-    </li>
-    <li class="invited in-progress" ng-repeat="invite in newInvites">
-      <img gravatar-src="invite.recipient" gravatar-size="50">
-      <div class="name">{{ invite.name }}</div>
-      <div class="recipient">{{ invite.recipient }}</div>
-      <div class="status {{invite.status}}" translate>será convidado ao salvar</div>
-    </li>
-    <li class="invited invite-new" ng-click="openInviteModal()">
-      <i class="fa fa-plus"></i>
-      <span translate>convidar para a caravana...</span>
-    </li>
-  </ul>
+   <div class="row">
+       <p class="container-fluid">
+        <button class="btn btn-primary" ng-click="openInviteModal()">
+            <i class="fa fa-plus"></i> Convidar
+        </button>
+       </p>
+   </div>
+
+   <div class="row">
+
+    <div class="col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span translate>Caravanista</span>
+        </div>
+        <div class="panel-body">
+          <div><strong>{{ credentials.name }}</strong></div>
+          <div>{{ credentials.email }}</div>
+          <div translate>Este é você!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-4" ng-repeat="invite in invites">
+      <div class="panel"
+           ng-class="{ 'panel-warning': invite.status == 'pending',
+                       'panel-success': invite.status == 'accepted',
+                       'panel-danger': invite.status == 'declined'}">
+        <div class="panel-heading">
+          Participante
+        </div>
+        <div class="panel-body">
+          <div><strong>{{ invite.name }}</strong></div>
+          <div>{{ invite.recipient }}</div>
+          <div>{{ invite.status }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </fieldset>
