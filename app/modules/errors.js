@@ -11,6 +11,11 @@
         $rootScope.$broadcast('errors:clear');
       };
 
+      self.clearScope = function($scope) {
+        errors = {};
+        $scope.$broadcast('errors:clear');
+      };
+
       self.setOne = function(field, label) {
         var path = field + "." + label;
         $rootScope.$broadcast('errors:set', path);
