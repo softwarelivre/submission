@@ -39,10 +39,9 @@
     </div>
 </div>
 
-<div class="row" ng-show="myInvites.length > 0">
-    <div class="container-fluid">
-    <legend translate class="text-primary"> Como co-autor </legend>
-
+<div class="container-fluid" ng-show="myInvites.length > 0">
+    <legend translate class="text-primary"> Como co-autor</legend>
+     <div class="row">
         <div class="col-sm-6" ng-repeat="proposal in myInvites">
             <div class="panel"
                  ng-class="{'panel-info': proposal.status == 'proposal',
@@ -77,6 +76,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
