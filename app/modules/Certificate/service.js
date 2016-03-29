@@ -30,8 +30,6 @@
       return service;
     })
     .service('Certificates', function(Restangular, Auth) {
-      var credentials = Auth.credentials();
-
       function serviceFor(accountId) {
         return Restangular.service('certificates', Restangular.one('accounts', accountId));
       }
@@ -39,11 +37,13 @@
       var service = {};
 
       service.getOwnedByCredentials = function() {
+        var credentials = Auth.credentials();
         if (!credentials) { return null; }
         return serviceFor(credentials.id).getList();
       };
 
       service.issue = function(descriptor) {
+        var credentials = Auth.credentials();
         if (!credentials) { return null; }
         return serviceFor(credentials.id).post({ descriptor: descriptor });
       };
