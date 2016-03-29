@@ -343,6 +343,12 @@
         </label>
         <input type="text"
                ng-model="signup.address_zipcode"
+               ng-show="type != 'foreign'"
+               mask="9" repeat="8" restrict="reject" validate="false"
+               class="form-control"/>
+        <input type="text"
+               ng-model="signup.address_zipcode"
+               ng-show="type == 'foreign'"
                class="form-control"/>
         <span field-error="address_zipcode"></span>
       </div>
