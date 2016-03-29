@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-6" ng-repeat="proposal in myProposals" ui-sref="proposal.edit({ id: proposal.id })">
           <div class="panel"
-               ng-class="{ 'panel-info': proposal.status == 'proposal',
+               ng-class="{ 'panel-info': proposal.status == 'pending',
                        'panel-success': proposal.status == 'accepted',
                        'panel-success': proposal.status == 'confirmed',
                        'panel-danger': proposal.status == 'declined'}">
@@ -44,7 +44,7 @@
      <div class="row">
         <div class="col-sm-6" ng-repeat="proposal in myInvites">
             <div class="panel"
-                 ng-class="{'panel-info': proposal.status == 'proposal',
+                 ng-class="{'panel-info': proposal.status == 'pending',
                             'panel-success': proposal.status == 'accepted',
                             'panel-danger': proposal.status == 'declined'}">
                 <div class="panel-heading">
