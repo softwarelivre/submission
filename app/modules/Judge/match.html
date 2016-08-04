@@ -1,92 +1,132 @@
-<dl class="judge">
-  <dt class="header" translate>avaliador</dt>
-  <dt translate>token</dt>
-  <dd class="token">{{ judge.hash }}</dd>
+<!--<button ng-click="instructions.setDisplay(true)">
+        ajuda!!
+      </button>-->
 
-  <dt translate>votos totais</dt>
-  <dd class="votes">{{ judge.votes }}</dd>
+<div class="row-fluid">
 
-  <dt translate>votos usados</dt>
-  <dd class="spent">{{ judge.spent }}</dd>
+  <h2  class="page-header">
+    <span translate>Seleção pública de palestras</span>
+  </h2>
 
-  <dt translate>votos restantes</dt>
-  <dd class="remaining">{{ judge.remaining }}</dd>
+  <div ng-show="instructions.display">
+    <p>
+      Participar da seleção pública de palestras do FISL17 é muito fácil!
+    </p>
+    <p>
+      Nas telas a seguir, serão mostradas duas propostas de palestra
+      que foram enviadas pela comunidade este ano. Selecione a que
+      você mais gostaria de ver apresentada no FISL17.</p>
+    <p>
+      Você poderá efetuar esse processo {{ judge.remaining }} vezes,
+      escolhendo uma proposta de palestra preferida em cada vez.
+    </p>
 
-  <dt>
-    <button ng-click="instructions.setDisplay(true)">
-      ajuda!!
-    </button>
-  </dt>
+    <p>
+      <b>Atenção:</b> você tem <b>15 minutos</b> para efetuar cada voto. Após
+      transcorrido esse tempo, o par de propostas será apresentado a
+      outro avaliador, e seu voto para aquele par será descartado.
+    </p>
 
-</dl>
-<div class="instructions" ng-show="instructions.display">
-  <h3 translate>Instruções</h3>
+    <div class="text-center">
+      <button class="btn btn-primary" ng-click="instructions.setDisplay(false)">
+        Ok, quero começar!
+      </button>
+    </div>
 
-  <p>
-    Participar da seleção pública de palestras do FISL16 é muito fácil!
-  </p>
-  <p>
-    Nas telas a seguir, serão mostradas duas propostas de palestra
-    que foram enviadas pela comunidade este ano. Selecione a que
-    você mais gostaria de ver apresentada no FISL16.</p>
-  <p>
-    Você poderá efetuar esse processo {{ judge.remaining }} vezes,
-    escolhendo uma proposta de palestra preferida em cada vez.
-  </p>
+  </div>
 
-  <p>
-    <b>Atenção:</b> você tem <b>15 minutos</b> para efetuar cada voto. Após
-    transcorrido esse tempo, o par de propostas será apresentado a
-    outro avaliador, e seu voto para aquele par será descartado.
-  </p>
+  <div class="row" ng-show="endOfTournament">
+    <h3 translate>Avaliação encerrada</h3>
 
-  <button ng-click="instructions.setDisplay(false)">
-    ok, quero começar!
-  </button>
+    <p>
+      A avaliação de propostas para o FISL17 está encerrada. Aguarde enquanto
+      analisamos os resultados. A convocação dos palestrantes selecionados
+      será iniciada em breve.
+    </p>
+  </div>
 
-
+<div class="row-fluid" ng-hide="instructions.display">
+    <table class="table table-striped">
+      <thead>
+        <th colspan="2">Informações do avaliador</th>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Token</th>
+          <td>{{ judge.hash }}</td>
+        </tr>
+        <tr>
+          <th>Votos totais</th>
+          <td>{{ judge.votes }}</td>
+        </tr>
+        <tr>
+          <th>Votos usados</th>
+          <td>{{ judge.spent }}</td>
+        </tr>
+        <tr>
+          <th>Votos restantes</th>
+          <td>{{ judge.remaining }}</td>
+        </tr>
+      </tbody>
+    </table>
 </div>
-<div class="end" ng-show="endOfTournament">
-  <h3 translate>Avaliação encerrada</h3>
 
-  <p>
-    A avaliação de propostas para o FISL16 está encerrada. Aguarde enquanto
-    analisamos os resultados. A convocação dos palestrantes selecionados
-    será iniciada em breve.
-  </p>
-</div>
-<div class="done" ng-hide="match.player1 || endOfTournament">
+<div class="row-fluid" ng-hide="match.player1 || endOfTournament">
   <h3 translate>Obrigado por participar!</h3>
 
   <p>
     Todos os seus votos foram computados. Em breve, anunciaremos
-    as propostas classificadas. Nos vemos no FISL16!
+    as propostas classificadas. Nos vemos no FISL17!
   </p>
 </div>
-<div class="match" ng-show="match.player1">
-  <div class="versus">x</div>
-  <div class="player player-{{$index}}" ng-repeat="player in [ match.player1, match.player2 ]">
-    <h4>{{ player.title }}</h4>
-    <dl class="scrollable">
-      <dt translate>trilha</dt>
-      <dd class="track">{{ player.track.zone }} - {{ player.track.track }}</dd>
 
-      <dt translate>autores</dt>
-      <dd class="author" ng-repeat="author in player.authors">
-        {{ author.name }}
-        <a ng-click="toggleResume($id)" ng-show="author.resume">currículo...</a>
-        <span ng-show="displayResume[$id]">
-          {{ author.resume }}
-        </span>
-      </dd>
-      <dt translate>descrição</dt>
-      <dd class="full pre-wrap">{{ player.full }}</dd>
-    </dl>
-  </div>
-  <div class="buttons">
-    <button ng-click="voteFor('player1')" translate>prefiro proposta 1</button>
-    <button ng-click="voteFor('tie')"     translate>gostei de ambas</button>
-    <button ng-click="voteFor('player2')" translate>prefiro proposta 2</button>
-  </div>
+
+<div class="row-fluid" ng-show="match.player1 && !instructions.display" >
+
+    <hr>
+
+    <div class="row">
+
+      <!-- THE !! IS A HACK FOR AVOID undefiened players-->
+      <div class="col-sm-6" ng-repeat="player in [ match.player1, match.player2 ] | filter:'!!'">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <i class="box-icon fa fa-newspaper-o"></i>
+            {{ player.title }}
+          </div>
+          <div class="panel-body">
+            <dl>
+              <dt translate>Trilha</dt>
+              <dd class="track">{{ player.track.zone }} - {{ player.track.track }}</dd>
+              <dt translate>Autores</dt>
+              <dd class="author" ng-repeat="author in player.authors">
+                {{ author.name }}
+                <a ng-click="toggleResume($id)" ng-show="author.resume">currículo...</a>
+                <p ng-show="displayResume[$id]">
+                  {{ author.resume }}
+                </p>
+              </dd>
+              <dt translate>Descrição</dt>
+              <dd>{{ player.full }}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="text-center">
+          <button class="btn btn-primary"
+                  ng-click="voteFor('player1')"
+                  translate>Prefiro proposta 1</button>
+          <button class="btn btn-default"
+                  ng-click="voteFor('tie')"
+                  translate>Gostei de ambas</button>
+          <button
+                  class="btn btn-primary"
+                  ng-click="voteFor('player2')"
+                  translate>Prefiro proposta 2</button>
+      </div>
+    </div>
 </div>
-

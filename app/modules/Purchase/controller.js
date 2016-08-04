@@ -18,7 +18,7 @@
             main:   { template:    "<div ui-view='form'></div>", controller: 'PurchaseController' }
           },
           resolve: {
-            products: function(Products) { return Products.getList(); },
+            products: function(Products) { return [] },
             purchaseMode: function(Purchases) { return Purchases.purchaseMode(); }
           }
         })
@@ -67,8 +67,10 @@
             "main@": { controller: 'NewPurchaseController', templateUrl: 'modules/Purchase/baseform.html' }
           },
           resolve: {
-            products:        function(Products, $stateParams) { return Products.getProponentOffer($stateParams.proponent_hash); }
-          }
+            products:        function(Products, $stateParams) { return Products.getProponentOffer($stateParams.proponent_hash); },
+            buyer:           function(Buyer) {return Buyer.createBuyer(); },
+          },
+
         });
     });
 
@@ -101,6 +103,8 @@
         promocode: 'código promocional',
         student: 'estudante',
         caravan: 'caravana',
+        'corporate-promocode': 'corporativo',
+        'gov-promocode': 'empenho',
         'proponent-student': 'proponente - estudante'
       }
       $scope.credentials = Auth.glue($scope, 'credentials');
@@ -116,7 +120,7 @@
       $scope.human_category = HUMAN_CATEGORIES[$scope.product.category];
     })
     .controller('NewPurchaseController', function($rootScope, $scope, $state, $stateParams,
-                                                  Config, Auth, FormErrors,
+                                                  Config, Auth, FormErrors, ngToast,
                                                   focusOn, products, purchaseMode, buyer,
                                                   Upload, Products, Purchases, Account, ContractModal) {
       $scope.enforceAuth();
@@ -126,51 +130,98 @@
       $scope.selectedProduct = {};
       $scope.purchaseMode = purchaseMode;
 
-      $scope.haveDiscount = false;
-      $scope.isPromoCode = false;
       $scope.discountValue = 0;
-      $scope.products = _.filter(products, function(element) {
-        if(buyer.caravan_invite_hash)
-          return (element.category == 'caravan');
-        return (element.category != 'donation' && element.category != 'caravan')
-      });
-
-      $scope.promoCodeError = false;
-      $scope.promocode = { "hash": "" };
-
-      $scope.showDialog = ContractModal.show
-
+      $scope.promocode = {'hash': ''};
+      $scope.total_amount = 0;
+      $scope.purchase_qty = {};
       $scope.isProponent = $stateParams.proponent_hash !== undefined;
 
-      $scope.refreshProducts = function(products) {
-        $scope.selectedProduct = {};
-        return _(products).groupBy('sold_until')
-                          .pairs()
-                          .map(function(p) { return [p[0],_.groupBy(p[1], 'category')]; })
-                          .value();
-      }
-
-      $scope.updateSelectedProduct = function(newId) {
-        $scope.selectedProduct = _($scope.products).findWhere({ id: newId });
-        if ($scope.selectedProduct.category == 'student') {
-          $scope.buyer.kind = 'person';
-          $scope.showDialog('student', 'contract_large');
+      $scope.updatePurchaseTotal = function () {
+        if ($scope.selectedProduct.id) {
+          $scope.total_amount = $scope.purchase_qty[$scope.selectedProduct.id] * $scope.selectedProduct.price;
         }
-        resetPaymentMethod();
       };
 
-      $scope.productsByPeriod = $scope.refreshProducts($scope.products);
+      $scope.products = _.filter(products, function(product) {
+        if($scope.buyer.caravan_invite_hash)
+          return (product.category == 'caravan');
+        else if($scope.buyer.kind == 'foreign')
+          return (product.category == 'foreigner');
+        else if($scope.buyer.kind == 'company')
+          return (product.category == 'business' || product.category == 'government');
+        else
+          return (product.category == 'normal' || product.category == 'student');
+      });
+
+      $scope.updateSelectedProduct = function(newId) {
+        $scope.selectedProduct = undefined;
+
+        var product = _($scope.products).findWhere({ id: newId });
+        var contract = 'initial';
+
+        console.log(product.category);
+
+        if (product.category == 'student' || product.category == 'proponent-student') {
+          console.log(product.category);
+          $scope.buyer.kind = 'person';
+          contract = 'student';
+        } else if(product.category == 'foreigner') {
+          contract = 'foreign';
+        } else if(product.category == 'caravan') {
+          contract = 'rider';
+        } else if(product.category == 'business') {
+          contract = 'corporate';
+        } else if(product.category == 'government') {
+          contract = 'government';
+        } else if(product.category == 'corporate-promocode') {
+          contract = undefined;
+        } else if(product.category == 'gov-promocode') {
+          contract = undefined;
+        }
+
+        if(contract) {
+          var dialog = ContractModal.show(contract, 'contract_large');
+
+          dialog.closePromise.then(function (data) {
+            if (data.value) {
+              $scope.selectedProduct = product;
+              $scope.total_amount = $scope.selectedProduct.price * buyer.purchase_qty;
+              $scope.updatePurchaseTotal();
+              resetPaymentMethod();
+            } else {
+              $state.reload();
+            }
+          });
+        } else {
+          $scope.selectedProduct = product;
+          $scope.total_amount = $scope.selectedProduct.price * buyer.purchase_qty;
+          $scope.updatePurchaseTotal();
+          resetPaymentMethod();
+        }
 
 
+      };
+
+      $scope.createCaravan = function () {
+        var dialog = ContractModal.show('caravan', 'contract_large');
+        dialog.closePromise.then(function (data) {
+            if(data.value) {$state.go('caravan.new');}
+        });
+      };
 
       function resetPaymentMethod() {
-        if (!$scope.selectedProduct) { return; }
-        var requiresCash = $scope.selectedProduct.can_pay_cash;
-        var isOnline     = purchaseMode == 'online';
-        if (requiresCash) {
-          $scope.payment.method = 'cash';
-        } else if (isOnline) {
-          $scope.payment.method = 'boleto';
+        if ($scope.selectedProduct) {
+          var requiresCash = $scope.selectedProduct.can_pay_cash;
+          var isOnline = purchaseMode == 'online';
+          if (requiresCash) {
+            $scope.payment.method = 'cash';
+          } else if (isOnline) {
+            if ($scope.buyer.kind == 'foreign') {
+                $scope.payment.method = 'paypal';
+            } else {
+              $scope.payment.method = 'boleto';
+            }
+          }
         }
       }
       resetPaymentMethod();
@@ -178,40 +229,22 @@
       $scope.verifyPromoCode = function() {
         Purchases.verifyPromoCode($scope.promocode.hash).then(
           function(ret) {
-            $scope.promoCodeError = false;
-            $scope.isPromoCode = true;
-
             $scope.buyer.hash_code = $scope.promocode.hash;
+
             var promo_products = [ ret.product ];
             $scope.products = promo_products;
-            $scope.productsByPeriod = $scope.refreshProducts(promo_products);
-            $scope.updateSelectedProduct(ret.product.id);
-
-            if (ret.discount < 1) {
-              console.log('valid promocode, partial discount');
-              $scope.haveDiscount = true;
-              $scope.discountValue = ret.discount*100;
-            } else {
-              console.log('valid promocode, full discount');
-              $scope.haveDiscount = false;
-            }
+            $scope.discountValue = ret.discount*100;
           }
         ).catch(function() {
-          console.log('invalid promocode');
-          $scope.isPromoCode = false;
-          $scope.promoCodeError = true;
+          ngToast.create({
+            content:'Este código promocional é inválido ou então ele já foi usado.',
+            className: 'danger',
+          });
         })
-      }
-
-
-      $scope.isDirty = function() {
-        return $scope.credentials && $scope.selectedProduct.id && $scope.purchase_form.$dirty;
       };
 
       function finish(response) {
         Purchases.followPaymentInstructions(response);
-        Purchases.localForget();
-        $state.go('home');
       }
 
       $scope.uploadDocument = function(file) {
@@ -227,10 +260,19 @@
       $scope.submit = function() {
         // This is UGLY, fix it later
         $scope.buyer.payment_method = $scope.payment.method;
-        Products.doAPurchase($scope.buyer, $scope.selectedProduct.id, $scope.payment.amount)
-                 .then(Purchases.pay($scope.payment.method))
-                 .then(finish)
-                 .catch(FormErrors.setError);
+        $scope.buyer.purchase_qty = $scope.purchase_qty[$scope.selectedProduct.id];
+
+        if($scope.selectedProduct.category == 'government') {
+            Products.doAPurchase($scope.buyer, $scope.selectedProduct.id)
+                .then(finish)
+                .catch(FormErrors.setError);
+        }
+        else {
+          Products.doAPurchase($scope.buyer, $scope.selectedProduct.id)
+              .then(Purchases.pay($scope.payment.method))
+              .then(finish)
+              .catch(FormErrors.setError);
+        }
       };
     });
 })();

@@ -56,6 +56,12 @@
       extensions.askReset = function(data) {
         return service.one('reset').post('', data);
       };
+
+      extensions.getEmployees = function () {
+         if (!Auth.isCorporate()) {return; }
+         return service.one(credentials.id).one('employees').getList();
+      };
+
       extensions.setCertificateName = function(data) {
         var credentials = Auth.credentials();
         if (!credentials) { return; }
@@ -70,6 +76,30 @@
                         .then(function(data) { return Auth.login(data.email, resetData.password); });
         };
       };
+
+      extensions.isUser = function(account) {
+        return extensions.hasRole(account, 'user');
+      };
+
+      extensions.isAdmin = function(account) {
+        return extensions.hasRole(account, 'admin');
+      };
+
+      extensions.isForeign = function(account) {
+        return extensions.hasRole(account, 'foreign');
+      };
+
+      extensions.isCorporate = function(account) {
+        return extensions.hasRole(account, 'corporate');
+      }
+
+      extensions.hasRole = function(account, role) {
+        if (!account) { return false;}
+        for(var i=0; i < account.roles.length; i++) {
+          if(account.roles[i].name === role) { return true; }
+        }
+        return false;
+      }
 
       return _.extend(service, extensions);
     });

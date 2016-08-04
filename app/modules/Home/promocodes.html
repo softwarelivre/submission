@@ -1,25 +1,29 @@
 <div class="container-fluid" ng-show="myPromocodes.length > 0">
-    <legend class="text-primary" translate> Meus códigos promocionais </legend>
+    <legend class="text-primary" translate>
+        <span ng-show="isCorporate">
+              Meus códigos promocionais</span>
+        <span ng-show="!isCorporate">Meus códigos</span>
+    </legend>
     <div class="row">
-      <table class="table table-responsive">
-          <thead>
-            <th translate>Código</th>
-            <th translate>Descrição</th>
-            <th translate>Desconto</th>
-            <th translate>Status</th>
-          </thead>
-          <tbody>
-            <tr ng-repeat="promocode in myPromocodes"
-                ng-class="{'bg-success': promocode.used }">
-                <td>{{promocode.hash_code}}</td>
-                <td>{{promocode.description}}</td>
-                <td>{{promocode.discount * 100}} %</td>
-                <td>
-                    <span ng-show="!promocode.used" translate>Disponível</span>
-                    <span ng-show="promocode.used" translate>Usado</span>
-                </td>
-            </tr>
-          </tbody>
-      </table>
+        <div class="col-sm-12">
+          <table class="table table-responsive">
+              <thead>
+                <th translate>Código</th>
+                <th translate>Descrição</th>
+                <th translate>Status</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="promocode in myPromocodes"
+                    ng-class="{'bg-success': promocode.used }">
+                    <td>{{promocode.hash_code}}</td>
+                    <td>{{promocode.description}}</td>
+                    <td>
+                        <span ng-show="!promocode.used" translate>Disponível</span>
+                        <span ng-show="promocode.used" translate>Utilizado</span>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
     </div>
 </div>

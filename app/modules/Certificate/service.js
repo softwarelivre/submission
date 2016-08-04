@@ -42,10 +42,10 @@
         return serviceFor(credentials.id).getList();
       };
 
-      service.issue = function(descriptor) {
+      service.issue = function(ticket_id, descriptor) {
         var credentials = Auth.credentials();
         if (!credentials) { return null; }
-        return serviceFor(credentials.id).post({ descriptor: descriptor });
+        return serviceFor(credentials.id).post({ ticket_id: ticket_id, descriptor: descriptor });
       };
 
       return service;

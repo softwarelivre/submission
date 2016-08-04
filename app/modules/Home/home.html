@@ -4,15 +4,10 @@
     <p class="text-center" translate>Neste espaço você poderá participar das campanhas de doação da ASL.Org, inscrever-se em eventos, submeter palestras e emitir certificados.</p>
 <hr>
 
-<div class="btn-group btn-group-justified" role="group" >
-  <div class="btn-group" role="group">
-    <a ui-sref="purchase.new" class="btn btn-default" translate>Inscrições Fisl17</a>
-  </div>
-  <div class="btn-group" role="group">
-    <a ui-sref="donation.new" class="btn btn-primary">Fazer doação</a>
-  </div>
-  <div class="btn-group" role="group">
-    <a  ui-sref="proposal.new" class="btn btn-default" translate>Submissão de Palestras</a>
+
+<div class="row">
+  <div class="col-sm-12">
+    <a ui-sref="donation.new" class="btn btn-block btn-primary">Fazer doação</a>
   </div>
 </div>
 
@@ -25,6 +20,6 @@
 <div ng-include="'modules/Home/proposals.html'" ></div>
 <div ng-include="'modules/Home/caravans.html'" ></div>
 <div ng-include="'modules/Home/promocodes.html'"></div>
-<!--
+<div ng-include="'modules/Home/employees.html'"></div>
+
 <div ng-include="'modules/Home/certificates.html'"></div>
--->

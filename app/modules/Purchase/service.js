@@ -46,11 +46,20 @@
         };
       };
 
-      extensions.doAPurchase = function(buyer_data, product_id, amount) {
+      extensions.doAPurchase = function(buyer_data, product_id) {
           var product = service.one(product_id);
-          buyer_data['amount'] = amount
           return product.post('purchase', buyer_data);
       };
+
+       extensions.doADonation = function(buyer_data, product_id, amount, survey) {
+          var product = service.one(product_id);
+          buyer_data['amount'] = amount;
+          buyer_data['shirt_size'] = survey.answers.size;
+          buyer_data['delivery'] = survey.answers.delivery;
+
+          return product.post('purchase', buyer_data);
+      };
+
 
 
       return _.extend(service, extensions);
@@ -93,6 +102,10 @@
           return p;
         };
       };
+      extensions.sendGovDocument = function(document, purchase_id) {
+          var buyer = {document_file: document};
+          return service.one(purchase_id).post('upload-buyer-document', buyer);
+      };
       extensions.followPaymentInstructions = function(response) {
        var instructions_url = "";
         if (_.has(response, '$type')) {
@@ -128,42 +141,49 @@
 
       return _.extend(service, extensions);
     })
-    .factory('Buyer', function(Account, $q) {
+    .factory('Buyer', function(Account, Auth, $q) {
       var service = {};
 
       service.createBuyer = function() {
         var deferred = $q.defer();
 
-        Account.get().then(
-            function(account) {
-              var buyer = {};
-              buyer.name = account.name;
-              buyer.kind = 'person';
-              buyer.cpf  = account.document;
-              if (account.role == 'corporate')
-              {
-                buyer.kind = 'company';
-                buyer.cnpj  = account.document;
-              }
-              else if (account.role == 'foreign')
-              {
-                buyer.kind = 'foreign';
-                buyer.passport  = account.document;
-              }
-              buyer.contact         = account.phone;
-              buyer.address_country = account.country;
-              buyer.address_state   = account.address_state;
-              buyer.address_city    = account.city;
-              buyer.address_neighborhood = account.address_neighborhood;
-              buyer.address_number = account.address_number;
-              buyer.address_street = account.address_street;
-              buyer.address_zipcode = account.address_zipcode;
-              buyer.caravan_invite_hash = account.caravan_invite_hash;
-              deferred.resolve(buyer);
-          },
-          function(error) {
-            deferred.reject(error);
-          });
+        if(Auth.credentials()) {
+
+            Account.get().then(
+                function (account) {
+                    var buyer = {};
+                    buyer.name = account.name;
+
+                    if(Account.isCorporate(account)) {
+                      buyer.kind = 'company';
+                      buyer.cnpj = account.document;
+                    } else if (Account.isForeign(account)) {
+                      buyer.kind = 'foreign';
+                      buyer.passport = account.document;
+                    } else {
+                      buyer.kind = 'person';
+                      buyer.cpf = account.document;
+                    }
+
+                    buyer.purchase_qty = 1;
+                    buyer.contact = account.phone;
+                    buyer.address_country = account.country;
+                    buyer.address_state = account.address_state;
+                    buyer.address_city = account.city;
+                    buyer.address_neighborhood = account.address_neighborhood;
+                    buyer.address_number = account.address_number;
+                    buyer.address_street = account.address_street;
+                    buyer.address_zipcode = account.address_zipcode;
+                    buyer.address_extra = account.address_extra;
+                    buyer.caravan_invite_hash = account.caravan_invite_hash;
+                    deferred.resolve(buyer);
+                },
+                function (error) {
+                    deferred.reject(error);
+                });
+        } else {
+            deferred.resolve({});
+        }
 
         return deferred.promise;
       };

@@ -1,30 +1,44 @@
-<div class="panel panel-default" ng-show="myCertificates.length > 0">
-  <div class="panel-body">
-          <legend translate class="text-primary"> Meus certificados</legend>
-          <ul>
-            <li ng-repeat="cert in myCertificates">
-              <span class="title">{{ cert.kind | humanize }}</span>
-              <span class="number" ng-show="cert.kind == 'attendant'">
-                  número: <b>{{ cert.person }}</b>
-              </span>
-              <span ng-hide="cert.name" class="talk">{{ cert.talk }}</span>
-              <small ng-show="cert.name" class="name">{{ cert.name }} - {{ cert.talk }}</small>
-              <span ng-hide="cert.name" class="empty" translate>grafia não confirmada</span>
-              <a ng-show="cert.status == 'issued'" class="status issued" href="{{cert.full_url}}" target="_blank" translate>
-                emitido no dia {{ cert.issue_date | date_locale }}
-              </a>
-              <span ng-hide="cert.status == 'issued'" class="status {{ cert.status }}" translate>
-                {{ cert.status | humanize }}
-              </span>
-            </li>
-            <li class="button" ui-sref="certificate.survey" ng-show="canIssueNewCerts()">
-              <span translate translate-n="myCertificates.length" translate-plural="emitir certificados..." translate>
-                emitir certificado...
-              </span>
-            </li>
-          </ul>
-          <div class="container" ng-if="!myCertificates.length && !canIssueNewCerts()" translate>
-              Nenhum certificado disponível para impressão
+<div class="container-fluid">
+  <legend translate class="page-header text-primary"> Meus certificados</legend>
+
+  <div class="row">
+    <div class="col-sm-6" ng-repeat="cert in myCertificates">
+      <div class="panel panel-default"  style="height: 150px;">
+          <div class="panel-heading">
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            <b style="text-transform: capitalize;">{{ cert.kind | humanize }}</b>
           </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <li ng-show="cert.kind == 'attendant'">Número: <b>{{ cert.person }}</b></li>
+              <li ng-hide="cert.name">{{ cert.talk }}</li>
+              <li ng-show="cert.name">{{ cert.name }} - {{ cert.talk }}</li>
+              <li ng-hide="cert.name">Grafia não confirmada</li>
+              <li ng-show="cert.status == 'issued'">
+                <a href="{{cert.full_url}}" target="_blank">
+                  Emitido no dia {{ cert.issue_date | date_locale }}
+                </a>
+              </li>
+              <li ng-hide="cert.status == 'issued'" class="status {{ cert.status }}" translate>
+                  {{ cert.status | humanize }}
+              </li>
+            </ul>
+          </div>
+      </div>
+    </div>
   </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-primary" ui-sref="certificate.survey" ng-show="canIssueNewCerts()">
+          <span translate translate-n="myCertificates.length" 
+                translate-plural="emitir certificados..." translate>Emitir certificado
+          </span>
+      </button>
+    </div>
+  </div>
+
+    <div ng-if="!myCertificates.length && !canIssueNewCerts()" translate>
+      <strong>Nenhum certificado disponível para impressão</strong>
+    </div>
 </div>

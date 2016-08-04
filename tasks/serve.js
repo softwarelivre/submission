@@ -10,6 +10,7 @@ gulp.task('serve', ['build'], function () {
 
   connect.server({
     livereload : !gutil.env.production,
+    host       : "0.0.0.0",
     root       : paths.dist,
     port       : config.WEB_SERVER_PORT
   });

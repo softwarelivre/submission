@@ -1,39 +1,40 @@
-<fieldset class="invite" ng-if="notification.kind == 'call'">
-  <legend translate>confirmação de presença como palestrante</legend>
+<div ng-if="notification.kind == 'call'">
+  <h2 class="page-header" translate>Confirmação de presença como palestrante</h2>
 
-  <div class="expired" ng-show="notification.is_expired" translate>
+
+  <p class="expired" ng-show="notification.is_expired" translate>
     Pedimos desculpas, mas o prazo para confirmação de sua palestra
     através da mensagem de notificação está encerrado. Outras propostas
     de palestras serão convocadas, dando oportunidade a outros
     proponentes.
-  </div>
+  </p>
 
-  <div class="intro" ng-hide="notification.is_expired" translate>
-    Sua palestra (descrita abaixo) foi aceita para apresentação no <b>FISL16</b>.
+  <p class="intro" ng-hide="notification.is_expired" translate>
+    Sua palestra (descrita abaixo) foi aceita para apresentação no <strong>FISL17</strong>.
     Para confirmar sua vinda ao evento para apresentação dessa palestra, utilize
     os botões abaixo.
-  </div>
+  </p>
 
   <ul>
-    <li><span translate>título:</span> {{ notification.proposal.title }}</li>
-    <li><span translate>trilha:</span> {{ notification.proposal.track.name_pt }}</li>
-    <li><span translate>língua:</span> {{ notification.proposal.language }}</li>
+    <li><span translate><strong>Título:</strong></span> {{ notification.proposal.title }}</li>
+    <li><span translate><strong>Trilha:</strong></span> {{ notification.proposal.track.name_pt }}</li>
+    <li><span translate><strong>Língua:</strong></span> {{ notification.proposal.language }}</li>
 
-    <li><span translate>mensagem enviada em:</span> {{ notification.sent | datetime_locale }}</li>
-    <li><span translate>prazo para resposta:</span> {{ notification.deadline | datetime_locale }}</li>
-    <li><span translate>código de ativação:</span> {{ notification.hash }}</li>
+    <li><span translate><strong>Mensagem enviada em:</strong></</span> {{ notification.sent | datetime_locale }}</li>
+    <li><span translate><strong>Prazo para resposta:</strong></span> {{ notification.deadline | datetime_locale }}</li>
+    <li><span translate><strong>Código de ativação:</strong></span> {{ notification.hash }}</li>
   </ul>
 
   <div ng-hide="notification.is_expired" ng-switch="notification.status">
-    <div class="done" ng-switch-when="confirmed">
+    <div class="alert alert-success" ng-switch-when="confirmed">
       OK, a apresentação dessa palestra está confirmada.
     </div>
-    <div class="done" ng-switch-when="declined">
-      OK, estamos cientes de seu desejo de <b>NÃO</b> apresentar esta palestra
+    <div class="alert alert-danger" ng-switch-when="declined">
+      OK, estamos cientes de seu desejo de <strong>NÃO</strong> apresentar esta palestra
     </div>
     <div class="actions" ng-switch-when="pending">
-      <button ng-click="accept()"  translate>sim, eu vou apresentar esta palestra</button>
-      <button ng-click="decline()" translate>não, eu não vou apresentar esta palestra</button>
+      <button ng-click="accept()" class="btn btn-primary"  translate>Sim, eu vou apresentar esta palestra</button>
+      <button ng-click="decline()" class="btn btn-default" translate>Não, eu não vou apresentar esta palestra</button>
     </div>
   </div>
 </fieldset>
@@ -48,7 +49,7 @@
   </div>
 
   <div class="intro" ng-hide="notification.is_expired" translate>
-    O horário definido para a sua palestra no <b>FISL16</b>
+    O horário definido para a sua palestra no <strong>FISL17</strong>
     está definido conforme os dados abaixo. Para aceitar este
     horário, por favor utilize os botões abaixo.
   </div>
@@ -79,4 +80,6 @@
       <button ng-click="decline()" translate>não, eu não vou apresentar esta palestra</button>
     </div>
   </div>
-</fieldset>
+
+
+</div>

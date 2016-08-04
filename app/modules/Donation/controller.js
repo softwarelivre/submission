@@ -31,6 +31,9 @@
           resolve: {
             products: function(Products) {
               return Products.getList();
+            },
+            buyer: function(Buyer) {
+              return Buyer.createBuyer();
             }
           }
         })
@@ -60,24 +63,29 @@
     })
     .controller('NewDonationController', function($rootScope, $scope, $stateParams,
                                                   Config, Auth, Validator, FormErrors, ContractModal,
-                                                  focusOn, products, purchaseMode,
+                                                  focusOn, products, purchaseMode, buyer,
                                                   $state, Products, Purchases, Account, Survey) {
 
       $scope.enforceAuth();
 
-      $scope.buyer = {};
-      $scope.payment = { method: 'boleto', amount: 10 };
+      $scope.buyer = buyer;
+      $scope.payment = { method: 'pagseguro', amount: 10 };
       $scope.selectedProduct = {};
+      <!-- TODO: REVIEW -->
       $scope.productSurvery = {
         survey: {
           name : 'fisl17_donation_shirt_purchase_',
-          productId: 1,
         },
         answers: {
           delivery: 'at_fisl',
           size: 'G',
         },
       };
+
+      $scope.reciveTShirt = function() {
+        return $scope.selectedProduct.id == 71 || $scope.selectedProduct.id == 73;
+      }
+
       $scope.purchaseMode = purchaseMode;
 
       $scope.donationProducts = function() {
@@ -102,52 +110,12 @@
         }
       }
 
-      Account.get().then(function(account) {
-        $scope.buyer.name            = account.name;
-        $scope.buyer.kind = 'person';
-        $scope.buyer.cpf  = account.document;
-        if (account.role == 'corporate')
-        {
-          $scope.buyer.kind = 'company';
-          $scope.buyer.cnpj  = account.document;
-        }
-        else if (account.role == 'foreign')
-        {
-          $scope.buyer.kind = 'foreign';
-          $scope.buyer.passport  = account.document;
-          $scope.payment.method = 'paypal';
-        }
-
-        $scope.buyer.contact         = account.phone;
-        $scope.buyer.address_country = account.country;
-        $scope.buyer.address_state   = account.address_state;
-        $scope.buyer.address_city    = account.city;
-        $scope.buyer.address_neighborhood = account.address_neighborhood;
-        $scope.buyer.address_number = account.address_number;
-        $scope.buyer.address_street = account.address_street;
-        $scope.buyer.address_zipcode = account.address_zipcode;
-
-      });
-
-      function submitSurvey(response) {
-        if($scope.selectedProduct.id == $scope.productSurvery.survey.productId )
-        {
-          $scope.productSurvery.survey.name += response.parentResource.id;
-          Survey.submitAnswers($scope.productSurvery);
-        }
-      }
-
-      function finish(response) {
-        Purchases.followPaymentInstructions(response);
-        submitSurvey(response);
-      }
-
       $scope.submit = function() {
         // This is UGLY, fix it later
         $scope.buyer.payment_method = $scope.payment.method;
-        Products.doAPurchase($scope.buyer, $scope.selectedProduct.id, $scope.payment.amount)
+        Products.doADonation($scope.buyer, $scope.selectedProduct.id, $scope.payment.amount, $scope.productSurvery)
                  .then(Purchases.pay($scope.payment.method))
-                 .then(finish)
+                 .then(Purchases.followPaymentInstructions)
                  .catch(FormErrors.setError)
       };
     });

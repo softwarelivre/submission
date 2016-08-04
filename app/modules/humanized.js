@@ -13,10 +13,16 @@
         'government':        'empenho',
         'normal':            'individual',
         'promocode':         'código promocional',
+        'corporate-promocode': 'corporativo',
+        'gov-promocode':       'corporativo',
         'proponent':         'proponente',
         'proponent-student': 'proponente estudante',
         'speaker':           'palestrante',
         'student':           'Estudante',
+        'volunteer':         'voluntário',
+        'press':             'imprensa',
+
+        'person': 'Física', 
 
         // payment types
         'cash':      'dinheiro',

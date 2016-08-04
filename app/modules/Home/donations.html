@@ -45,7 +45,7 @@
                     <button class="btn btn-default" ng-click="doPayment(purchase, 'pagseguro')">
                         PagSeguro
                     </button>
-                    <button ng-show="credentials.role == 'foreign'"
+                    <button ng-show="isForeign"
                             class="btn btn-default"
                             ng-click="doPayment(purchase, 'paypal')">
                         Paypal

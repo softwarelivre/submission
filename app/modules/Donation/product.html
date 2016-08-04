@@ -1,4 +1,12 @@
 <h2 class="page-header" translate>Campanha de Doação 2016</h2>
+
+    <div class="row">
+      <div class="container-fluid text-center">
+        <img src="images/banner_donation.jpg" alt=""
+              class="img-responsive center-block" >
+      </div>
+    </div>
+
 <table class="table">
   <thead>
     <tr>
@@ -40,7 +48,7 @@
 </div>
 </div>
 
-<div ng-show="selectedProduct.id == productSurvery.survey.productId">
+<div ng-show="reciveTShirt()">
   <!--survey -->
   <div class="row">
     <div class="form-group col-sm-12">
@@ -67,7 +75,8 @@
     <div class="form-group col-sm-12">
       <label class="control-label" translate>Escolha o tamanho de sua camiseta:</label>
         <label class="radio-inline" translate>
-          <input name="size"  value="P" checked="checked" type="radio">P
+          <input name="size"  
+                 value="P" ng-model="productSurvery.answers.size" type="radio">P
         </label>
         <label class="radio-inline">
           <input name="size"

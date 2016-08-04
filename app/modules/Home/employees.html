@@ -1,0 +1,23 @@
+<div class="container-fluid" ng-show="myEmployees.length > 0">
+    <legend class="text-primary" translate> Funcionários já inscritos </legend>
+    <div class="row">
+        <div class="col-sm-12">
+          <table class="table table-striped">
+              <thead>
+                <th translate>Código da inscrição</th>
+                <th translate>Nome completo</th>
+                <th translate>Documento</th>
+                <th translate>Código promocional utilizado</th>
+              </thead>
+              <tbody>
+                <tr ng-repeat="employee in myEmployees" >
+                    <td>{{employee.purchase_id}}</td>
+                    <td>{{employee.name}}</td>
+                    <td>{{employee.document }}</td>
+                     <td>{{employee.hash_code}}</td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+    </div>
+</div>

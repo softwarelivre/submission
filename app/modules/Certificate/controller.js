@@ -71,27 +71,40 @@
         if (!cert) { return; }
         cert.status = 'failed';
       }
-      $scope.issue = function(descriptor) {
-        return Certificates.issue(descriptor, $scope.language)
+      $scope.issue = function(ticket_id, descriptor) {
+        return Certificates.issue(ticket_id, descriptor, $scope.language)
                            .then(moveFromPendingToIssued)
                            .catch(markFailure);
       };
       _($scope.pending_certificates).each(function(certificate) {
-        $scope.issue(certificate.descriptor);
+        $scope.issue(certificate.person, certificate.descriptor);
       });
 
       $scope.openCertificate = function(cert) {
         $window.open(cert.full_url);
       };
     })
-    .controller('SurveyController', function($scope, $state, Survey, survey) {
+    .controller('SurveyController', function($scope, $state, ngToast, Survey, survey) {
       $scope.survey = survey;
       $scope.responses = {};
       $scope.doSubmit = function() {
-        Survey.saveAnswers($scope.responses).then(function(data) {
-          $state.go('certificate.name');
-        });
-      };
+
+        if(answeredAllQuestions()) {
+          Survey.saveAnswers($scope.responses).then(function(data) {
+            $state.go('certificate.name');
+          });
+        } else {
+          ngToast.create({
+            className: 'danger', 
+            content: 'É necessário responder o questionário antes de emitir o certificado.' 
+          });
+        }
+      }
+
+      function answeredAllQuestions() {
+        return _.keys($scope.responses).length == 18;
+      }
+
     })
     .controller('NameController', function($scope, $state, Account, account, certificates, focusOn) {
       if (account.certificate_name) {

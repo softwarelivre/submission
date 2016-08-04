@@ -1,22 +1,22 @@
 <fieldset class="issue">
-  <legend>
-    meus certificados
+  <legend class="text-primary">
+    Meus certificados
   </legend>
-  <div class="line">
-    <ul>
+  <div>
+    <ul class="list-unstyled">
       <li ng-repeat="certificate in pending_certificates" class="pending">
         <i class="indicator fa fa-cog fa-spin"></i>
-        certificado de {{ certificate.kind | humanize }}
+        Certificado de {{ certificate.kind | humanize }}
         <span ng-show="certificate.talk" class="talk">
           "{{ certificate.talk }}"
         </span>
-        <span class="error" ng-show="certificate.status == 'failed'" translate>erro!</span>
+        <span class="text-danger" ng-show="certificate.status == 'failed'" translate>erro!</span>
       </li>
       <li ng-repeat="certificate in issued_certificates"
           ng-click="openCertificate(certificate)"
           class="issued">
-        <i class="indicator fa fa-check"></i>
-        certificado de {{ certificate.kind | humanize }}
+        <i class="indicator fa fa-check text-success"></i>
+        Certificado de {{ certificate.kind | humanize }}
 
         <span ng-show="certificate.talk" class="talk">
           "{{ certificate.talk }}"
@@ -29,5 +29,8 @@
         </span>
       </li>
     </ul>
+  </div>
+  <div>
+    <button class="btn btn-default" ui-sref="home">Voltar</button>
   </div>
 </fieldset>

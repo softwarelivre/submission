@@ -29,6 +29,7 @@
             signup:           function(Account)      { return Account.get(); },
             cfpState:         function(Proposals)    { return Proposals.cfpState(); },
             purchaseMode:     function(Purchases)    { return Purchases.purchaseMode(); },
+            employees:        function(Account)      { return Account.getEmployees(); }
           }
         });
 
@@ -38,7 +39,7 @@
     .controller('HomeController', function($scope, $state, $stateParams, $window,
                                            Auth, Proposals, Purchases, Account,
                                            myPurchases, myProposals, myInvites, myCaravan, myCertificates,
-                                           myPromocodes,
+                                           myPromocodes, employees, Upload,
                                            currentProposal, signup, cfpState, Config,
                                            Validator, FormErrors, purchaseMode, ngToast, Restangular) {
       $scope.enforceAuth(); //FIX ME
@@ -48,6 +49,8 @@
       $scope.myInvites       = myInvites;
       $scope.myCertificates  = myCertificates;
       $scope.myPromocodes    = myPromocodes;
+      $scope.myEmployees     = employees;
+
       $scope.myDonatations = _.filter(myPurchases, function(element) {
           return (element.product.category == 'donation');
       });
@@ -62,6 +65,10 @@
       $scope.lockEmail = true;
       $scope.signup = signup;
 
+      $scope.isCorporate = Account.isCorporate(signup);
+      $scope.isForeign   = Account.isForeign(signup);
+
+
       $scope.today = new Date();
 
       $scope.disabilityTypes =  Account.getDisabilityTypes();
@@ -74,6 +81,29 @@
       if (_.has($scope.signup, 'country')) {
         $scope.signup[Account.getDocumentField($scope.signup.country)] = $scope.signup.document;
       }
+
+      $scope.sendGovDocument = function(file, purchase_id) {
+
+        $scope.fileUploadError = false;
+        Upload.base64DataUrl(file).then(
+          function (result) {
+              Purchases.sendGovDocument(result, purchase_id)
+                  .then(function (result) {
+                      ngToast.create({
+                          content:'Documento enviado com sucesso'
+                      });
+                      $window.location.reload();
+                  }, function (error) {
+                      ngToast.create({
+                          content:'Ocorreu um erro ao enviar o documento',
+                          className: 'danger',
+                      });
+                  });
+          }, function(error) {
+             console.log(error);
+          });
+      };
+
 
       $scope.removeCurrent = function(ev) {
         $scope.currentProposal = null;
@@ -101,7 +131,18 @@
                       .then(Purchases.followPaymentInstructions);
       };
 
-      $scope.tryToPay = function(purchase) { //FIX ME DADY
+      $scope.calculateLeftAmount = function(purchase) {
+          var amount = purchase.amount * purchase.qty;
+          for(var i=0; i < purchase.payments.length; i++ ) {
+              if(purchase.payments[i]['$type'] == 'PromoCodePayment.normal' ) {
+                amount = amount - purchase.payments[i].amount;
+              }
+          }
+          return amount;
+      };
+
+      //REMOVE
+      $scope.tryToPay = function(purchase) {
           if(purchase.payments)
           {
               var payment = purchase.payments[0];

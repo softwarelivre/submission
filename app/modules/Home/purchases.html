@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-12">
 
-      <table class="table table-striped table-responsive">
+      <table class="table table-striped table-responsive table-condensed">
           <thead>
             <th translate>Código</th>
             <th translate>Ingresso</th>
@@ -20,36 +20,35 @@
 
                 <td>{{ purchase.id }}</td>
                 <td>{{ purchase.product.description }}</td>
-                <td ng-if="purchase.product.price">
-                    {{ purchase.product.price | realbrasileiro}}
-                </td>
-                <td ng-if="!purchase.product.price"> <!-- donation -->
-                    {{ purchase.payments[0].amount | realbrasileiro}}
+                <td>
+                    {{ calculateLeftAmount(purchase) | realbrasileiro }}
                 </td>
                 <td>{{ purchase.created | date_locale }}</td>
                 <!--TODO: FIX DATE FORMAT USE THE USER LOCALE -->
-                <td>{{ purchase.due_date | amDateFormat: 'DD/MM/YYYY' }}</td>
-                <td ng-show="canStartPayment(purchase) && purchase.payments.length > 0">
+                <td ng-show="purchase.product.category=='government'">
+                    -
+                </td>
+                <td ng-show="purchase.product.category!='government'">
+                    {{ purchase.due_date | amDateFormat: 'DD/MM/YYYY' }}
+                </td>
+               <td ng-show="canStartPayment(purchase) && purchase.product.category!='government'">
                     <span translate>Aguardando confirmação</span>
-                    <button class="btn btn-default" ng-click="tryToPay(purchase)">
-                        <span translate ng-show="purchase.payments[0].type=='boleto'">Boleto</span>
-                        <span translate ng-show="purchase.payments[0].type=='pagseguro'">PagSeguro</span>
-                        <span translate ng-show="purchase.payments[0].type=='paypal'">PayPal</span>
-                    </button>
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-sm" ng-click="doPayment(purchase, 'boleto')">
+                            Boleto
+                        </button>
+                        <button class="btn btn-default btn-sm" ng-click="doPayment(purchase, 'pagseguro')">
+                            PagSeguro
+                        </button>
+                        <button ng-show="isForeign"
+                                class="btn btn-default btn-sm"
+                                ng-click="doPayment(purchase, 'paypal')">
+                            Paypal
+                        </button>
+                    </div>
                </td>
-               <td ng-show="canStartPayment(purchase) && purchase.payments.length == 0">
-                    <span translate>Aguardando confirmação</span>
-                    <button class="btn btn-default" ng-click="doPayment(purchase, 'boleto')">
-                        Boleto
-                    </button>
-                    <button class="btn btn-default" ng-click="doPayment(purchase, 'pagseguro')">
-                        PagSeguro
-                    </button>
-                    <button ng-show="credentials.role == 'foreign'"
-                            class="btn btn-default"
-                            ng-click="doPayment(purchase, 'paypal')">
-                        Paypal
-                    </button>
+               <td ng-show="canStartPayment(purchase) && purchase.payments.length == 0 && purchase.product.category=='government'">
+                Pagamento posterior ao evento
                </td>
                <td ng-show="isExpired(purchase)">
                     <span translate >
@@ -61,6 +60,36 @@
                 </td>
                 <td ng-show="isReimbursed(purchase)">
                     <span  translate >Devolvida</span>
+                </td>
+                <td ng-show="purchase.status == 'student_document_in_analysis'">
+                    <span  translate >Documentação em processo de análise</span>
+                </td>
+                <td ng-show="purchase.status == 'gov_document_submission_pending'">
+                    <p  translate > Aguardando submissão da nota de empenho</p>
+
+                    <!--FIX REVIEW-->
+                    <p>
+                      <input name="file"
+                             type="file"
+                             ng-model="buyer_document"
+                             ng-model-options="{allowInvalid: false}"
+                             ngf-select="sendGovDocument($file, purchase.id)"
+                             ngf-max-files="1"
+                             ngf-validate="{size: {max: '2MB'}, pattern: '.pdf' }" />
+                      <p class="text-danger" ng-show="purchase_form.file.$error.maxSize">
+                          O tamanho máximo permitido é 2MB, por favor selecione um outro arquivo.
+                      </p>
+                      <p class="text-danger" ng-show="purchase_form.file.$error.pattern">
+                          Formato do arquivo inválido, por favor selecione um outro arquivo.
+                      </p>
+                      <p class="text-danger" ng-show="fileUploadError">
+                          Houve um erro ao fazer o upload do arquivo.
+                      </p>
+                   </p>
+
+                </td>
+                <td ng-show="purchase.status == 'gov_document_in_analysis'">
+                    <span  translate >Documentação em processo de análise</span>
                 </td>
                 <td ng-show="purchase.status == 'paid'" translate>
                     <strong>Confirmado</strong></b>

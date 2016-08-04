@@ -47,12 +47,22 @@
       <!--TODO: MOVE TO app.js -->
       Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
         if (response.status === 400) {
-          var str_error_message = '<span translate>' + response.data.error.message + '</span>';
-          ngToast.create({
-            content: $sce.trustAsHtml(str_error_message),
-            className: 'danger',
-            compileContent: true
-          });
+
+          <!-- TODO: REMOVE THIS HACK -->
+          if(response.data.description == 'Token is undecipherable' && response.data.error == 'Invalid JWT')
+          {
+            LocalSession.destroy();
+            $state.go('splash');
+          }
+          else
+          {
+            var str_error_message = '<span translate>' + response.data.error.message + '</span>';
+            ngToast.create({
+              content: $sce.trustAsHtml(str_error_message),
+              className: 'danger',
+              compileContent: true
+            });
+          }
           return false;
         }
 
@@ -79,6 +89,20 @@
       self.token = function() {
         return LocalSession.current().token;
       };
+
+      self.isCorporate = function() {
+        var credentials = self.credentials();
+        if (!credentials) { return; }
+        return self.hasRole(credentials, 'corporate');
+      }
+
+      self.hasRole = function(credential, role) {
+        if (!credentials) { return false;}
+        for(var i=0; i < credential.roles.length; i++) {
+          if(credential.roles[i].name === role) { return true; }
+        }
+        return false;
+      }
 
       self.glue = function(target, name) {
         $rootScope.$on('auth:changed', function(_,d) { target[name] = d; });

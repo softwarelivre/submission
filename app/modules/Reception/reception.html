@@ -1,9 +1,5 @@
-<fieldset class="reception">
-  <div class="print-only">
-    <img width="100" class="logo ng-scope" src="/images/logo-pt.png" />
-  </div>
-
-  <legend translate>
+<fieldset>
+  <legend translate class="text-primary">
     Ficha de Participante
   </legend>
 
@@ -12,16 +8,12 @@
     {{ person.category | humanize }}
     <span ng-show="person.kind == 'public'" ng-hide="promocode">{{ person.status | humanize }}</span>
 
-    <span ng-show="promocode">
-      <br/>
-      {{ promocode.hash_code }}
-    </span>
-
+    <span ng-show="promocode"> <br/> {{ promocode.hash_code }}</span>
   </h1>
 
   <div ng-hide="person.has_valid_ticket">
     <span>
-      valor pendente: {{ person.outstanding_amount | realbrasileiro }}
+      Valor pendente: {{ person.outstanding_amount | realbrasileiro }}
     </span>
 
   </div>
@@ -40,36 +32,38 @@
   </div>
 
   <fieldset>
-    <legend>Dados do Participante</legend>
+    <legend class="text-primary">Dados do Participante</legend>
 
     <ul>
-      <li class="important"><b>nome:</b> {{ person.name }}</li>
-      <li class="important"><b>email:</b> {{ person.email }}</li>
-      <li class="important"><b>documento:</b> {{ person.document |document }}</li>
+      <li><b>Nome:</b> {{ person.name }}</li>
+      <li><b>Email:</b> {{ person.email }}</li>
+      <li><b>Documento:</b> {{ person.document |document }}</li>
 
-      <li><b>organização:</b> {{ person.organization }}</li>
+      <li><b>Organização:</b> {{ person.organization }}</li>
 
-      <li><b>valor:</b> {{ person.price | realbrasileiro }}</li>
-      <li><b>categoria:</b> {{ person.category | humanize }}</li>
-      <li ng-show="person.product.gives_kit"><b>recebe kit:</b> sim</li>
-      <li ng-hide="person.product.gives_kit"><b>recebe kit:</b> não</li>
-      <li><b>tipo:</b> {{ product.description }}</li>
+      <li><b>Valor:</b> {{ person.price | realbrasileiro }}</li>
+      <li><b>Categoria:</b> {{ person.category | humanize }}</li>
+      <li ng-show="person.product.gives_kit"><b>Recebe kit:</b> sim</li>
+      <li ng-hide="person.product.gives_kit"><b>Recebe kit:</b> não</li>
+      <li><b>Tipo:</b> {{ person.product_description }}</li>
     </ul>
   </fieldset>
 
   <fieldset>
-    <legend>Dados do Comprador</legend>
+    <legend class="text-primary">Dados do Comprador</legend>
 
     <ul>
-      <li><b>nome:</b> {{ person.buyer.name }}</li>
-      <li><b>tipo:</b> {{ person.buyer.kind | humanize }}</li>
-      <li><b>documento:</b> {{ person.buyer.document | document }}</li>
-      <li><b>país:</b> {{ person.buyer.address_country }}</li>
-      <li><b>cidade:</b> {{ person.buyer.address_city }}</li>
-      <li><b>rua:</b> {{ person.buyer.address_street }}</li>
-      <li><b>número:</b> {{ person.buyer.address_number }}</li>
-      <li><b>complemento:</b> {{ person.buyer.address_extra }}</li>
+      <li><b>Nome:</b> {{ person.buyer.name }}</li>
+      <li><b>Tipo:</b> {{ person.buyer.kind | humanize }}</li>
+      <li><b>Documento:</b> {{ person.buyer.document | document }}</li>
+      <li><b>País:</b> {{ person.buyer.address_country }}</li>
+      <li><b>Estado:</b> {{ person.buyer.address_state}}</li>
+      <li><b>Cidade:</b> {{ person.buyer.address_city }}</li>
       <li><b>CEP:</b> {{ person.buyer.address_zipcode }}</li>
+      <li><b>Bairro:</b> {{ person.buyer.address_neighborhood }}</li>
+      <li><b>Rua:</b> {{ person.buyer.address_street }}</li>
+      <li><b>Número:</b> {{ person.buyer.address_number }}</li>
+      <li><b>Complemento:</b> {{ person.buyer.address_extra }}</li>
     </ul>
   </fieldset>
 

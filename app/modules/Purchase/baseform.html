@@ -1,25 +1,29 @@
 <form novalidate name="purchase_form" class="form">
 
-  <div ng-show="products.length > 0">
+
+  <div ng-show="products.length > 0 || purchaseMode == 'reservation'">
     <ng-include src="'modules/Purchase/product.html'"></ng-include>
   </div>
+
+<!--
   <div ng-show="products.length == 0">
     <ng-include src="'modules/Purchase/no_products.html'"></ng-include>
   </div>
-
+-->
 
   <div class="container-fluid" ng-show="selectedProduct.id">
-
     <hr>
 
-    <div ng-include="'modules/Purchase/buyer_data.html'"></div>
-      <div class="container-fluid text-center" ng-show="isDirty()">
+    <div ng-include="'modules/Purchase/buyer_data.html'" ng-hide="discountValue == 100">
+
+    </div>
+
+      <div class="container-fluid text-center">
 
         <div form-error-any class="alert alert-danger" role="alert">
           <span translate>Por favor verifique as mensagens acima e tente novamente
           </span>
         </div>
-
 
         <button class="btn btn-primary" ng-hide="purchase.id" ng-click="submit()" translate>
           Finalizar

@@ -30,6 +30,13 @@
             form: { controller: 'NewProposalController', templateUrl: 'modules/Proposal/form.html' }
           }
         })
+        .state('proposal.closed', {
+          parent: 'proposal',
+          url: '^/proposal/closed',
+          views: {
+            form: { controller: 'ClosedProposalController', templateUrl: 'modules/Proposal/form.html' }
+          }
+        })
         .state('proposal.edit', {
           parent: 'proposal',
           url: '^/proposal/:id',
@@ -67,6 +74,10 @@
       $scope.invites = invites;
       $scope.newInvites = [];
 
+      $scope.lockAll = true;
+      //TODO: REMOVE
+      $scope.cfpState = 'open';
+
       $scope.isDirty = function() {
         return $scope.credentials && (($scope.proposal_form.$dirty) || ($scope.newInvites.length > 0));
       };
@@ -93,10 +104,16 @@
       };
 
     })
+    .controller('ClosedProposalController', function($scope) {
+      $scope.cfpState  = 'closed';
+
+    })
     .controller('NewProposalController', function($scope, ngDialog,
                                                   FormErrors, Proposals) {
       $scope.proposal = {};
       $scope.newInvites = [];
+      //TODO: REMOVE TEMPORARY HACK
+      $scope.cfpState  = 'open';
 
       $scope.isDirty = function() {
         return $scope.credentials && (($scope.proposal_form.$dirty) || ($scope.newInvites.length > 0));

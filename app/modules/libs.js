@@ -38,22 +38,12 @@
       $scope.contract_type = "modules/common/contract_" + contract_type + ".html";
 
       $scope.acceptContract = function() {
-        if ($rootScope.accepted_contracts === undefined) {
-          $rootScope.accepted_contracts = new Array();
-        }
-
-        if (!_.include($rootScope.accepted_contracts, contract_type)) {
-          $rootScope.accepted_contracts.push(contract_type);
-        }
-
         $scope.closeThisDialog(true);
-      }
+      };
 
       $scope.rejectContract = function() {
-        $window.location = "/";
+        $scope.closeThisDialog(false);
       }
-
-
 
     })
     .factory('ContractModal', function (ngDialog, $rootScope) {
@@ -66,14 +56,11 @@
       };
       return {
         show:  function(contract_type, dialog_size) {
-          if (!_.include($rootScope.accepted_contracts, contract_type)) {
-            var size = 'contract_default';
-            if (!_.isUndefined(dialog_size)) { size = dialog_size; }
-            _.extend(contractConfig, { className: 'ngdialog-theme-default ' + size, data: { contract_type: contract_type} });
-            return ngDialog.open(contractConfig);
-          } else { return false; }
+          var size = 'contract_default';
+          if (!_.isUndefined(dialog_size)) { size = dialog_size; }
+          _.extend(contractConfig, { className: 'ngdialog-theme-default ' + size, data: { contract_type: contract_type} });
+          return ngDialog.open(contractConfig);
         }
       };
     });
-
 })();

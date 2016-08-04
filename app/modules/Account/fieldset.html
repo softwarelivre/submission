@@ -102,10 +102,26 @@
         </label>
         <input type="text"
                maxlength="80"
+               ng-readonly="lockCorporateName"
                ng-model="signup.name"
                class="form-control"/>
         <span field-error="name"></span>
       </div>
+    </div>
+
+    <div class="row" ng-show="type == 'corporate'">
+      <div class="form-group has-feedback col-sm-6" >
+        <label class="required" translate>
+          <span> Responsável:</span>
+        </label>
+        <input type="text"
+               maxlength="80"
+               ng-readonly="lockInCharge"
+               ng-model="signup.incharge"
+               class="form-control"/>
+        <span field-error="incharge"></span>
+      </div>
+
     </div>
 
     <div class="row" ng-show="type != 'corporate'">
@@ -116,6 +132,17 @@
                ng-model="signup.badge_name"
                class="form-control"/>
       </div>
+    </div>
+    
+    </div>
+
+    <div class="row">
+      <div class="form-group has-feedback col-sm-6">
+        <label><span translate>Nome da Empresa/Instituição:</span></label>
+        <input type="text" maxlength="20"
+                ng-model="signup.organization"
+                class="form-control"/>
+       </div>
     </div>
 
     <div class="row">
@@ -222,6 +249,21 @@
     <div class="row">
       <div class="form-group has-feedback col-sm-6">
         <label class="required">
+          <span translate>Formação:</span>
+        </label>
+        <select name="education"
+                ng-model="signup.education"
+                class="form-control"
+                ng-options="education as education | humanize for education in educationTypes">
+                <option value="" translate>Selecione uma opção</option>
+        </select>
+        <span field-error="education"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group has-feedback col-sm-6">
+        <label class="required">
           <span translate>Ocupação:</span>
         </label>
         <select name="occupation"
@@ -233,25 +275,92 @@
         <span field-error="occupation"></span>
       </div>
 
-    <div class="form-group has-feedback col-sm-6">
-      <label class="required">
-        <span translate>Formação:</span>
-      </label>
-      <select name="education"
-              ng-model="signup.education"
-              class="form-control"
-              ng-options="education as education | humanize for education in educationTypes">
-              <option value="" translate>Selecione uma opção</option>
-      </select>
-      <span field-error="education"></span>
-    </div>
+      <div class="form-group has-feedback col-sm-6">
+        <label>
+          <span translate>Cargo na Organização:</span>
+        </label>
+        <select name="occupation_position"
+              ng-model="signup.occupation_position"
+              class="form-control">
+              <option value="" >Selecione uma opção</option>
+              <option value="tecnico">Técnico</option>
+              <option value="analista_de_qualidade">Analista de qualidade</option>
+              <option value="desenvolvedor">Desenvolvedor</option>
+              <option value="engenheiro">Engenheiro</option>
+              <option value="administrador_de_sistemas">Administrador de sistemas</option>
+              <option value="marketing_vendas">Marketing/Vendas</option>
+              <option value="gerente_coordenador">Gerente/Coordenador</option>
+              <option value="diretor_executivo">Diretor/Executivo</option>
+              <option value="professor_pesquisador">Professor/Pesquisador</option>
+              <option value="jornalista_publicitario_designer_relacoes_publicas">Jornalista/Publicitário/Designer/Relações públicas</option>
+              <option value="outros">Outros</option>
+        </select>
+        <span field-error="occupation_position"></span>
+      </div>
 
     </div>
 
     <div class="row">
+      <div class="form-group has-feedback col-sm-6">
+        <label>
+          <span translate>Poder de decisão na Organização:</span>
+        </label>
+        <select name="occupation_decision_power"
+                ng-model="signup.occupation_decision_power"
+                class="form-control">
+                <option value="" >Selecione uma opção</option>
+                <option value="nenhum">Nenhum poder de decisão</option>
+                <option value="pouco">Pouco poder de decisão</option>
+                <option value="muito">Muito poder de decisão</option>
+                <option value="total">Total poder de decisão</option>
+        </select>
+        <span field-error="occupation_decision_power"></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group has-feedback col-sm-6">
+        <label>
+          <span translate>Área de atuação da Organização em que trabalha:</span>
+        </label>
+      <select name="employer_activity"
+              ng-model="signup.employer_activity"
+              class="form-control">
+              <option value="" >Selecione uma opção</option>
+              <option value="forncedor_tic">Fornecedor soluções em TIC</option>
+              <option value="consultoria_tic">Consultoria TIC</option>
+              <option value="associacoes_fundacoes_sindicatos">Associações/Fundações/Sindicatos</option>
+              <option value="educacao_pesquisa">Educação/Pesquisa</option>
+              <option value="software_internet">Software/Internet</option>
+              <option value="hardware">Hardware</option>
+              <option value="eletrica_eletronica">Elétrica/Eletrônica</option>
+              <option value="outros">Outros</option>
+      </select>
+      <span field-error="employer_activity"></span>
+      </div>
+
+    <div class="form-group has-feedback col-sm-6">
+        <label>
+          <span translate>Porte da Organização:</span>
+        </label>
+        <select name="employer_size"
+              ng-model="signup.employer_size"
+              class="form-control">
+              <option value="" >Selecione uma opção</option>
+              <option value="_10">Até 10 funcionários</option>
+              <option value="10_50">De 10 a 50 funcionários</option>
+              <option value="50_100">De 50 a 100 funcionários</option>
+              <option value="100_">Acima de 100 funcionários</option>
+        </select>
+        <span field-error="employer_size"></span>
+      </div>
+    </div>
+
+
+    <div class="row">
       <div class="form-group has-feedback col-sm-4">
         <label class="required">
-          <span translate>Você é portador de alguma defiência:</span>
+          <span translate>Você é portador de alguma deficiência:</span>
         </label>
         <select
               name="disability"
@@ -304,6 +413,23 @@
         <span field-error="resume"></span>
       </div>
     </div>
+
+    <div class="row">
+    <div class="form-group has-feedback col-sm-6">
+        <label class="required">
+          <span translate>Você aceita que seus dados sejam divulgados?</span>
+        </label>
+        <select name="inform"
+              ng-model="signup.inform"
+              class="form-control">
+              <option value="true" >Sim</option>
+              <option value="false">Não</option>
+        </select>
+        <span field-error="inform"></span>
+      </div>
+    </div>
+
+
 
     </fieldset>
 

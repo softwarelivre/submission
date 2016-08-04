@@ -99,7 +99,8 @@
 
       $scope.signup = {
           sex: 'M',
-          membership: false
+          membership: false,
+          inform: true
       };
       $scope.selectedAddress = '';
 
@@ -127,6 +128,9 @@
         if($scope.signup.membership === 'true') { $scope.signup.membership = true; }
         if($scope.signup.membership === 'false') { $scope.signup.membership = false; }
 
+        //TODO: FIX
+        $scope.signup.type = $scope.type
+
         Account.post($scope.signup)
                .then(finishedSignUp)
                .catch(FormErrors.setError);
@@ -145,6 +149,8 @@
 
       $scope.lockEmail = true;
       $scope.lockType = true;
+      $scope.lockCorporateName = true;
+      $scope.lockInCharge = true;
 
       $scope.onSelectLocation = function($item){
         var address = AddressResolver.convertToAddress($item);
@@ -158,22 +164,16 @@
 
       Account.get().then(function(data){
         $scope.signup = data;
-        $scope.type = 'person';
-        /*TODO: REMOVE THIS HACK OLD ACCOUNTS WITHOUT A DOCUMENT SO DOC WAS SET TO ID*/
-        if ($scope.signup.document == $scope.signup.id )
-        {
-           delete $scope.signup.document
-        }
-        /* FIX PERMISSIONS */
-        $scope.type = 'person'
-        $scope.signup.cpf = $scope.signup.document;
-        if( $scope.signup.role == 'corporate')
-        {
-            $scope.type = 'corporate';
-            $scope.signup.cnpj = $scope.signup.document;
-        } else if( $scope.signup.role == 'foreign') {
-            $scope.type = 'foreign'
-            $scope.signup.passport = $scope.signup.document;
+
+        if( Account.isCorporate($scope.signup) ) {
+          $scope.type = 'corporate';
+          $scope.signup.cnpj = $scope.signup.document;
+        } else if( Account.isForeign($scope.signup) ) {
+          $scope.type = 'foreign'
+          $scope.signup.passport = $scope.signup.document;
+        } else {
+          $scope.type = 'person';
+          $scope.signup.cpf = $scope.signup.document
         }
         delete $scope.signup.document;
       });

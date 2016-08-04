@@ -51,7 +51,7 @@
       <span field-error="cpf"></span>
     </div>
 
-    <div class="form-group has-feedback col-sm-4" ng-show="buyer.kind == 'corporate'">
+    <div class="form-group has-feedback col-sm-4" ng-show="buyer.kind == 'company'">
       <label class="required">
         <span> CNPJ: </span>
         <small class="text-muted" translate>(Somente números)</small>
@@ -77,21 +77,30 @@
     </div>
 </fieldset >
 
-  <fieldset>
+  <fieldset ng-hide="selectedProduct.category == 'government'">
     <legend translate class="text-primary">Dados do pagamento</legend>
     <div class="form-group has-feedback">
       <label class="col-sm-3 control-label" translate>
         Forma de pagamento:
       </label>
       <div class="col-sm-9">
-          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash"
+
+      <!--
+          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash && buyer.kind != 'foreign'"
                  class="radio-inline" translate>
             <input type="radio" id="payment_boleto" name="payment_method" value="boleto"
                ng-model="payment.method" >Boleto bancário
           </label>
-          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash"
+      -->
+
+          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash && buyer.kind != 'foreign'"
                  class="radio-inline" translate>
             <input type="radio" id="payment_pagseguro" name="payment_method" value="pagseguro"
+               ng-model="payment.method" /> Cartão
+          </label>
+          <label ng-show="purchaseMode == 'online' && !selectedProduct.can_pay_cash && buyer.kind == 'foreign'"
+                 class="radio-inline" translate>
+            <input type="radio" id="payment_paypal" name="payment_method" value="paypal"
                ng-model="payment.method" /> Cartão
           </label>
           <label ng-show="selectedProduct.can_pay_cash" class="radio-inline" translate>
@@ -105,7 +114,7 @@
 
   </fieldset>
 
-<fieldset ng-show="selectedProduct.category == 'student'">
+<fieldset ng-show="selectedProduct.category=='student' || selectedProduct.category == 'proponent-student' ">
   <legend class="text-primary" translate>Declaração de vínculo estudantil</legend>
 
   <div class="alert alert-info">
@@ -169,6 +178,12 @@
         </label>
         <input type="text"
                ng-model="buyer.address_zipcode"
+               ng-show="type != 'foreign'"
+               mask="9" repeat="8" restrict="reject" validate="false"
+               class="form-control"/>
+        <input type="text"
+               ng-model="buyer.address_zipcode"
+               ng-show="type == 'foreign'"
                class="form-control"/>
         <span field-error="address_zipcode"></span>
       </div>

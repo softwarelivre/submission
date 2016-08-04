@@ -1,27 +1,22 @@
 <form novalidate name="purchase_form" class="form-horizontal">
-
-
   <div class="panel panel-default">
     <div class="panel-body">
       <ng-include src="'modules/Purchase/product.html'"></ng-include>
     </div>
   </div>
 
-    <!--  <ng-include ng-show="selectedProduct.id" src="'modules/Purchase/user.html'"></ng-include> -->
-
-
-  <div class="panel panel-default" ng-show="selectedProduct.id && credentials">
+  <div class="panel panel-default" ng-show="selectedProduct.id">
     <div class="panel-body">
 
-      <div class="container">
+      <div class="container-fluid">
         <div ng-include="'modules/Purchase/buyer_data.html'"></div>
 
-        <div class="container text-center" ng-show="isDirty()">
+        <div class="container-fluid text-center">
           <div form-error-any class="alert alert-danger" role="alert">
             <span translate>Por favor verifique as mensagens acima e tente novamente</span>
           </div>
 
-          <button class="btn btn-primary" ng-hide="purchase.id" ng-click="submit()" translate>
+          <button class="btn btn-primary" ng-click="submit()" translate>
             Comprar ingresso
           </button>
         </div>

@@ -1,22 +1,31 @@
 <fieldset class="name">
-  <legend translate>
-    confirmação de nome para o certificado
-  </legend>
-  <p translate>
+  <h2 translate class="text-primary page-header">
+    Confirmação de nome para o certificado
+  </h2>
+  <div class="container-fluid">
     Confirme abaixo a correta grafia de seu
     nome para a emissão do certificado.
-  </p>
-  <form>
-    <input ng-model="new_name" focusable
-          placeholder="nome para o certificado" />
+  </div>
 
-    <button ng-click="doSubmit()" translate>
-      a grafia está correta
-    </button>
-  </form>
+  </br>
 
-  <p class="alert alert-danger" translate>
-    atenção: não é possível alterar o nome do certificado após essa confirmação
-  </p>
+  <div class="container-fluid">
+    <form class="form-inline">
+        <input  class="form-control" 
+                ng-model="new_name" focusable
+                placeholder="Nome para o certificado" />
+        <button class="btn btn-primary" ng-click="doSubmit()" translate>
+          A grafia está correta
+        </button>
+    </form>
+  </div>
+
+  </br>
+
+  <div class="container-fluid">
+    <div class="alert alert-danger" translate>
+      Atenção: não é possível alterar o nome do certificado após essa confirmação
+    </div>
+  </div>
 
 </fieldset>

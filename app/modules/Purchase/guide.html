@@ -1,32 +1,14 @@
 <fieldset class="guide">
-  <legend translate>
+  <h2 class="page-header">
     Ficha de Participante
-  </legend>
+  </h2>
 
-  <h3>
-    INSCRIÇÃO #{{ purchase.id }} - {{ human_category }}<br/>
-    {{ human_status }}
-    <span ng-hide="purchase.status == 'paid'">
-      <br />
-      <span>
-       valor: {{ product.price | realbrasileiro }}
-      </span>
-      <span ng-show="product.is_promo">
-       - desconto de {{ product.price * promocode.discount | realbrasileiro }} ({{ promocode.discount * 100 }}%)
-       = {{ product.price - (product.price * promocode.discount) | realbrasileiro }}
-      </span>
-    </span>
-    <br />
-    <span ng-show="product.is_promo">
-      CÓDIGO PROMOCIONAL: {{ promocode.hash_code }}
-    </span>
-  </h3>
-
-  <h4>
+  <p><strong>
     Para agilizar o seu atendimento, por favor
     leve essa página impressa e apresente-a
-    no balcão de atendimento.
-  </h4>
+    no balcão de atendimento.</strong>
+  </p>
+
 
   <div class="info" ng-hide="purchase.status == 'paid'">
     O pagamento de sua inscrição deverá ser realizado
@@ -36,36 +18,38 @@
   </div>
 
   <fieldset>
-    <legend>Dados do Participante</legend>
+    <legend class="text-primary">Dados do Participante</legend>
 
     <ul>
-      <li class="important"><b>nome:</b> {{ customer.name }}</li>
-      <li class="important"><b>email:</b> {{ customer.email }}</li>
-      <li class="important"><b>documento:</b> {{ customer.document }}</li>
-
-      <li><b>organização:</b> {{ customer.organization }}</li>
-      <li><b>telefone:</b> {{ customer.phone }}</li>
-
-      <li><b>valor:</b> {{ product.price | realbrasileiro }}</li>
-      <li><b>categoria:</b> {{ human_category }} ({{ product.category }})</li>
-      <li ng-show="product.gives_kit"><b>recebe kit:</b> sim</li>
-      <li ng-hide="product.gives_kit"><b>recebe kit:</b> não</li>
-      <li><b>tipo:</b> {{ product.description }}</li>
+      <li><b>Inscrição: {{ purchase.id }}</b></li>
+      <li><b>Nome:</b> {{ customer.name }}</li>
+      <li><b>Email:</b> {{ customer.email }}</li>
+      <li><b>Documento:</b> {{ customer.document }}</li>
+      <li><b>Telefone:</b> {{ customer.phone }}</li>
+      <li><b>Valor:</b> {{ product.price  | realbrasileiro }}</li>
+      <li><b>Categoria:</b> {{ human_category }} </li>
+      <li ng-show="product.gives_kit"><b>Recebe kit:</b>sim</li>
+      <li ng-hide="product.gives_kit"><b>Recebe kit:</b> não</li>
+      <li><b>Tipo:</b> {{ product.description }}</li>
     </ul>
+
+    <p ng-show="product.gives_kit">
+      <strong>O kit será entregue no evento.</strong>
+    </p>
+
   </fieldset>
 
-  <fieldset>
-    <legend>Dados do Comprador</legend>
+  <fieldset ng-hide="product.category == 'corporate-promocode' || product.category == 'gov-promocode'">
+    <legend class="text-primary">Dados do Comprador</legend>
 
     <ul>
-      <li><b>nome:</b> {{ buyer.name }}</li>
-      <li><b>tipo:</b> {{ buyer.kind }}</li>
-      <li><b>documento:</b> {{ buyer.document }}</li>
-      <li><b>país:</b> {{ buyer.address_country }}</li>
-      <li><b>cidade:</b> {{ buyer.address_city }}</li>
-      <li><b>rua:</b> {{ buyer.address_street }}</li>
-      <li><b>número:</b> {{ buyer.address_number }}</li>
-      <li><b>complemento:</b> {{ buyer.address_extra }}</li>
+      <li><b>Nome:</b> {{ buyer.name }}</li>
+      <li><b>Documento:</b> {{ buyer.document }}</li>
+      <li><b>País:</b> {{ buyer.address_country }}</li>
+      <li><b>Cidade:</b> {{ buyer.address_city }}</li>
+      <li><b>Rua:</b> {{ buyer.address_street }}</li>
+      <li><b>Número:</b> {{ buyer.address_number }}</li>
+      <li><b>Complemento:</b> {{ buyer.address_extra }}</li>
       <li><b>CEP:</b> {{ buyer.address_zipcode }}</li>
     </ul>
   </fieldset>
