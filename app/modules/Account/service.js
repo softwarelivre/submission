@@ -78,7 +78,7 @@
       };
 
       extensions.isUser = function(account) {
-        return extensions.hasRole(account, 'user');
+        return extensions.hasRole(account, 'user') || extensions.hasRole(account, 'admin');
       };
 
       extensions.isAdmin = function(account) {
@@ -95,10 +95,13 @@
 
       extensions.hasRole = function(account, role) {
         if (!account) { return false;}
+        return account.role == role;
+        /*
         for(var i=0; i < account.roles.length; i++) {
           if(account.roles[i].name === role) { return true; }
         }
         return false;
+        */
       }
 
       return _.extend(service, extensions);
