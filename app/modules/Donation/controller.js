@@ -74,7 +74,7 @@
       <!-- TODO: REVIEW -->
       $scope.productSurvery = {
         survey: {
-          name : 'fisl17_donation_shirt_purchase_',
+          name : 'fisl18_donation_shirt_purchase_',
         },
         answers: {
           delivery: 'at_fisl',
@@ -83,7 +83,7 @@
       };
 
       $scope.reciveTShirt = function() {
-        return $scope.selectedProduct.id == 71 || $scope.selectedProduct.id == 73;
+        return $scope.selectedProduct.id == 1 || $scope.selectedProduct.id == 71;
       }
 
       $scope.purchaseMode = purchaseMode;
