@@ -74,7 +74,7 @@
       $scope.invites = invites;
       $scope.newInvites = [];
 
-      $scope.lockAll = true;
+      $scope.lockAll = false;
       //TODO: REMOVE
       $scope.cfpState = 'open';
 
