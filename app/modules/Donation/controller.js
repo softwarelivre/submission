@@ -83,7 +83,7 @@
       };
 
       $scope.reciveTShirt = function() {
-        return $scope.selectedProduct.id == 1 || $scope.selectedProduct.id == 71;
+        return $scope.selectedProduct.id == 13 || $scope.selectedProduct.id == 58;
       }
 
       $scope.purchaseMode = purchaseMode;
