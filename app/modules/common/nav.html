@@ -28,6 +28,18 @@
         <li  ng-class="{'active': state.name == 'account.update'}">
           <a   ui-sref="account.update" translate> Meus dados </a>
         </li>
+        <li  ng-class="{'active': state.name == 'purchase.new'}">
+          <a   ui-sref="purchase.new" translate> Fazer inscrição </a>
+        </li>
+        <li  ng-class="{'active': state.name == 'donation.new'}">
+          <a   ui-sref="donation.new" translate> Fazer doação </a>
+        </li>
+        <li  ng-class="{'active': state.name == 'proposal.new'}">
+          <a   ui-sref="proposal.new" translate> Submeter palestra </a>
+        </li>
+        <li  class="disabled">
+          <a   ui-sref="" translate> Área do associado </a>
+        </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
