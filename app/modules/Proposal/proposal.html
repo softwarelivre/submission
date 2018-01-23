@@ -32,11 +32,11 @@
       </label>
       <select class="form-control"
               if-locale="pt"
-              ng-model="proposal.track_id" ng-options="t.id as t.name_pt for t in tracks">
+              ng-model="proposal.track_id" ng-options="t.id as t.name_pt for t in tracks | orderBy:'name_pt'">
         <option value="" ng-hide="proposal.track_id" translate>Escolha uma trilha</option>
       </select>
       <select class="form-control"
-              if-locale="en" ng-model="proposal.track_id" ng-options="t.id as t.name_en for t in tracks">
+              if-locale="en" ng-model="proposal.track_id" ng-options="t.id as t.name_en for t in tracks |  orderBy:'name_en'">
         <option value="" ng-hide="proposal.track_id" translate>Escolha uma trilha</option>
       </select>
       <span field-error="track_id"></span>
