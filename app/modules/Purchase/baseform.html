@@ -1,15 +1,18 @@
 <form novalidate name="purchase_form" class="form">
 
 
-  <div ng-show="products.length > 0 || purchaseMode == 'reservation'">
+  <div ng-show="purchaseModeIsOnline() && products.length > 0">
     <ng-include src="'modules/Purchase/product.html'"></ng-include>
   </div>
 
-<!--
-  <div ng-show="products.length == 0">
+  <div ng-show="purchaseModeIsOnline() && products.length == 0">
     <ng-include src="'modules/Purchase/no_products.html'"></ng-include>
   </div>
--->
+
+  <div ng-hide="purchaseModeIsOnline()">
+    <ng-include src="'modules/Purchase/offline.html'"></ng-include>
+  </div>
+
 
   <div class="container-fluid" ng-show="selectedProduct.id">
     <hr>

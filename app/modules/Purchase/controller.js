@@ -136,6 +136,11 @@
       $scope.purchase_qty = {};
       $scope.isProponent = $stateParams.proponent_hash !== undefined;
 
+
+      $scope.purchaseModeIsOnline = function() {
+        return $scope.purchaseMode == 'online';
+      };
+
       $scope.updatePurchaseTotal = function () {
         if ($scope.selectedProduct.id) {
           $scope.total_amount = $scope.purchase_qty[$scope.selectedProduct.id] * $scope.selectedProduct.price;
