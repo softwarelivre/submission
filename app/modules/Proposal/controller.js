@@ -75,8 +75,6 @@
       $scope.newInvites = [];
 
       $scope.lockAll = false;
-      //TODO: REMOVE
-      $scope.cfpState = 'open';
 
       $scope.isDirty = function() {
         return $scope.credentials && (($scope.proposal_form.$dirty) || ($scope.newInvites.length > 0));
@@ -112,8 +110,6 @@
                                                   FormErrors, Proposals) {
       $scope.proposal = {};
       $scope.newInvites = [];
-      //TODO: REMOVE TEMPORARY HACK
-      $scope.cfpState  = 'open';
 
       $scope.isDirty = function() {
         return $scope.credentials && (($scope.proposal_form.$dirty) || ($scope.newInvites.length > 0));
