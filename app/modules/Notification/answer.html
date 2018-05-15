@@ -41,9 +41,10 @@
     </div>
   </div>
 </fieldset>
+</div>
 
-<fieldset class="invite" ng-if="notification.kind == 'slot'">
-  <legend translate>confirmação de horário de palestra</legend>
+<div ng-if="notification.kind == 'slot'">
+  <h2 class="page-header" translate>Confirmação de horário de palestra</h2>
 
   <div class="expired" ng-show="notification.is_expired" translate>
     Pedimos desculpas, mas o prazo para confirmação
@@ -79,10 +80,8 @@
       OK, estamos cientes de seu desejo de <b>NÃO</b> apresentar esta palestra
     </div>
     <div class="actions" ng-switch-when="pending">
-      <button ng-click="accept()"  translate>sim, eu vou apresentar esta palestra</button>
-      <button ng-click="decline()" translate>não, eu não vou apresentar esta palestra</button>
+      <button class="btn btn-primary" ng-click="accept()"  translate>Sim, eu vou apresentar esta palestra</button>
+      <button class="btn btn-default" ng-click="decline()" translate>Não, eu não vou apresentar esta palestra</button>
     </div>
   </div>
-
-
 </div>
