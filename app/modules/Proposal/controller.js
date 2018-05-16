@@ -64,7 +64,7 @@
       $scope.languages = Config.PROPOSAL_LANGUAGES;
       $scope.levels    = Config.PROPOSAL_LEVELS;
       $scope.tracks    = tracks;
-      $scope.cfpState  = cfpState;
+      $scope.cfpState  = 'open';
     })
     .controller('EditProposalController', function($scope, ngDialog,
                                                    FormErrors, Validator, Proposals,
@@ -74,7 +74,7 @@
       $scope.invites = invites;
       $scope.newInvites = [];
 
-      $scope.lockAll = false;
+      $scope.lockAll = true;
 
       $scope.isDirty = function() {
         return $scope.credentials && (($scope.proposal_form.$dirty) || ($scope.newInvites.length > 0));
@@ -108,6 +108,8 @@
     })
     .controller('NewProposalController', function($scope, ngDialog,
                                                   FormErrors, Proposals) {
+
+      $scope.cfpState  = 'close';
       $scope.proposal = {};
       $scope.newInvites = [];
 
