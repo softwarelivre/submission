@@ -3,13 +3,12 @@
     Ficha de Participante
   </legend>
 
-  <h1>
-    INSCRIÇÃO #{{ person.id }}<br/>
-    {{ person.category | humanize }}
-    <span ng-show="person.kind == 'public'" ng-hide="promocode">{{ person.status | humanize }}</span>
+  <h1>INSCRIÇÃO #{{ person.id }}</h1>
 
-    <span ng-show="promocode"> <br/> {{ promocode.hash_code }}</span>
-  </h1>
+  <h2>Categoria - {{ person.category | humanize }}</h2>
+  <h2 ng-show="person.kind == 'public'" ng-hide="promocode">Status - {{ person.status | humanize }}</h2>
+  <h2 ng-show="promocode"> <br/> {{ promocode.hash_code }}</h2>
+  
 
   <div ng-hide="person.has_valid_ticket">
     <span>
@@ -18,11 +17,7 @@
 
   </div>
 
-  <h2>
-    Para agilizar o seu atendimento, por favor
-    leve essa página impressa e apresente-a
-    no balcão de atendimento.
-  </h2>
+  <hr>
 
   <div class="info" ng-hide="person.has_valid_ticket">
     O pagamento de sua inscrição deverá ser realizado
@@ -66,5 +61,11 @@
       <li><b>Complemento:</b> {{ person.buyer.address_extra }}</li>
     </ul>
   </fieldset>
+
+  <p>
+    * Para agilizar o seu atendimento, por favor
+    leve essa página impressa e apresente-a
+    no balcão de atendimento.
+  </p>
 
 </fieldset>

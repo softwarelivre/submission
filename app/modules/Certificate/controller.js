@@ -102,7 +102,7 @@
       }
 
       function answeredAllQuestions() {
-        return _.keys($scope.responses).length == 18;
+        return _.keys($scope.responses).length == 17;
       }
 
     })
