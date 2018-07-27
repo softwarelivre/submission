@@ -32,7 +32,7 @@
                 <td ng-show="canStartPayment(purchase) && purchase.payments.length > 0">
                     <p translate>Aguardando confirmação</p>
                     <button class="btn btn-sm btn-default" ng-click="tryToPay(purchase)">
-                        <span translate ng-show="purchase.payments[0].type=='boleto'">Boleto</span>
+                       <!-- <span translate ng-show="purchase.payments[0].type=='boleto'">Boleto</span> -->
                         <span translate ng-show="purchase.payments[0].type=='pagseguro'">PagSeguro</span>
                         <span translate ng-show="purchase.payments[0].type=='paypal'">PayPal</span>
                     </button>

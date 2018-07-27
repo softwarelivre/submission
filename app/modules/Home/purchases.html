@@ -34,9 +34,11 @@
                <td ng-show="canStartPayment(purchase) && purchase.product.category!='government'">
                     <p translate>Aguardando confirmação</p>
                     <div class="btn-group">
+                        <!--
                         <button class="btn btn-default btn-sm" ng-click="doPayment(purchase, 'boleto')">
                             Boleto
                         </button>
+                        -->
                         <button class="btn btn-default btn-sm" ng-click="doPayment(purchase, 'pagseguro')">
                             PagSeguro
                         </button>

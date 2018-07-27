@@ -224,7 +224,7 @@
             if ($scope.buyer.kind == 'foreign') {
                 $scope.payment.method = 'paypal';
             } else {
-              $scope.payment.method = 'boleto';
+              $scope.payment.method = 'pagseguro';
             }
           }
         }

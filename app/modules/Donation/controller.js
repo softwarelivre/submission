@@ -106,7 +106,7 @@
         if (requiresCash) {
           $scope.payment.method = 'cash';
         } else if (isOnline) {
-          $scope.payment.method = 'boleto';
+          $scope.payment.method = 'pagseguro';
         }
       }
 
