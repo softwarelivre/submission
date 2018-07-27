@@ -1,0 +1,25 @@
+  <h2  class="page-header" translate>
+    Conclusão do pagamento
+  </h2>
+
+  <div class="info" ng-hide="purchase.status == 'paid'">
+    <strong>Aguardando pagamento.</strong> Seu pagamento será confirmado tão logo
+    seu pagamento seja processado. Caso você tenha optado por meios de pagamento
+    off-line (por exemplo, boleto bancário), fique atento à data de vencimento
+    impressa no mesmo.
+  </div>
+
+  <div class="info" ng-show="purchase.status == 'paid'">
+    <strong>Confirmado!</strong>
+    Obrigado por investir na difusão do software livre e contribuir para a realização do FISL. 
+    Seu pagamento foi recebido e processado com sucesso. Em breve você receberá uma mensagem por e-mail confirmando todos os  da operação.
+  </div>
+
+  <ul>
+    <li><b>Campanha:</b> {{ purchase.product.description }}</li>
+    <li ng-if="purchase.product.price">
+      <b>Valor:</b>{{ purchase.product.price | realbrasileiro }}</li>
+    <li ng-if="!purchase.product.price">
+      <b>Valor:</b>{{ purchase.payments[0].amount | realbrasileiro}}</li>
+    <li><b>Status:</b> {{ purchase.status  | translate }}</li>
+  </ul>

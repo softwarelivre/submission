@@ -37,8 +37,8 @@
         <li  ng-class="{'active': state.name == 'proposal.new'}">
           <a   ui-sref="proposal.new" translate> Submeter palestra </a>
         </li>
-        <li  class="disabled">
-          <a href="#" translate> Área do associado </a>
+        <li ng-class="{'active': state.name == 'members'}">
+          <a ui-sref="members.purchase" translate> Área do associado </a>
         </li>
       </ul>
 

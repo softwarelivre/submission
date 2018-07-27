@@ -1,0 +1,23 @@
+<div class="container-fluid">
+
+    <form novalidate name="purchase_form" class="form">
+
+    <ng-include src="'modules/Members/product.html'"></ng-include>
+
+    <div ng-show="selectedProduct.id">
+    
+    <div ng-include="'modules/Members/buyer_data.html'"></div>
+        <div form-error-any class="alert alert-danger" role="alert">
+          <span translate>Por favor verifique as mensagens acima e tente novamente</span>
+        </div>
+
+      <div class="text-center">
+        <button class="btn btn-primary" ng-hide="purchase.id" ng-click="submit()" translate>
+          Finalizar
+        </button>
+      </div>
+    </div>
+        
+  </form>
+</div>
+

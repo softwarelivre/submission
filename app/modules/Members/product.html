@@ -1,0 +1,49 @@
+<h2 class="page-header" translate>Área de associados</h2>
+    <div class="row">
+      <div class="container-fluid">
+        <p>Na área de associados é possível realizar o pagamento da anuidade.
+          Em breve, esta área contará com novas funcionalidades.
+        </p>
+      </div>
+    </div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Anuidade</th>
+      <th>Valor</th>
+      <th>Selecionar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="product in donationProducts()">
+      <td>
+        {{product.description}}
+      </td>
+      <td ng-if="product.price">
+          {{ product.price | realbrasileiro }}
+      </td>
+      <td ng-if="!product.price" class="col-sm-4">
+          <input
+               name="amount"
+               type="number"
+               class="form-control"
+               ng-model="payment.amount"  />
+      </td>
+      <td>
+        <input id="product_{{product.id}}" type="radio"
+               ng-value="product.id"
+               name="productId"
+               ng-model="productId"
+               ng-click="updateSelectedProduct(product.id)">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div ng-show="selectedProduct.information">
+  <h4 class="text-primary" translate>Informações adicionais</h4>
+  <div class="alert alert-info" role="alert">
+    {{ selectedProduct.information}}
+  </div>
+</div>

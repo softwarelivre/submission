@@ -36,6 +36,7 @@
       'segue.submission.judge',
       'segue.submission.certificate',
       'segue.submission.survey',
+      'segue.submission.members',
     ])
     .controller('SubmissionController', function($scope, $state, Config, Auth, $stateParams) {
       $scope.CONFIG = Config;
